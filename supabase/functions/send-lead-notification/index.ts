@@ -5,7 +5,7 @@ const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
 const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY") ?? "";
 const RESEND_FROM_DOMAIN = Deno.env.get("RESEND_FROM_DOMAIN") || "digital-footprint.uk";
-const NOTIFICATION_EMAIL = Deno.env.get("DFP_LEADS_NOTIFICATION_EMAIL") || Deno.env.get("NOTIFICATION_EMAIL") || "";
+const NOTIFICATION_EMAIL = Deno.env.get("DFP_LEADS_NOTIFICATION_EMAIL") || Deno.env.get("NOTIFICATION_EMAIL") || "leads@digital-footprint.uk";
 const SITE_URL = Deno.env.get("SITE_URL") || "https://digital-footprint.uk";
 
 const MAX_ATTEMPTS = 5;
@@ -18,6 +18,7 @@ const ALLOWED_TABLES = new Set([
   "career_applications",
   "digital_footprint_support",
   "uat_tester_applications",
+  "project_submissions",
 ]);
 
 const ALLOWED_ORIGINS = new Set([
@@ -95,6 +96,7 @@ function deriveType(sourceTable: string, record: Record<string, unknown>): strin
   if (sourceTable === "career_applications") return "career";
   if (sourceTable === "digital_footprint_support") return "support";
   if (sourceTable === "uat_tester_applications") return "uat";
+  if (sourceTable === "project_submissions") return "project_submission";
   return "contact";
 }
 
@@ -112,6 +114,7 @@ function subjectFor(type: string): string {
     support: "New DFP enquiry — Support Request",
     uat: "New DFP enquiry — UAT Tester Application",
     strategy_review: "New DFP enquiry — Roadmap / Strategy Review",
+    project_submission: "New DFP enquiry — Project Brief",
   };
   return map[type] || "New DFP enquiry";
 }
@@ -157,6 +160,32 @@ function buildRows(type: string, r: Record<string, unknown>): string {
       field("Reference", r.application_reference),
       field("Experience", r.experience_level),
       fieldLines("Motivation", r.motivation),
+    ].join("");
+  }
+  if (type === "project_submission") {
+    const services = [
+      r.mobile_app ? "Mobile App" : "",
+      r.ai_agents ? "AI Agents" : "",
+      r.social_media ? "Social Media" : "",
+      r.ecommerce ? "E-commerce" : "",
+      r.stripe_payment ? "Stripe Payments" : "",
+      r.managed_hosting ? "Managed Hosting" : "",
+    ].filter(Boolean).join(", ");
+    const refs = Array.isArray(r.reference_urls) ? (r.reference_urls as string[]).filter(Boolean).join(", ") : "";
+    return [
+      field("Name", r.name),
+      field("Email", r.email),
+      field("Project type", r.project_type),
+      field("Budget", r.budget_range),
+      field("Website type", r.website_type),
+      field("Services", services),
+      field("Visual effects", r.visual_effects),
+      field("Database", r.database_type),
+      field("Timeline", r.timeline),
+      field("Experience", r.experience_level),
+      field("Reference sites", refs),
+      fieldLines("Initial message", r.initial_message),
+      fieldLines("Additional notes", r.additional_notes),
     ].join("");
   }
   const enquiryData = (r.enquiry_data as Record<string, unknown>) || {};
@@ -324,10 +353,6 @@ serve(async (req: Request) => {
 
   if (!RESEND_API_KEY) {
     return Response.json({ code: "ERROR", message: "email_service_not_configured" }, { status: 500, headers: cors(req) });
-  }
-
-  if (!NOTIFICATION_EMAIL) {
-    return Response.json({ code: "ERROR", message: "notification_recipient_not_configured" }, { status: 500, headers: cors(req) });
   }
 
   const subject = subjectFor(type);

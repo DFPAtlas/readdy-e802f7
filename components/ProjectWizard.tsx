@@ -3,6 +3,7 @@
 import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from '@/components/motion';
 import { supabase } from '@/lib/supabase';
+import { notifyLeadSubmission } from '@/lib/submit-enquiry';
 import { 
   X, ChevronRight, ChevronLeft, Globe, Smartphone, Bot, Share2, 
   Database, ShoppingCart, Clock, Settings, Upload, Check, Sparkles,
@@ -145,6 +146,10 @@ export default function ProjectWizard({ isOpen, onClose, initialData }: WizardPr
         .single();
 
       if (error) throw error;
+
+      if (submission?.id) {
+        notifyLeadSubmission('project_submissions', submission.id);
+      }
 
       setSubmitSuccess(true);
       setTimeout(() => {

@@ -42,14 +42,28 @@ export async function submitEnquiry(
     return { code: 'ERROR', message: 'Submission service is not configured. Please try again later.' };
   }
   try {
-    const { data, error } = await supabase.from(table).insert(payload as never).select('id');
-    if (error) {
-      if (error.code === '23505') {
-        return { code: 'OK', submissionId };
+    let recordId: string | undefined;
+
+    if (table === 'leads') {
+      const { data, error } = await supabase.rpc('submit_lead', { p_payload: payload });
+      if (error) {
+        if (error.code === '23505') {
+          return { code: 'OK', submissionId };
+        }
+        return { code: 'ERROR', message: error.message || 'Unable to submit. Please try again.' };
       }
-      return { code: 'ERROR', message: error.message || 'Unable to submit. Please try again.' };
+      recordId = (data as string | null) ?? undefined;
+    } else {
+      const { data, error } = await supabase.from(table).insert(payload as never).select('id');
+      if (error) {
+        if (error.code === '23505') {
+          return { code: 'OK', submissionId };
+        }
+        return { code: 'ERROR', message: error.message || 'Unable to submit. Please try again.' };
+      }
+      recordId = data?.[0]?.id as string | undefined;
     }
-    const recordId = data?.[0]?.id as string | undefined;
+
     if (notify && recordId) {
       notifyLeadSubmission(table, recordId);
     }

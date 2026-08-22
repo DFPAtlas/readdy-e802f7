@@ -40,7 +40,7 @@ export default function StrategyCTA() {
         stage: 'new',
         consent_contact: true,
         idempotency_key: makeIdempotencyKey(),
-      });
+      }, true);
 
       if (result.code === 'OK') {
         setSubmitted(true);
