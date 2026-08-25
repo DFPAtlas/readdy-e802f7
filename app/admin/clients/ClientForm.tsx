@@ -18,6 +18,7 @@ export default function ClientForm({ client, onClose, onSave }: ClientFormProps)
     timezone: 'Europe/London', billing_currency: 'GBP', user_id: '',
   });
   const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [showAdvanced, setShowAdvanced] = useState(false);
 
@@ -50,7 +51,9 @@ export default function ClientForm({ client, onClose, onSave }: ClientFormProps)
     e.preventDefault();
     if (!validate()) return;
     setSaving(true);
-    try { await onSave(formData); onClose(); } catch {}
+    setSaveError(null);
+    try { await onSave(formData); onClose(); }
+    catch (err) { setSaveError(err instanceof Error ? err.message : 'Failed to save client'); }
     finally { setSaving(false); }
   };
 
@@ -235,6 +238,12 @@ export default function ClientForm({ client, onClose, onSave }: ClientFormProps)
             </div>
             <p className="text-xs text-slate-500 mt-1">{formData.notes.length}/500 characters</p>
           </div>
+
+          {saveError && (
+            <div className="px-4 py-3 bg-red-500/10 border border-red-500/20 rounded-xl text-sm text-red-400">
+              {saveError}
+            </div>
+          )}
 
           <div className="flex gap-3 pt-4">
             <button type="button" onClick={onClose} className="flex-1 px-4 py-2.5 bg-white/5 text-slate-400 rounded-xl text-sm font-semibold hover:bg-white/10 transition-all cursor-pointer whitespace-nowrap">

@@ -2,8 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { supabase } from '@/lib/supabase';
-import { notifyLeadSubmission } from '@/lib/submit-enquiry';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { motion } from '@/components/motion';
@@ -32,13 +30,18 @@ export default function CareersApplyClient({ slug }: { slug: string }) {
 
   useEffect(() => {
     let cancelled = false;
-    supabase.from('careers_vacancies').select('*').eq('slug', slug).maybeSingle().then(({ data, error }) => {
+    import('@/lib/supabase').then(({ supabase }) => {
       if (cancelled) return;
-      if (error || !data) { setNotFound(true); setLoading(false); return; }
-      const v = data as CareersVacancy;
-      if (v.vacancy_status !== 'Open' || v.public_visibility !== 'Public') { setNotFound(true); setLoading(false); return; }
-      setVacancy(v);
-      setLoading(false);
+      supabase.from('careers_vacancies').select('*').eq('slug', slug).maybeSingle().then(({ data, error }) => {
+        if (cancelled) return;
+        if (error || !data) { setNotFound(true); setLoading(false); return; }
+        const v = data as CareersVacancy;
+        if (v.vacancy_status !== 'Open' || v.public_visibility !== 'Public') { setNotFound(true); setLoading(false); return; }
+        setVacancy(v);
+        setLoading(false);
+      });
+    }).catch(() => {
+      if (!cancelled) setLoading(false);
     });
     return () => { cancelled = true; };
   }, [slug]);
@@ -63,6 +66,8 @@ export default function CareersApplyClient({ slug }: { slug: string }) {
     setFormError('');
 
     try {
+      const { supabase } = await import('@/lib/supabase');
+      const { notifyLeadSubmission } = await import('@/lib/submit-enquiry');
       const { data: isDuplicate, error: dupError } = await supabase.rpc('has_career_application', {
         p_vacancy_id: vacancy?.id,
         p_email: formValues.email,

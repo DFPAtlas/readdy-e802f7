@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { motion } from '@/components/motion';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { submitEnquiry, makeIdempotencyKey } from '@/lib/submit-enquiry';
 
 export default function BlogPage() {
   const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
@@ -20,6 +19,7 @@ export default function BlogPage() {
     setFormError('');
     formData.delete('website_alt');
     try {
+      const { submitEnquiry, makeIdempotencyKey } = await import('@/lib/submit-enquiry');
       const result = await submitEnquiry('leads', {
         name: 'Newsletter Subscriber',
         email: (formData.get('email') as string) || '',

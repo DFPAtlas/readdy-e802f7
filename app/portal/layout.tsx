@@ -1,12 +1,5 @@
-import AreaGate from '@/components/AreaGate';
+import { PortalAccessProvider } from '@/components/portal/PortalAccessProvider';
 
 export default function PortalLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <AreaGate
-      loginPath="/portal/login"
-      publicPaths={['/portal/login']}
-    >
-      {children}
-    </AreaGate>
-  );
+  return <PortalAccessProvider>{children}</PortalAccessProvider>;
 }

@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import PortalShell from '../PortalShell';
+import { usePortalMembership } from '@/components/portal/PortalAccessProvider';
 
 
 
@@ -38,6 +39,7 @@ function getStatus(c: string) {
 }
 
 export default function ProjectsPage() {
+  const membership = usePortalMembership();
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all');
@@ -47,18 +49,14 @@ export default function ProjectsPage() {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) { setLoading(false); return; }
 
-      const { data: clientData } = await supabase
-        .from('clients')
-        .select('id')
-        .eq('user_id', session.user.id)
-        .maybeSingle();
+      const cid = membership?.client_id;
 
-      if (!clientData) { setLoading(false); return; }
+      if (!cid) { setLoading(false); return; }
 
       const { data } = await supabase
         .from('projects')
         .select('*')
-        .eq('client_id', clientData.id)
+        .eq('client_id', cid)
         .order('created_at', { ascending: false });
 
       if (data) setProjects(data);

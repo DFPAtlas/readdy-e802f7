@@ -1,8 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { supabase } from '@/lib/supabase';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { motion } from '@/components/motion';
@@ -15,15 +14,20 @@ export default function CareersPage() {
   const [departmentFilter, setDepartmentFilter] = useState('all');
   const [typeFilter, setTypeFilter] = useState('all');
 
-  useState(() => {
+  useEffect(() => {
     let cancelled = false;
-    supabase.from('careers_vacancies').select('*').order('sort_order').then(({ data }) => {
+    import('@/lib/supabase').then(({ supabase }) => {
       if (cancelled) return;
-      setVacancies((data || []) as CareersVacancy[]);
-      setLoading(false);
+      supabase.from('careers_vacancies').select('*').order('sort_order').then(({ data }) => {
+        if (cancelled) return;
+        setVacancies((data || []) as CareersVacancy[]);
+        setLoading(false);
+      });
+    }).catch(() => {
+      if (!cancelled) setLoading(false);
     });
     return () => { cancelled = true; };
-  });
+  }, []);
 
   const openVacancies = vacancies.filter(v => v.vacancy_status === 'Open' && v.public_visibility === 'Public');
 

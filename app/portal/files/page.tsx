@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import PortalShell from '../PortalShell';
+import { usePortalMembership } from '@/components/portal/PortalAccessProvider';
 import { formatFileSize, getFileStatusDef, FILE_CATEGORIES, ALLOWED_EXTENSIONS, generateStoragePath } from '@/lib/file-definitions';
 import { getContentRequestStatusDef, getContentRequestPriorityDef } from '@/lib/file-definitions';
 
@@ -64,6 +65,7 @@ function getFileIcon(fileType: string) {
 }
 
 export default function FilesPage() {
+  const membership = usePortalMembership();
   const [files, setFiles] = useState<ProjectFile[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
   const [contentRequests, setContentRequests] = useState<ContentRequest[]>([]);
@@ -89,22 +91,19 @@ export default function FilesPage() {
     async function init() {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) { setLoading(false); return; }
+      // membership resolved from provider
 
       setUserName(session.user.user_metadata?.full_name || session.user.email?.split('@')[0] || 'Client');
       setUserId(session.user.id);
 
-      const { data: clientData } = await supabase
-        .from('clients')
-        .select('id')
-        .eq('user_id', session.user.id)
-        .maybeSingle();
+      const cid = membership?.client_id;
 
-      if (!clientData) { setLoading(false); return; }
+      if (!cid) { setLoading(false); return; }
 
       const { data: projectsData } = await supabase
         .from('projects')
         .select('id, name')
-        .eq('client_id', clientData.id)
+        .eq('client_id', cid)
         .order('created_at', { ascending: false });
 
       if (projectsData) {
@@ -124,7 +123,7 @@ export default function FilesPage() {
       setLoading(false);
     }
     init();
-  }, []);
+  }, [membership?.client_id]);
 
   async function handleUpload() {
     if (!uploadFile || !uploadForm.project_id) return;

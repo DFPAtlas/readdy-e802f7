@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import PortalShell from '../PortalShell';
+import { usePortalMembership } from '@/components/portal/PortalAccessProvider';
 import { CDD_PHASES, getPhaseIndex } from '@/lib/project-definitions';
 
 interface Project {
@@ -142,6 +143,7 @@ function safeProgress(project: Project | undefined) {
 }
 
 export default function DashboardPage() {
+  const membership = usePortalMembership();
   const [userName, setUserName] = useState('');
   const [clientId, setClientId] = useState<string | null>(null);
   const [projects, setProjects] = useState<Project[]>([]);
@@ -162,6 +164,7 @@ export default function DashboardPage() {
 
   useEffect(() => {
     let cancelled = false;
+    const resolvedClientId = membership?.client_id || null;
 
     async function fetchData() {
       try {
@@ -179,13 +182,7 @@ export default function DashboardPage() {
 
         setUserName(name);
 
-        const { data: clientData } = await supabase
-          .from('clients')
-          .select('id')
-          .eq('user_id', session.user.id)
-          .maybeSingle();
-
-        const foundClientId = clientData?.id || null;
+        const foundClientId = resolvedClientId;
         setClientId(foundClientId);
 
         if (!foundClientId) {
@@ -319,7 +316,7 @@ export default function DashboardPage() {
 
     fetchData();
     return () => { cancelled = true; };
-  }, []);
+  }, [membership?.client_id]);
 
   const activeProjects = projects.filter(p => p.status === 'active');
   const completedProjects = projects.filter(p => p.status === 'completed');

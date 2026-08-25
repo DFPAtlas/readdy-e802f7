@@ -8,6 +8,7 @@ import {
   AlertTriangle, Search, ChevronDown, X, Calendar, PoundSterling, ArrowUpDown,
 } from 'lucide-react';
 import PortalShell from '../PortalShell';
+import { usePortalMembership } from '@/components/portal/PortalAccessProvider';
 
 
 
@@ -61,6 +62,7 @@ function downloadInvoice(invoice: Invoice) {
 }
 
 export default function InvoicesPage() {
+  const membership = usePortalMembership();
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<FilterTab>('all');
@@ -76,18 +78,14 @@ export default function InvoicesPage() {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) { setLoading(false); return; }
 
-      const { data: clientData } = await supabase
-        .from('clients')
-        .select('id')
-        .eq('user_id', session.user.id)
-        .maybeSingle();
+      const cid = membership?.client_id;
 
-      if (!clientData) { setLoading(false); return; }
+      if (!cid) { setLoading(false); return; }
 
       const { data } = await supabase
         .from('invoices')
         .select('*')
-        .eq('client_id', clientData.id)
+        .eq('client_id', cid)
         .order('created_at', { ascending: false });
 
       if (data) setInvoices(data as Invoice[]);

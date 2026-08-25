@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { partnerTypeConfig } from '@/lib/cms-definitions';
-import { submitEnquiry } from '@/lib/submit-enquiry';
 
 function ApplyForm() {
   const searchParams = useSearchParams();
@@ -33,6 +32,7 @@ function ApplyForm() {
     setFormError('');
 
     try {
+      const { submitEnquiry } = await import('@/lib/submit-enquiry');
       const result = await submitEnquiry('partner_applications', {
         application_type: formData.get('application_type') as string,
         company_name: (formData.get('company_name') as string) || null,

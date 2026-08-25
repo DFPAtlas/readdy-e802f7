@@ -3,7 +3,9 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { trackConversion } from '@/lib/analytics';
-import { submitEnquiry } from '@/lib/submit-enquiry';
+
+const SUPPORT_ENDPOINT =
+  'https://zjqftnkrmqhmbrtkvafy.supabase.co/functions/v1/receive-support-ticket';
 
 const ISSUE_CATEGORIES = [
   { value: 'general', label: 'General Question' },
@@ -17,6 +19,18 @@ const ISSUE_CATEGORIES = [
   { value: 'other', label: 'Other' },
 ];
 
+const CATEGORY_MAP: Record<string, string> = {
+  general: 'general',
+  account: 'account',
+  billing: 'billing',
+  project: 'general',
+  product: 'technical',
+  uat: 'technical',
+  pbx: 'technical',
+  security: 'security',
+  other: 'other',
+};
+
 const URGENCY_OPTIONS = [
   { value: 'general', label: 'General question' },
   { value: 'normal', label: 'Normal issue' },
@@ -25,9 +39,35 @@ const URGENCY_OPTIONS = [
   { value: 'security', label: 'Security or privacy concern' },
 ];
 
+const PRIORITY_MAP: Record<string, string> = {
+  general: 'low',
+  normal: 'normal',
+  important: 'high',
+  'service-unavailable': 'high',
+  security: 'high',
+};
+
+const ERROR_MESSAGES: Record<number, string> = {
+  400: 'Please check the information entered and try again.',
+  403: 'We could not verify this support request. Please refresh the page and try again.',
+  409: 'This request has already been received.',
+  429: 'Too many requests have been submitted. Please wait and try again.',
+  503: 'Support is temporarily unavailable. Please try again shortly.',
+};
+
+function makeNonce(): string {
+  if (typeof crypto !== 'undefined' && 'randomUUID' in crypto) {
+    return crypto.randomUUID();
+  }
+  const arr = new Uint8Array(16);
+  crypto.getRandomValues(arr);
+  return Array.from(arr, (b) => b.toString(16).padStart(2, '0')).join('');
+}
+
 export default function SupportRequestPage() {
   const [formState, setFormState] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const [formError, setFormError] = useState('');
+  const [ticketNumber, setTicketNumber] = useState('');
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -40,51 +80,89 @@ export default function SupportRequestPage() {
       return;
     }
 
-    if ((formData.get('description') as string).length > 500) {
+    const description = (formData.get('description') as string) || '';
+    if (description.length > 500) {
       setFormError('Description must be 500 characters or fewer.');
+      setFormState('error');
+      return;
+    }
+
+    if (!formData.get('privacy_acknowledgement')) {
+      setFormError('Please accept the privacy notice before submitting.');
+      setFormState('error');
       return;
     }
 
     setFormState('submitting');
     setFormError('');
 
+    const name = (formData.get('name') as string || '').trim();
+    const email = (formData.get('email') as string || '').trim();
+    const subject = (formData.get('subject') as string || 'Support Request').trim();
+    const organisation = (formData.get('organisation') as string || '').trim();
+    const productService = (formData.get('product_service') as string || '').trim();
+    const categorySlug = (formData.get('category') as string || 'general');
+    const urgency = (formData.get('urgency') as string || 'normal');
+
+    const category = CATEGORY_MAP[categorySlug] || 'general';
+    const priority = PRIORITY_MAP[urgency] || 'normal';
+
+    const descriptionParts = [description];
+    if (organisation) descriptionParts.push(`Organisation: ${organisation}`);
+    if (productService) descriptionParts.push(`Product/Service: ${productService}`);
+
+    const payload = {
+      siteSlug: 'digital-footprint',
+      customer: {
+        name,
+        email,
+        phone: '',
+      },
+      ticket: {
+        subject,
+        description: descriptionParts.join('\n'),
+        category,
+        priority,
+        sourcePageUrl: window.location.href,
+      },
+      consent: {
+        privacyAccepted: true,
+      },
+      nonce: makeNonce(),
+      timestamp: new Date().toISOString(),
+      honeypot: '',
+    };
+
     try {
-      const urgency = (formData.get('urgency') as string) || 'normal';
-      const priorityMap: Record<string, string> = {
-        general: 'Low',
-        normal: 'Medium',
-        important: 'High',
-        'service-unavailable': 'Urgent',
-        security: 'High',
-      };
+      const res = await fetch(SUPPORT_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
 
-      const descriptionParts = [];
-      descriptionParts.push((formData.get('description') as string) || '');
-      const organisation = (formData.get('organisation') as string) || '';
-      const category = (formData.get('category') as string) || '';
-      const productService = (formData.get('product_service') as string) || '';
-      if (organisation) descriptionParts.push(`Organisation: ${organisation}`);
-      if (category) descriptionParts.push(`Category: ${category}`);
-      if (productService) descriptionParts.push(`Product/Service: ${productService}`);
-
-      const result = await submitEnquiry('digital_footprint_support', {
-        ticket_title: (formData.get('subject') as string) || 'Support Request',
-        ticket_description: descriptionParts.join('\n'),
-        status: 'Open',
-        priority: priorityMap[urgency] || 'Medium',
-        submitted_by: (formData.get('name') as string) || '',
-        submitted_email: (formData.get('email') as string) || '',
-      }, true);
-
-      if (result.code === 'OK') {
+      if (res.status === 201 || res.status === 200) {
+        let reference = '';
+        try {
+          const data = await res.json();
+          reference = data?.ticketNumber || data?.ticket_number || data?.reference || '';
+        } catch {
+          reference = '';
+        }
+        setTicketNumber(reference);
+        form.reset();
         setFormState('success');
-        trackConversion('support_request', `support_${formData.get('email') as string}_${Date.now()}`, { service_key: productService || undefined, content_slug: category || undefined });
-      } else {
-        setFormError(result.message);
-        setFormState('error');
+        trackConversion(
+          'support_request',
+          `support_${email}_${Date.now()}`,
+          { service_key: productService || undefined, content_slug: category }
+        );
+        return;
       }
+
+      setFormError(ERROR_MESSAGES[res.status] || 'We could not send your support request. Please try again.');
+      setFormState('error');
     } catch {
-      setFormError('Network error. Please check your connection and try again.');
+      setFormError('We could not send your support request. Please try again.');
       setFormState('error');
     }
   };
@@ -96,7 +174,10 @@ export default function SupportRequestPage() {
           <div className="w-16 h-16 rounded-2xl bg-emerald-50 flex items-center justify-center mx-auto mb-5">
             <i className="ri-check-line w-8 h-8 text-emerald-500 flex items-center justify-center" />
           </div>
-          <h1 className="text-xl font-bold text-slate-800 mb-2">Request Submitted</h1>
+          <h1 className="text-xl font-bold text-slate-800 mb-2">Your support request has been received.</h1>
+          {ticketNumber && (
+            <p className="text-sm font-semibold text-slate-700 mb-2">Reference: {ticketNumber}</p>
+          )}
           <p className="text-slate-500 text-sm mb-6">
             Thank you. Our support team will review your request and respond as soon as possible. You will receive a confirmation by email.
           </p>
@@ -261,10 +342,11 @@ export default function SupportRequestPage() {
                   className="mt-1 w-4 h-4 rounded border-slate-300 text-[#06B6D4] focus:ring-[#06B6D4] cursor-pointer"
                 />
                 <label htmlFor="privacy-ack" className="text-xs text-slate-500">
-                  I understand that my information will be used to respond to my enquiry and will be handled in accordance with the{' '}
+                  I agree that Digital Footprint may use the information provided to respond to this support request in accordance with the{' '}
                   <Link href="/privacy" className="text-[#06B6D4] underline cursor-pointer">Privacy Policy</Link>.
                 </label>
               </div>
+
             </div>
 
             <div className="mt-8 flex items-center justify-between">
@@ -278,7 +360,7 @@ export default function SupportRequestPage() {
                 disabled={formState === 'submitting'}
                 className="px-6 py-2.5 bg-[#06B6D4] text-white text-sm font-semibold rounded-xl hover:bg-[#0891B2] disabled:opacity-50 disabled:cursor-not-allowed transition-all cursor-pointer whitespace-nowrap"
               >
-                {formState === 'submitting' ? 'Submitting...' : 'Submit Request'}
+                {formState === 'submitting' ? 'Sending support request…' : 'Submit Request'}
               </button>
             </div>
           </form>

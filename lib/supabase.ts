@@ -38,18 +38,30 @@ function createSafeStorage() {
   }
 }
 
-if (!isSupabaseConfigured()) {
-  throw new Error(getSupabaseConfigurationError() ?? 'Supabase is not configured.');
+let clientInstance: SupabaseClient | null = null;
+
+function getOrCreateClient(): SupabaseClient {
+  if (!clientInstance) {
+    clientInstance = createClient(
+      supabaseUrl || 'https://placeholder.supabase.co',
+      supabaseKey || 'placeholder-anon-key',
+      {
+        auth: {
+          persistSession: true,
+          autoRefreshToken: true,
+          detectSessionInUrl: false,
+          storage: createSafeStorage() as never,
+        },
+      },
+    );
+  }
+  return clientInstance;
 }
 
-export const supabase: SupabaseClient = createClient(supabaseUrl!, supabaseKey!, {
-  auth: {
-    persistSession: true,
-    autoRefreshToken: true,
-    detectSessionInUrl: true,
-    storage: createSafeStorage() as never,
-  },
-});
+// The exported client never throws at import time. When Supabase is not
+// configured, this holds a placeholder instance that fails safely at request
+// time; the auth flow guards every operation with isSupabaseConfigured().
+export const supabase: SupabaseClient = getOrCreateClient();
 
 let sessionReady = false;
 let sessionReadyCallbacks: Array<() => void> = [];
@@ -60,13 +72,16 @@ function notifySessionReady() {
   sessionReadyCallbacks = [];
 }
 
-supabase.auth.onAuthStateChange((event) => {
-  if (event === 'INITIAL_SESSION' || event === 'SIGNED_IN') {
-    notifySessionReady();
-  }
-});
+if (isSupabaseConfigured()) {
+  supabase.auth.onAuthStateChange((event) => {
+    if (event === 'INITIAL_SESSION' || event === 'SIGNED_IN') {
+      notifySessionReady();
+    }
+  });
+}
 
 export async function getSessionSafe() {
+  if (!isSupabaseConfigured()) return null;
   try {
     const { data } = await supabase.auth.getSession();
     return data.session;
@@ -76,6 +91,7 @@ export async function getSessionSafe() {
 }
 
 export function waitForAuthReady(timeoutMs = 6000): Promise<boolean> {
+  if (!isSupabaseConfigured()) return Promise.resolve(false);
   if (sessionReady) return Promise.resolve(true);
   return new Promise((resolve) => {
     const cb = () => resolve(true);

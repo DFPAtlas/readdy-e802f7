@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from '@/components/motion';
 import { formatMessageTime, formatMessageTimeFull, getThreadStatusLabel, getThreadTypeLabel, getThreadStatusColor, getPriorityColor } from '@/lib/message-definitions';
 import { Search, Send, MessageSquare, FolderKanban, Globe, ReceiptText, CheckCircle, FileText, Headphones, ArrowLeft, Plus, Clock, Loader2 } from 'lucide-react';
 import PortalShell from '../PortalShell';
+import { usePortalMembership } from '@/components/portal/PortalAccessProvider';
 import { AttachmentUploader, AttachmentFile } from '@/components/portal/AttachmentUploader';
 import { sendNotificationEmail, buildClientReplyEmailHtml } from '@/lib/email-notifications';
 
@@ -61,6 +62,7 @@ interface ThreadWithMeta extends Thread {
 type FilterKey = 'all' | 'unread' | 'projects' | 'support' | 'billing' | 'resolved';
 
 export default function MessagesPage() {
+  const membership = usePortalMembership();
   const [threads, setThreads] = useState<ThreadWithMeta[]>([]);
   const [activeThreadId, setActiveThreadId] = useState<string | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -91,8 +93,7 @@ export default function MessagesPage() {
       setUserId(session.user.id);
       setUserName(session.user.user_metadata?.full_name || session.user.email?.split('@')[0] || 'Client');
 
-      const { data: clientData } = await supabase.from('clients').select('id').eq('user_id', session.user.id).maybeSingle();
-      const cid = clientData?.id || null;
+      const cid = membership?.client_id || null;
       setClientId(cid);
 
       if (cid) {

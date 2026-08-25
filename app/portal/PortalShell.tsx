@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import { supabase } from '@/lib/supabase';
 import { AnimatePresence, motion } from '@/components/motion';
 import { NotificationDropdown } from '@/components/portal/NotificationDropdown';
+import { usePortalMembership } from '@/components/portal/PortalAccessProvider';
 import SessionExpiryBanner from '@/components/admin/SessionExpiryBanner';
 import {
   ChevronDown,
@@ -36,6 +37,8 @@ export default function PortalShell({ children }: PortalShellProps) {
   const router = useRouter();
   const pathname = usePathname();
   const menuRef = useRef<HTMLDivElement>(null);
+  const membership = usePortalMembership();
+  const clientId = membership?.client_id ?? null;
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [userName, setUserName] = useState('');
   const [loading, setLoading] = useState(true);
@@ -111,11 +114,9 @@ export default function PortalShell({ children }: PortalShellProps) {
       setUserName(name);
       setLoading(false);
 
-      supabase.from('clients').select('id').eq('user_id', session.user.id).maybeSingle().then(({ data }) => {
-        if (data?.id && !cancelled) {
-          fetchCounts(session.user.id, data.id);
-        }
-      });
+      if (clientId && !cancelled) {
+        fetchCounts(session.user.id, clientId);
+      }
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
@@ -129,7 +130,7 @@ export default function PortalShell({ children }: PortalShellProps) {
       cancelled = true;
       subscription.unsubscribe();
     };
-  }, [router, fetchCounts]);
+  }, [router, fetchCounts, clientId]);
 
   useEffect(() => {
     let cancelled = false;
@@ -137,12 +138,7 @@ export default function PortalShell({ children }: PortalShellProps) {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) return;
 
-      const { data: clientData } = await supabase
-        .from('clients')
-        .select('id')
-        .eq('user_id', session.user.id)
-        .maybeSingle();
-      if (!clientData?.id) return;
+      if (!clientId) return;
 
       if (channelRef.current) {
         supabase.removeChannel(channelRef.current);
@@ -155,21 +151,21 @@ export default function PortalShell({ children }: PortalShellProps) {
           schema: 'public',
           table: 'project_messages',
         }, () => {
-          if (!cancelled) fetchCounts(session.user.id, clientData.id);
+          if (!cancelled) fetchCounts(session.user.id, clientId);
         })
         .on('postgres_changes', {
           event: 'UPDATE',
           schema: 'public',
           table: 'message_read_receipts',
         }, () => {
-          if (!cancelled) fetchCounts(session.user.id, clientData.id);
+          if (!cancelled) fetchCounts(session.user.id, clientId);
         })
         .on('postgres_changes', {
           event: '*',
           schema: 'public',
           table: 'client_approvals',
         }, () => {
-          if (!cancelled) fetchCounts(session.user.id, clientData.id);
+          if (!cancelled) fetchCounts(session.user.id, clientId);
         })
         .subscribe();
 
@@ -184,7 +180,7 @@ export default function PortalShell({ children }: PortalShellProps) {
         channelRef.current = null;
       }
     };
-  }, [fetchCounts]);
+  }, [fetchCounts, clientId]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {

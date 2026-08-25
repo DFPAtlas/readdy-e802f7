@@ -7,6 +7,7 @@ import { formatMessageTime, formatMessageTimeFull, getTicketStatusLabel, getTick
 import { Headphones, Plus, Search, Clock, CheckCircle, XCircle, Loader2, ExternalLink, FolderKanban, Globe, ArrowRight, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
 import PortalShell from '../PortalShell';
+import { usePortalMembership } from '@/components/portal/PortalAccessProvider';
 import { sendNotificationEmail, buildTicketEmailHtml } from '@/lib/email-notifications';
 
 interface Ticket {
@@ -43,6 +44,7 @@ interface Website {
 type FilterKey = 'all' | 'open' | 'awaiting_client' | 'in_progress' | 'resolved';
 
 export default function SupportPage() {
+  const membership = usePortalMembership();
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [loading, setLoading] = useState(true);
   const [userId, setUserId] = useState('');
@@ -65,8 +67,7 @@ export default function SupportPage() {
       if (!session) { setLoading(false); return; }
       setUserId(session.user.id);
 
-      const { data: clientData } = await supabase.from('clients').select('id').eq('user_id', session.user.id).maybeSingle();
-      const cid = clientData?.id || null;
+      const cid = membership?.client_id || null;
       setClientId(cid);
 
       if (cid) {

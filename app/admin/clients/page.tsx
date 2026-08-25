@@ -73,12 +73,16 @@ export default function AdminClientsPage() {
   };
 
   const handleSave = async (data: any) => {
+    const cleaned = { ...data };
+    if (cleaned.user_id === '' || cleaned.user_id === undefined) cleaned.user_id = null;
     if (editingClient) {
-      const { error } = await supabase.from('clients').update({ ...data, updated_at: new Date().toISOString() }).eq('id', editingClient.id);
-      if (!error) setClients(prev => prev.map(c => c.id === editingClient.id ? { ...c, ...data } : c));
+      const { error } = await supabase.from('clients').update({ ...cleaned, updated_at: new Date().toISOString() }).eq('id', editingClient.id);
+      if (error) throw new Error(error.message);
+      setClients(prev => prev.map(c => c.id === editingClient.id ? { ...c, ...cleaned } : c));
     } else {
-      const { data: newClient, error } = await supabase.from('clients').insert([data]).select().single();
-      if (!error && newClient) setClients(prev => [newClient as ClientRow, ...prev]);
+      const { data: newClient, error } = await supabase.from('clients').insert([cleaned]).select().single();
+      if (error) throw new Error(error.message);
+      if (newClient) setClients(prev => [newClient as ClientRow, ...prev]);
     }
   };
 

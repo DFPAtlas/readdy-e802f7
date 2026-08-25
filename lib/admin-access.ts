@@ -1,5 +1,5 @@
 import type { Session } from '@supabase/supabase-js';
-import { supabase, getSessionSafe } from '@/lib/supabase';
+import { supabase, getSessionSafe, isSupabaseConfigured } from '@/lib/supabase';
 
 import {
   normaliseAdminRole,
@@ -70,7 +70,7 @@ export function getAccessDeniedMessage(reason: AdminAccessDeniedReason): string 
 }
 
 export async function verifyAdminAccess(session: Session): Promise<AdminAccessResult> {
-  if (!supabase) {
+  if (!isSupabaseConfigured()) {
     return { allowed: false, reason: 'query_failed', message: 'Authentication service is unavailable.' };
   }
 
@@ -119,7 +119,7 @@ export async function verifyAdminAccess(session: Session): Promise<AdminAccessRe
 }
 
 export async function getCurrentAdminAccess(): Promise<AdminAccessResult> {
-  if (!supabase) {
+  if (!isSupabaseConfigured()) {
     return { allowed: false, reason: 'query_failed', message: 'Authentication service is unavailable.' };
   }
 

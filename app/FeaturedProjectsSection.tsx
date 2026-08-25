@@ -325,6 +325,7 @@ export default function FeaturedProjectsSection() {
                       src={project.homepagePreview}
                       alt={project.homepagePreviewAlt || ''}
                       loading="lazy"
+                      decoding="async"
                       className="w-full h-full object-cover object-top transition-all duration-700"
                       style={{
                         filter: isHighlighted ? 'brightness(1.05) saturate(1.02)' : 'brightness(0.95) saturate(0.95)',

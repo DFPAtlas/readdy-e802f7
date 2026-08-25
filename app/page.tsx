@@ -2,21 +2,27 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import JsonLdScript from '../components/JsonLdScript';
 import VideoHeroSection from './VideoHeroSection';
 import FirstContentSection from './FirstContentSection';
-import FeaturedProjectsSection from './FeaturedProjectsSection';
-import CDDProcessSection from './CDDProcessSection';
-import IntelligentBusinessSystemsSection from './IntelligentBusinessSystemsSection';
-import InfrastructureManagementSection from './InfrastructureManagementSection';
-import FounderSection from './FounderSection';
-import WaysToWorkSection from './WaysToWorkSection';
-import CTASection from './CTASection';
-import WhoWeHelpSection from './WhoWeHelpSection';
-import WhereAreYouNowSection from './WhereAreYouNowSection';
-import ServiceRoutesSection from './ServiceRoutesSection';
+
+const WhoWeHelpSection = dynamic(() => import('./WhoWeHelpSection'), { ssr: false, loading: () => <SectionLoader /> });
+const WhereAreYouNowSection = dynamic(() => import('./WhereAreYouNowSection'), { ssr: false, loading: () => <SectionLoader /> });
+const ServiceRoutesSection = dynamic(() => import('./ServiceRoutesSection'), { ssr: false, loading: () => <SectionLoader /> });
+const FeaturedProjectsSection = dynamic(() => import('./FeaturedProjectsSection'), { ssr: false, loading: () => <SectionLoader /> });
+const CDDProcessSection = dynamic(() => import('./CDDProcessSection'), { ssr: false, loading: () => <SectionLoader /> });
+const IntelligentBusinessSystemsSection = dynamic(() => import('./IntelligentBusinessSystemsSection'), { ssr: false, loading: () => <SectionLoader /> });
+const InfrastructureManagementSection = dynamic(() => import('./InfrastructureManagementSection'), { ssr: false, loading: () => <SectionLoader /> });
+const FounderSection = dynamic(() => import('./FounderSection'), { ssr: false, loading: () => <SectionLoader /> });
+const WaysToWorkSection = dynamic(() => import('./WaysToWorkSection'), { ssr: false, loading: () => <SectionLoader /> });
+const CTASection = dynamic(() => import('./CTASection'), { ssr: false, loading: () => <SectionLoader /> });
+
+function SectionLoader() {
+  return <div className="min-h-[60vh] bg-[#050D1C]" aria-hidden="true" />;
+}
 
 const organizationSchema = {
   '@context': 'https://schema.org',
@@ -60,7 +66,7 @@ export default function HomePage() {
     <>
       <JsonLdScript schemas={[organizationSchema, webPageSchema]} />
 
-      <main id="main-content" className={`transition-all duration-500 ${mounted ? 'opacity-100' : 'opacity-0'}`} suppressHydrationWarning={true} aria-label="Home page content">
+      <main id="main-content" className={`transition-opacity duration-500 ${mounted ? 'opacity-100' : 'opacity-0'}`} suppressHydrationWarning={true} aria-label="Home page content">
         <div className="min-h-screen bg-[#050D1C]">
           <Header />
           <VideoHeroSection />

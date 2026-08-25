@@ -1,8 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { supabase } from '@/lib/supabase';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { motion } from '@/components/motion';
@@ -15,16 +14,21 @@ export default function CareersVacancyDetail({ slug }: { slug: string }) {
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
 
-  useState(() => {
+  useEffect(() => {
     let cancelled = false;
-    supabase.from('careers_vacancies').select('*').eq('slug', slug).maybeSingle().then(({ data, error }) => {
+    import('@/lib/supabase').then(({ supabase }) => {
       if (cancelled) return;
-      if (error || !data) { setNotFound(true); setLoading(false); return; }
-      setVacancy(data as CareersVacancy);
-      setLoading(false);
+      supabase.from('careers_vacancies').select('*').eq('slug', slug).maybeSingle().then(({ data, error }) => {
+        if (cancelled) return;
+        if (error || !data) { setNotFound(true); setLoading(false); return; }
+        setVacancy(data as CareersVacancy);
+        setLoading(false);
+      });
+    }).catch(() => {
+      if (!cancelled) setLoading(false);
     });
     return () => { cancelled = true; };
-  });
+  }, [slug]);
 
   const formatSalary = (v: CareersVacancy) => {
     if (v.salary_visibility === 'not_shown' || (!v.salary_min && !v.salary_max)) return null;

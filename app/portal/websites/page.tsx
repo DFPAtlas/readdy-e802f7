@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import PortalShell from '../PortalShell';
+import { usePortalMembership } from '@/components/portal/PortalAccessProvider';
 
 interface Website {
   id: string;
@@ -40,6 +41,7 @@ interface Project {
 }
 
 export default function WebsitesPage() {
+  const membership = usePortalMembership();
   const [websites, setWebsites] = useState<Website[]>([]);
   const [projects, setProjects] = useState<Record<string, Project>>({});
   const [loading, setLoading] = useState(true);
@@ -54,18 +56,14 @@ export default function WebsitesPage() {
         const { data: { session } } = await supabase.auth.getSession();
         if (!session || cancelled) { setLoading(false); return; }
 
-        const { data: clientData } = await supabase
-          .from('clients')
-          .select('id')
-          .eq('user_id', session.user.id)
-          .maybeSingle();
+        const cid = membership?.client_id;
 
-        if (!clientData || cancelled) { setLoading(false); return; }
+        if (!cid || cancelled) { setLoading(false); return; }
 
         const { data: webData, error: webErr } = await supabase
           .from('client_websites')
           .select('*')
-          .eq('client_id', clientData.id)
+          .eq('client_id', cid)
           .eq('client_visible', true)
           .order('featured', { ascending: false })
           .order('created_at', { ascending: false });

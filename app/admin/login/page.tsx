@@ -6,6 +6,18 @@ import { verifyAdminAccess, getAccessDeniedMessage } from '@/lib/admin-access';
 import { Shield, Eye, EyeOff, ArrowLeft, Loader2, Mail, Check } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import type { AuthDebugEntry } from '@/components/admin/AuthDebugBanner';
+
+const DEBUG_STORAGE_KEY = '__dfp_admin_login_debug__';
+
+function saveDebugToStorage(entries: AuthDebugEntry[]) {
+  if (typeof window === 'undefined') return;
+  try {
+    window.sessionStorage.setItem(DEBUG_STORAGE_KEY, JSON.stringify(entries));
+  } catch {
+    // ignore
+  }
+}
 
 function getResetRedirectUrl() {
   if (typeof window !== 'undefined') {
@@ -41,6 +53,19 @@ export default function AdminLoginPage() {
   const [deniedSession, setDeniedSession] = useState(false);
   const [configWarning, setConfigWarning] = useState('');
   const [justReset, setJustReset] = useState(false);
+  const [debugEntries, setDebugEntries] = useState<AuthDebugEntry[]>([]);
+
+  const pushDebug = (label: string, detail: string, level: AuthDebugEntry['level'] = 'info') => {
+    const entry: AuthDebugEntry = { time: new Date().toISOString().slice(11, 19), label, detail, level };
+    if (typeof window !== 'undefined') {
+      console.info(`[admin-login] ${label}: ${detail}`);
+    }
+    setDebugEntries((prev) => {
+      const next = [...prev, entry];
+      saveDebugToStorage(next);
+      return next;
+    });
+  };
 
   useEffect(() => {
     mountedRef.current = true;
@@ -50,11 +75,14 @@ export default function AdminLoginPage() {
   }, []);
 
   useEffect(() => {
-    if (!isSupabaseConfigured()) {
+    const configured = isSupabaseConfigured();
+    pushDebug('config', configured ? 'Supabase configured' : 'Supabase NOT configured', configured ? 'ok' : 'err');
+    if (!configured) {
       setConfigWarning('Authentication is temporarily unavailable because the application configuration could not be loaded.');
       return;
     }
     setConfigWarning('');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -64,13 +92,23 @@ export default function AdminLoginPage() {
   }, []);
 
   useEffect(() => {
+    pushDebug('mount', typeof window !== 'undefined' ? `URL=${window.location.href}` : 'URL unavailable', 'info');
+    const from = readSearchParam('from');
+    const reset = readSearchParam('reset');
+    pushDebug('params', `from=${from || '(none)'} reset=${reset || '(none)'}`, 'info');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
     let cancelled = false;
 
     const checkExisting = async () => {
       if (readSearchParam('from') === 'gate') {
+        pushDebug('check-existing', 'from=gate → skipping auto-redirect', 'info');
         return;
       }
       if (!isSupabaseConfigured()) {
+        pushDebug('check-existing', 'Supabase not configured → skip', 'warn');
         return;
       }
 
@@ -79,18 +117,26 @@ export default function AdminLoginPage() {
         const session = data?.session;
 
         if (!session || cancelled || !mountedRef.current) {
+          pushDebug('check-existing', session ? 'cancelled/unmounted' : 'no existing session → show form', 'info');
           return;
         }
 
+        pushDebug('check-existing', `existing session user=${session.user.id}`, 'info');
         const result = await verifyAdminAccess(session);
         if (!mountedRef.current || cancelled) return;
 
         if (result.allowed) {
-          router.push('/admin');
+          pushDebug('check-existing', 'verified admin → redirecting to /admin', 'ok');
+          saveDebugToStorage(debugEntries);
+          setTimeout(() => {
+            router.push('/admin');
+          }, 100);
         } else {
+          pushDebug('check-existing', `session exists but NOT admin (${result.reason}) → show denied UI`, 'warn');
           setDeniedSession(true);
         }
-      } catch {
+      } catch (e) {
+        pushDebug('check-existing', `error: ${(e as Error)?.message || 'unknown'}`, 'err');
       }
     };
 
@@ -99,12 +145,13 @@ export default function AdminLoginPage() {
     return () => {
       cancelled = true;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!supabase) {
+    if (!isSupabaseConfigured()) {
       setError('Authentication service unavailable. Please refresh.');
       return;
     }
@@ -115,6 +162,7 @@ export default function AdminLoginPage() {
     setError('');
     setDeniedSession(false);
     setLoading(true);
+    pushDebug('login', 'submitting credentials…', 'info');
 
     try {
       const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({ email, password });
@@ -122,6 +170,7 @@ export default function AdminLoginPage() {
       if (!mountedRef.current) { loginInProgressRef.current = false; return; }
 
       if (signInError) {
+        pushDebug('login', `sign-in failed: ${signInError.message}`, 'err');
         setLoading(false);
         loginInProgressRef.current = false;
         if (signInError.message?.includes('Invalid login credentials') || signInError.message?.includes('invalid')) {
@@ -144,17 +193,24 @@ export default function AdminLoginPage() {
         return;
       }
 
+      pushDebug('login', `sign-in ok user=${signInData.session.user.id}`, 'ok');
       const result = await verifyAdminAccess(signInData.session);
 
       if (!mountedRef.current) { loginInProgressRef.current = false; return; }
 
       if (result.allowed) {
+        pushDebug('login', 'verified admin → redirecting to /admin (hard nav)', 'ok');
         setLoading(false);
         loginInProgressRef.current = false;
-        router.push('/admin');
+        // Static exports: hard navigation is more reliable than router.push for auth handoffs
+        saveDebugToStorage([...debugEntries, { time: new Date().toISOString().slice(11, 19), label: 'redirect', detail: 'window.location.href=/admin', level: 'ok' }]);
+        setTimeout(() => {
+          router.push('/admin');
+        }, 150);
         return;
       }
 
+      pushDebug('login', `verified → NOT admin (${result.reason})`, 'warn');
       const message = getAccessDeniedMessage(result.reason);
       setError(message);
       setDeniedSession(true);
@@ -170,7 +226,7 @@ export default function AdminLoginPage() {
   };
 
   const handleSignOut = async () => {
-    if (!supabase) return;
+    if (!isSupabaseConfigured()) return;
     setLoading(true);
     await supabase.auth.signOut();
     if (mountedRef.current) {
@@ -182,7 +238,7 @@ export default function AdminLoginPage() {
 
   const handleSendResetEmail = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!supabase) {
+    if (!isSupabaseConfigured()) {
       setResetError('Authentication service unavailable.');
       return;
     }
@@ -286,7 +342,7 @@ export default function AdminLoginPage() {
                       </div>
                     )}
 
-                    <button type="submit" disabled={resetLoading}
+                    <button type="submit" disabled={resetLoading || !isSupabaseConfigured()}
                       className="w-full py-3 bg-gradient-to-r from-[#06B6D4] to-[#0891B2] rounded-xl font-bold text-white hover:shadow-lg hover:shadow-[#06B6D4]/20 transition-all cursor-pointer flex items-center justify-center gap-2 disabled:opacity-50 whitespace-nowrap"
                     >
                       {resetLoading ? (
@@ -378,7 +434,7 @@ export default function AdminLoginPage() {
                   </div>
                 )}
 
-                <button type="submit" disabled={loading} data-testid="login-submit"
+                <button type="submit" disabled={loading || !isSupabaseConfigured()} data-testid="login-submit"
                   className="w-full py-3 bg-gradient-to-r from-[#06B6D4] to-[#0891B2] rounded-xl font-bold text-white hover:shadow-lg hover:shadow-[#06B6D4]/20 transition-all cursor-pointer flex items-center justify-center gap-2 disabled:opacity-50 whitespace-nowrap"
                 >
                   {loading ? (

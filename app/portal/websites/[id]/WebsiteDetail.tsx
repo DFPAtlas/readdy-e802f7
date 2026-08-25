@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import PortalShell from '../../PortalShell';
+import { usePortalMembership } from '@/components/portal/PortalAccessProvider';
 
 interface Website {
   id: string;
@@ -87,6 +88,7 @@ function formatDate(value: string | null | undefined) {
 }
 
 export default function WebsiteDetail({ websiteId }: { websiteId: string }) {
+  const membership = usePortalMembership();
   const [website, setWebsite] = useState<Website | null>(null);
   const [project, setProject] = useState<Project | null>(null);
   const [staffProfiles, setStaffProfiles] = useState<Record<string, StaffProfile>>({});
@@ -114,19 +116,15 @@ export default function WebsiteDetail({ websiteId }: { websiteId: string }) {
         const { data: { session } } = await supabase.auth.getSession();
         if (!session || cancelled) { setError('Session expired'); setLoading(false); return; }
 
-        const { data: clientData } = await supabase
-          .from('clients')
-          .select('id')
-          .eq('user_id', session.user.id)
-          .maybeSingle();
+        const cid = membership?.client_id;
 
-        if (!clientData || cancelled) { setError('Access denied'); setLoading(false); return; }
+        if (!cid || cancelled) { setError('Access denied'); setLoading(false); return; }
 
         const { data: webData, error: webErr } = await supabase
           .from('client_websites')
           .select('*')
           .eq('id', websiteId)
-          .eq('client_id', clientData.id)
+          .eq('client_id', cid)
           .eq('client_visible', true)
           .maybeSingle();
 

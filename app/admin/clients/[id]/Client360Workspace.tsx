@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from '@/components/motion';
 import { supabase } from '@/lib/supabase';
 import { useClientData } from '@/hooks/useClientData';
 import AdminShell from '../../../../components/admin/AdminShell';
+import PortalAccessTab from '@/components/admin/clients/PortalAccessTab';
 import { CLIENT_STATUS_STYLES, HEALTH_STATUS_STYLES, ONBOARDING_CHECKLIST, OFFBOARDING_CHECKLIST, calculateHealth } from '@/lib/client-definitions';
 import Link from 'next/link';
 import {
@@ -546,32 +547,16 @@ export default function Client360Workspace({ clientId }: { clientId: string }) {
             )}
 
             {activeTab === 'portal' && (
-              <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.08)] rounded-2xl p-6">
-                <h3 className="text-sm font-semibold text-white mb-4">Portal Access ({portalAccess.length})</h3>
-                {portalAccess.length === 0 ? (
-                  <p className="text-sm text-slate-500">No portal access records yet.</p>
-                ) : (
-                  <div className="space-y-3">
-                    {portalAccess.map(pa => (
-                      <div key={pa.id} className="p-4 bg-white/[0.02] rounded-xl border border-[rgba(255,255,255,0.06)]">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <p className="text-sm font-semibold text-white">{pa.access_role}</p>
-                            <p className="text-xs text-slate-400">State: {pa.invitation_state}</p>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            {pa.is_revoked ? (
-                              <span className="px-2 py-0.5 bg-red-500/10 text-red-400 text-[10px] rounded-md font-medium">Revoked</span>
-                            ) : (
-                              <span className="px-2 py-0.5 bg-emerald-500/10 text-emerald-400 text-[10px] rounded-md font-medium">Active</span>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
+              <PortalAccessTab
+                clientId={clientId}
+                clientName={client.company_name || 'Unnamed Company'}
+                clientContact={client.contact_name || null}
+                records={portalAccess}
+                onRefresh={async () => {
+                  await fetchPortalAccess(clientId);
+                  await fetchClient(clientId);
+                }}
+              />
             )}
 
             {activeTab === 'activity' && (

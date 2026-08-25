@@ -71,6 +71,10 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning={true} className={inter.variable}>
       <body className="antialiased bg-white" suppressHydrationWarning={true}>
+        <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
+        <link rel="preconnect" href="https://storage.readdy-site.link" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://storage.readdy-site.link" />
         <ThemeProvider>
           <a 
             href="#main-content" 

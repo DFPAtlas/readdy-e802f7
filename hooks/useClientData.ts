@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/lib/supabase';
+import type { PortalAccessRow } from '@/lib/portal-access';
 
 export interface ClientRow {
   id: string;
@@ -94,22 +95,7 @@ export interface ClientNote {
   updated_at: string | null;
 }
 
-export interface PortalAccess {
-  id: string;
-  client_id: string;
-  contact_id: string | null;
-  user_id: string | null;
-  access_role: string;
-  project_ids: string[] | null;
-  service_ids: string[] | null;
-  invitation_state: string;
-  invited_at: string | null;
-  accepted_at: string | null;
-  last_login_at: string | null;
-  is_revoked: boolean;
-  revoked_at: string | null;
-  created_at: string | null;
-}
+export type PortalAccess = PortalAccessRow;
 
 export interface OnboardingItem {
   id: string;

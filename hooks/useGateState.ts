@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { usePathname } from 'next/navigation';
-import { supabase, getSessionSafe } from '@/lib/supabase';
+import { supabase, getSessionSafe, isSupabaseConfigured } from '@/lib/supabase';
 import type { Session } from '@supabase/supabase-js';
 
 export interface GateVerifyResult {
@@ -16,12 +16,33 @@ export interface GateStateOptions {
 
 export type GateState = 'idle' | 'checking' | 'allowed' | 'denied';
 
+function readPersistedDebug(): unknown[] {
+  if (typeof window === 'undefined') return [];
+  try {
+    const raw = window.sessionStorage.getItem('__dfp_admin_login_debug__');
+    if (raw) return JSON.parse(raw);
+  } catch {
+    // ignore
+  }
+  return [];
+}
+
+function clearPersistedDebug() {
+  if (typeof window === 'undefined') return;
+  try {
+    window.sessionStorage.removeItem('__dfp_admin_login_debug__');
+  } catch {
+    // ignore
+  }
+}
+
 export function useGateState({ publicPaths, loginPath, verifyAccess }: GateStateOptions) {
-  const [gateState, setGateState] = useState<GateState>('idle');
+  const [gateState, setGateState] = useState<GateState>('checking');
   const [deniedReason, setDeniedReason] = useState<string | null>(null);
 
   const mountedRef = useRef(true);
   const pathname = usePathname();
+  const retryCountRef = useRef(0);
 
   const configRef = useRef({ publicPaths, loginPath, verifyAccess });
   configRef.current = { publicPaths, loginPath, verifyAccess };
@@ -59,7 +80,7 @@ export function useGateState({ publicPaths, loginPath, verifyAccess }: GateState
     let cancelled = false;
     let checking = false;
 
-    const runCheck = async () => {
+    const runCheck = async (isRetry = false) => {
       if (!mountedRef.current || cancelled) return;
 
       if (!checking) {
@@ -72,11 +93,20 @@ export function useGateState({ publicPaths, loginPath, verifyAccess }: GateState
         if (!mountedRef.current || cancelled) return;
 
         if (!session) {
-          setGateState('denied');
-          setDeniedReason('unauthenticated');
+          if (isRetry || retryCountRef.current >= 2) {
+            setGateState('denied');
+            setDeniedReason('unauthenticated');
+          } else {
+            retryCountRef.current += 1;
+            if (typeof window !== 'undefined') {
+              console.info(`[gate] session empty, retry ${retryCountRef.current}/2 in 250ms`);
+            }
+            setTimeout(() => runCheck(true), 250);
+          }
           return;
         }
 
+        retryCountRef.current = 0;
         const result = await verify(session);
         if (!mountedRef.current || cancelled) return;
 
@@ -94,10 +124,18 @@ export function useGateState({ publicPaths, loginPath, verifyAccess }: GateState
       }
     };
 
-    if (!supabase) {
+    if (!isSupabaseConfigured()) {
       setGateState('denied');
       setDeniedReason('Authentication service is unavailable.');
       return;
+    }
+
+    const persisted = readPersistedDebug();
+    if (persisted.length > 0) {
+      if (typeof window !== 'undefined') {
+        console.info('[gate] persisted login debug trace:', persisted);
+      }
+      clearPersistedDebug();
     }
 
     runCheck();

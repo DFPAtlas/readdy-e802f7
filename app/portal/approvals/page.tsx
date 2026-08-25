@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import PortalShell from '../PortalShell';
+import { usePortalMembership } from '@/components/portal/PortalAccessProvider';
 import {
   APPROVAL_TYPES, APPROVAL_STATUSES,
   getApprovalTypeDef, getApprovalStatusDef,
@@ -39,6 +40,7 @@ interface ProjectBrief {
 type FilterGroup = 'awaiting_me' | 'changes_requested' | 'approved' | 'completed';
 
 export default function ApprovalsPage() {
+  const membership = usePortalMembership();
   const [approvals, setApprovals] = useState<(Approval & { project_name?: string })[]>([]);
   const [projects, setProjects] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
@@ -47,7 +49,7 @@ export default function ApprovalsPage() {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [membership?.client_id]);
 
   async function fetchData() {
     setLoading(true);
@@ -56,18 +58,13 @@ export default function ApprovalsPage() {
     const { data: { session } } = await supabase.auth.getSession();
     if (!session) { setError('Session expired'); setLoading(false); return; }
 
-    const { data: clientData } = await supabase
-      .from('clients')
-      .select('id')
-      .eq('user_id', session.user.id)
-      .maybeSingle();
-
-    if (!clientData) { setError('No client account found'); setLoading(false); return; }
+    const cid = membership?.client_id;
+    if (!cid) { setError('No client account found'); setLoading(false); return; }
 
     const { data: projectList } = await supabase
       .from('projects')
       .select('id, name')
-      .eq('client_id', clientData.id);
+      .eq('client_id', cid);
 
     if (!projectList?.length) { setLoading(false); return; }
 

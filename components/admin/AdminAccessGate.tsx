@@ -71,7 +71,9 @@ function ProtectedAdminAccessGate({ children }: { children: React.ReactNode }) {
             <i className="ri-shield-cross-line text-2xl text-red-400 w-7 h-7 flex items-center justify-center" />
           </div>
           <h1 className="text-xl font-semibold text-white mb-2">Access Denied</h1>
-          <p className="text-sm text-slate-400 mb-6">{message}</p>
+          <p className="text-sm text-slate-400 mb-2">{message}</p>
+          <p className="text-[11px] text-slate-600 font-mono mb-6">reason: {reason}</p>
+
           <div className="space-y-3">
             <button
               onClick={handleSignOut}
@@ -80,7 +82,7 @@ function ProtectedAdminAccessGate({ children }: { children: React.ReactNode }) {
               Sign Out
             </button>
             <Link
-              href="/admin/login"
+              href="/admin/login?from=gate"
               className="block w-full py-3 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-[#06B6D4] to-[#0891B2] hover:shadow-lg transition-all cursor-pointer text-center whitespace-nowrap"
             >
               Go to Sign In
