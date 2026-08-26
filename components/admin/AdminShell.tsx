@@ -37,6 +37,7 @@ const navGroups = [
       { href: '/admin/command-centre', icon: Shield, label: 'Command Centre' },
       { href: '/admin/cms', icon: Palette, label: 'CMS' },
       { href: '/admin/about-content', icon: FileText, label: 'About Content' },
+      { href: '/admin/team-profiles', icon: Users, label: 'Team Profiles' },
       { href: '/admin/diagnostics', icon: Stethoscope, label: 'Diagnostics' },
       { href: '/admin/analytics/public', icon: BarChart3, label: 'Public Analytics' },
     ],

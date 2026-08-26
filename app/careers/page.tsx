@@ -11,20 +11,35 @@ import type { CareersVacancy } from '@/hooks/useCmsData';
 export default function CareersPage() {
   const [vacancies, setVacancies] = useState<CareersVacancy[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [departmentFilter, setDepartmentFilter] = useState('all');
   const [typeFilter, setTypeFilter] = useState('all');
 
   useEffect(() => {
     let cancelled = false;
+    setLoading(true);
+    setError(null);
     import('@/lib/supabase').then(({ supabase }) => {
       if (cancelled) return;
-      supabase.from('careers_vacancies').select('*').order('sort_order').then(({ data }) => {
+      supabase.from('careers_vacancies').select('*').order('sort_order').then(({ data, error: queryError }) => {
         if (cancelled) return;
-        setVacancies((data || []) as CareersVacancy[]);
+        if (queryError) {
+          setError('Unable to load vacancies. Please try again shortly.');
+        } else {
+          setVacancies((data || []) as CareersVacancy[]);
+        }
         setLoading(false);
+      }).catch(() => {
+        if (!cancelled) {
+          setError('Unable to load vacancies. Please try again shortly.');
+          setLoading(false);
+        }
       });
     }).catch(() => {
-      if (!cancelled) setLoading(false);
+      if (!cancelled) {
+        setError('Unable to load vacancies. Please try again shortly.');
+        setLoading(false);
+      }
     });
     return () => { cancelled = true; };
   }, []);
@@ -103,6 +118,18 @@ export default function CareersPage() {
                     <div className="h-4 bg-slate-200 rounded w-1/2" />
                   </div>
                 ))}
+              </div>
+            ) : error ? (
+              <div className="text-center py-16">
+                <i className="ri-error-warning-line w-12 h-12 text-red-400 mx-auto mb-4 flex items-center justify-center" />
+                <h2 className="text-xl font-bold text-slate-800 mb-2">Something went wrong</h2>
+                <p className="text-slate-500 max-w-md mx-auto mb-6">{error}</p>
+                <button
+                  onClick={() => window.location.reload()}
+                  className="px-5 py-2.5 rounded-xl bg-[#06B6D4] text-white font-semibold text-sm hover:bg-[#0891B2] transition-colors whitespace-nowrap cursor-pointer"
+                >
+                  Try again
+                </button>
               </div>
             ) : openVacancies.length === 0 ? (
               <div className="text-center py-16">

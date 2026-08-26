@@ -95,9 +95,12 @@ export default function Header() {
     };
 
     window.addEventListener('scroll', onScroll, { passive: true });
-    detectBgLightness();
+    const initialRaf = requestAnimationFrame(() => {
+      if (mountedRef.current) detectBgLightness();
+    });
     return () => {
       mountedRef.current = false;
+      cancelAnimationFrame(initialRaf);
       window.removeEventListener('scroll', onScroll);
       if (rafRef.current !== null) {
         cancelAnimationFrame(rafRef.current);

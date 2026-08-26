@@ -38,10 +38,18 @@ export function useNotifications(userId: string | null) {
     error: null,
   });
   const channelRef = useRef<ReturnType<typeof supabase.channel> | null>(null);
+  const mountedRef = useRef(true);
+
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+    };
+  }, []);
 
   const loadNotifications = useCallback(async () => {
     if (!userId) {
-      setState((p) => ({ ...p, loading: false }));
+      if (mountedRef.current) setState((p) => ({ ...p, loading: false }));
       return;
     }
 
@@ -60,6 +68,8 @@ export function useNotifications(userId: string | null) {
         .is('read_at', null)
         .is('dismissed_at', null),
     ]);
+
+    if (!mountedRef.current) return;
 
     if (recentErr || countErr) {
       setState((p) => ({ ...p, loading: false, error: (recentErr || countErr)!.message }));

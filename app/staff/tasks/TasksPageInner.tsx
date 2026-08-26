@@ -128,10 +128,11 @@ export default function TasksPageInner() {
     cancelledRef.current = false;
     async function init() {
       const { data: { session } } = await supabase.auth.getSession();
+      if (cancelledRef.current) return;
       if (!session) { router.replace('/staff/login'); return; }
       const { data: sp } = await supabase.from('staff_profiles').select('id, full_name, role').eq('id', session.user.id).maybeSingle();
-      if (!sp) { router.replace('/staff/login'); return; }
       if (cancelledRef.current) return;
+      if (!sp) { router.replace('/staff/login'); return; }
       setProfile(sp);
 
       const tasksPromise = supabase

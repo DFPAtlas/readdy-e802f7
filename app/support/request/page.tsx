@@ -9,24 +9,18 @@ const SUPPORT_ENDPOINT =
 
 const ISSUE_CATEGORIES = [
   { value: 'general', label: 'General Question' },
-  { value: 'account', label: 'Account Access' },
-  { value: 'billing', label: 'Billing and Invoices' },
-  { value: 'project', label: 'Project Delivery' },
-  { value: 'product', label: 'Product Support' },
-  { value: 'uat', label: 'UAT Testing' },
-  { value: 'pbx', label: 'Cloud PBX' },
-  { value: 'security', label: 'Security or Privacy' },
+  { value: 'technical', label: 'Technical Support' },
+  { value: 'account', label: 'Account / Login' },
+  { value: 'billing', label: 'Billing' },
+  { value: 'security', label: 'Security Concern' },
   { value: 'other', label: 'Other' },
 ];
 
 const CATEGORY_MAP: Record<string, string> = {
   general: 'general',
+  technical: 'technical',
   account: 'account',
   billing: 'billing',
-  project: 'general',
-  product: 'technical',
-  uat: 'technical',
-  pbx: 'technical',
   security: 'security',
   other: 'other',
 };

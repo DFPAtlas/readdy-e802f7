@@ -114,22 +114,13 @@ function MotionFactory(tag: keyof JSX.IntrinsicElements | 'i') {
     const [inView, setInView] = useState(false);
     const [mounted, setMounted] = useState(false);
     const mountedRef = useRef(false);
-    const rafRef = useRef<number | null>(null);
     const presence = useContext(PresenceContext);
 
     useEffect(() => {
       mountedRef.current = true;
-      rafRef.current = requestAnimationFrame(() => {
-        if (mountedRef.current) {
-          setMounted(true);
-        }
-      });
+      setMounted(true);
       return () => {
         mountedRef.current = false;
-        if (rafRef.current !== null) {
-          cancelAnimationFrame(rafRef.current);
-          rafRef.current = null;
-        }
       };
     }, []);
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { supabase } from '@/lib/supabase';
 
 export interface Notification {
@@ -18,6 +18,7 @@ const MAX_NOTIFICATIONS = 20;
 export function useRealtimeNotifications(testerId: string | null) {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [toast, setToast] = useState<Notification | null>(null);
+  const toastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const unreadCount = notifications.filter((n) => !n.read).length;
 
@@ -30,7 +31,8 @@ export function useRealtimeNotifications(testerId: string | null) {
     };
     setNotifications((prev) => [notif, ...prev].slice(0, MAX_NOTIFICATIONS));
     setToast(notif);
-    setTimeout(() => setToast(null), 6000);
+    if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+    toastTimerRef.current = setTimeout(() => setToast(null), 6000);
   }, []);
 
   const markAllRead = useCallback(() => {
@@ -43,6 +45,12 @@ export function useRealtimeNotifications(testerId: string | null) {
 
   const clearAll = useCallback(() => {
     setNotifications([]);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+    };
   }, []);
 
   useEffect(() => {

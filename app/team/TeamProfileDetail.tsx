@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import { motion } from '@/components/motion';
 import Link from 'next/link';
@@ -27,11 +27,12 @@ export interface PublicTeamProfile {
   featured: boolean;
 }
 
-export default function TeamProfileDetail({ slug }: { slug: string }) {
-  const [profile, setProfile] = useState<PublicTeamProfile | null>(null);
-  const [loading, setLoading] = useState(true);
+export default function TeamProfileDetail({ profile }: { profile: PublicTeamProfile | null }) {
+  const [liveProfile, setLiveProfile] = useState<PublicTeamProfile | null>(profile);
 
   useEffect(() => {
+    const slug = profile?.slug || (typeof window !== 'undefined' ? window.location.pathname.split('/').filter(Boolean).pop() : null);
+    if (!slug) return;
     let cancelled = false;
     supabase
       .from('public_team_profiles')
@@ -40,22 +41,17 @@ export default function TeamProfileDetail({ slug }: { slug: string }) {
       .eq('public_status', 'Published')
       .maybeSingle()
       .then(({ data }) => {
-        if (!cancelled && data) setProfile(data as PublicTeamProfile);
-        if (!cancelled) setLoading(false);
+        if (!cancelled && data) {
+          setLiveProfile(data as PublicTeamProfile);
+        }
       });
-
     return () => { cancelled = true; };
-  }, [slug]);
+  }, [profile?.slug]);
 
-  if (loading) {
-    return (
-      <div className="min-h-[60vh] flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-[#06B6D4]/30 border-t-[#06B6D4] rounded-full animate-spin" />
-      </div>
-    );
-  }
 
-  if (!profile) {
+  const p = liveProfile;
+
+  if (!p) {
     return (
       <div className="min-h-[60vh] flex flex-col items-center justify-center text-center px-6">
         <div className="w-20 h-20 rounded-2xl bg-slate-100 flex items-center justify-center mb-4">
@@ -70,17 +66,20 @@ export default function TeamProfileDetail({ slug }: { slug: string }) {
     );
   }
 
-  const initials = profile.public_name
+  const initials = p.public_name
     .split(' ')
     .map(n => n[0])
     .join('')
     .toUpperCase()
     .slice(0, 2);
 
-  const areas = profile.specialist_areas || [];
-  const resp = profile.responsibilities || [];
-  const quals = profile.qualifications || [];
-  const links = profile.professional_links || {};
+  const areas = p.specialist_areas || [];
+  const resp = p.responsibilities || [];
+  const quals = p.qualifications || [];
+  const links = p.professional_links || {};
+  const experience = p.experience_summary || [];
+  const products = p.products || [];
+  const services = p.services || [];
 
   return (
     <div className="max-w-5xl mx-auto px-6 py-16">
@@ -95,11 +94,11 @@ export default function TeamProfileDetail({ slug }: { slug: string }) {
             <div className="lg:w-2/5 bg-gradient-to-br from-slate-50 via-slate-100 to-slate-50 p-8 lg:p-10 flex flex-col items-center justify-center min-h-[300px] relative overflow-hidden">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_30%,rgba(6,182,212,0.08),transparent)]" />
               <div className="relative z-10">
-                {profile.profile_asset_id ? (
+                {p.profile_asset_id ? (
                   <div className="w-36 h-36 rounded-2xl overflow-hidden border-2 border-[#06B6D4]/20 mb-5 shadow-[0_0_40px_rgba(6,182,212,0.08)]">
                     <img
-                      src={profile.profile_asset_id}
-                      alt={profile.image_alt_text || profile.public_name}
+                      src={p.profile_asset_id}
+                      alt={p.image_alt_text || p.public_name}
                       className="w-full h-full object-cover object-top"
                     />
                   </div>
@@ -108,34 +107,48 @@ export default function TeamProfileDetail({ slug }: { slug: string }) {
                     <span className="text-3xl font-bold text-[#06B6D4]/60">{initials}</span>
                   </div>
                 )}
-                <h1 className="text-2xl font-bold text-slate-900 text-center">{profile.public_name}</h1>
-                {profile.public_job_title && (
-                  <p className="text-[#06B6D4] font-medium text-sm mt-1 text-center">{profile.public_job_title}</p>
+                <h1 className="text-2xl font-bold text-slate-900 text-center">{p.public_name}</h1>
+                {p.public_job_title && (
+                  <p className="text-[#06B6D4] font-medium text-sm mt-1 text-center">{p.public_job_title}</p>
                 )}
-                {profile.department && (
+                {p.department && (
                   <span className="inline-block mt-3 px-3 py-1 rounded-full text-xs font-medium bg-[#06B6D4]/8 text-[#06B6D4] border border-[#06B6D4]/15">
-                    {profile.department}
+                    {p.department}
                   </span>
                 )}
-                {profile.leadership_level && (
+                {p.leadership_level && (
                   <span className="inline-block mt-2 px-3 py-1 rounded-full text-xs font-medium bg-purple-500/8 text-purple-600 border border-purple-500/15">
-                    {profile.leadership_level}
+                    {p.leadership_level}
                   </span>
                 )}
               </div>
             </div>
 
             <div className="lg:w-3/5 p-8 lg:p-10">
-              {profile.short_bio && (
+              {p.short_bio && (
                 <div className="mb-6">
                   <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-2">About</h3>
-                  <p className="text-slate-600 leading-relaxed">{profile.short_bio}</p>
+                  <p className="text-slate-600 leading-relaxed">{p.short_bio}</p>
                 </div>
               )}
 
-              {profile.full_bio && (
+              {p.full_bio && (
                 <div className="mb-6">
-                  <p className="text-slate-600 leading-relaxed">{profile.full_bio}</p>
+                  <p className="text-slate-600 leading-relaxed">{p.full_bio}</p>
+                </div>
+              )}
+
+              {experience.length > 0 && (
+                <div className="mb-6">
+                  <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-3">Experience</h3>
+                  <ul className="space-y-2">
+                    {experience.map((item, i) => (
+                      <li key={i} className="flex items-start gap-2 text-sm text-slate-600">
+                        <i className="ri-briefcase-line text-[#06B6D4] mt-0.5 w-4 h-4 flex items-center justify-center shrink-0" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               )}
 
@@ -163,6 +176,32 @@ export default function TeamProfileDetail({ slug }: { slug: string }) {
                       </li>
                     ))}
                   </ul>
+                </div>
+              )}
+
+              {products.length > 0 && (
+                <div className="mb-6">
+                  <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-3">Products</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {products.map((product, i) => (
+                      <span key={i} className="px-3 py-1.5 rounded-full text-xs font-medium bg-purple-500/6 text-purple-600 border border-purple-500/10">
+                        {product}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {services.length > 0 && (
+                <div className="mb-6">
+                  <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-3">Services</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {services.map((service, i) => (
+                      <span key={i} className="px-3 py-1.5 rounded-full text-xs font-medium bg-[#06B6D4]/6 text-[#06B6D4] border border-[#06B6D4]/10">
+                        {service}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               )}
 
