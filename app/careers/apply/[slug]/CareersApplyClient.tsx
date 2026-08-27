@@ -381,6 +381,32 @@ export default function CareersApplyClient({ slug }: { slug: string }) {
             )}
           </div>
         </section>
+
+        <section className="py-12 bg-slate-50 border-t border-slate-200">
+          <div className="max-w-2xl mx-auto px-6">
+            <h2 className="text-lg font-bold text-slate-900 mb-4">What Happens Next</h2>
+            <div className="space-y-3">
+              <div className="flex items-start gap-3">
+                <span className="w-6 h-6 rounded-full bg-[#06B6D4]/10 text-[#06B6D4] text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">1</span>
+                <p className="text-sm text-slate-600 leading-relaxed">
+                  A member of our team reviews every application individually. We aim to respond within two weeks of the closing date, and you will hear from us either way.
+                </p>
+              </div>
+              <div className="flex items-start gap-3">
+                <span className="w-6 h-6 rounded-full bg-[#06B6D4]/10 text-[#06B6D4] text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">2</span>
+                <p className="text-sm text-slate-600 leading-relaxed">
+                  If your experience matches what we are looking for, we will invite you to a first conversation to discuss the role, your background, and answer any questions you have.
+                </p>
+              </div>
+              <div className="flex items-start gap-3">
+                <span className="w-6 h-6 rounded-full bg-[#06B6D4]/10 text-[#06B6D4] text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">3</span>
+                <p className="text-sm text-slate-600 leading-relaxed">
+                  Shortlisted candidates progress to a skills assessment and a team interview before a final decision. We will support you through every stage of the process.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
 
       <Footer />

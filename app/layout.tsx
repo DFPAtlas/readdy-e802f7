@@ -73,6 +73,7 @@ export default function RootLayout({
       <body className="antialiased bg-white" suppressHydrationWarning={true}>
         <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
+        <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.5.0/remixicon.min.css" as="style" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://storage.readdy-site.link" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://storage.readdy-site.link" />
         <ThemeProvider>

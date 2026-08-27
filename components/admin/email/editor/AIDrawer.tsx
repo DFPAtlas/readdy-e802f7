@@ -275,7 +275,7 @@ export default function AIDrawer({
           <motion.div
             initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }}
             transition={{ type: 'tween', duration: 0.2 }}
-            className="fixed right-0 top-0 bottom-0 w-full lg:w-[420px] xl:w-[480px] bg-[#0d0d10] border-l border-[rgba(255,255,255,0.06)] z-50 flex flex-col shadow-2xl"
+            className="fixed right-0 top-0 bottom-0 w-full lg:w-[420px] xl:w-[480px] bg-[#1E293B] border-l border-[rgba(255,255,255,0.06)] z-50 flex flex-col shadow-2xl"
           >
             <div className="flex items-center justify-between px-4 py-3 border-b border-[rgba(255,255,255,0.06)] shrink-0">
               <div className="flex items-center gap-2">

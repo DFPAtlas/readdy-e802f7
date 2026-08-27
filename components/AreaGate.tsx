@@ -74,23 +74,27 @@ export default function AreaGate({ children, loginPath, requiredRoles, publicPat
   }
 
   if (gateState === 'denied') {
+    const isUnauthenticated = deniedReason === 'unauthenticated';
     return (
       <div className="min-h-screen bg-[#0F172A] flex flex-col items-center justify-center gap-4 px-4">
         <div className="w-14 h-14 rounded-full bg-red-500/10 flex items-center justify-center">
           <i className="ri-shield-cross-line text-2xl text-red-400 w-7 h-7 flex items-center justify-center" />
         </div>
-        <h1 className="text-xl font-semibold text-white">Access Denied</h1>
-        {deniedReason && (
+        <h1 className="text-xl font-semibold text-white">{isUnauthenticated ? 'Sign in required' : 'Access Denied'}</h1>
+        {deniedReason && !isUnauthenticated && (
           <p className="text-sm text-slate-400 max-w-sm text-center">{deniedReason}</p>
+        )}
+        {isUnauthenticated && (
+          <p className="text-sm text-slate-400 max-w-sm text-center">Please sign in to continue to this area.</p>
         )}
         <button
           onClick={async () => {
-            if (supabase) await supabase.auth.signOut();
+            if (!isUnauthenticated && supabase) await supabase.auth.signOut();
             window.location.href = loginPath;
           }}
           className="mt-4 px-6 py-2.5 rounded-xl font-medium text-sm text-red-400 bg-red-500/10 border border-red-500/20 hover:bg-red-500/20 transition-colors cursor-pointer whitespace-nowrap"
         >
-          Sign Out
+          {isUnauthenticated ? 'Sign in' : 'Sign Out'}
         </button>
       </div>
     );

@@ -305,30 +305,30 @@ export default function RenderTestDetailClient({ params }: { params: { id: strin
       )}
 
       <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-3">
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl p-4">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl p-4">
           <p className="text-[11px] font-medium text-slate-400 uppercase tracking-wider mb-1">Total Clients</p>
           <p className="text-2xl font-bold text-white">{summary.total}</p>
         </div>
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl p-4">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl p-4">
           <p className="text-[11px] font-medium text-slate-400 uppercase tracking-wider mb-1">Passed</p>
           <p className="text-2xl font-bold text-emerald-400">{summary.passed}</p>
         </div>
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl p-4">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl p-4">
           <p className="text-[11px] font-medium text-slate-400 uppercase tracking-wider mb-1">Warnings</p>
           <p className="text-2xl font-bold text-amber-400">{summary.warning}</p>
         </div>
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl p-4">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl p-4">
           <p className="text-[11px] font-medium text-slate-400 uppercase tracking-wider mb-1">Failed</p>
           <p className="text-2xl font-bold text-red-400">{summary.failed}</p>
         </div>
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl p-4">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl p-4">
           <p className="text-[11px] font-medium text-slate-400 uppercase tracking-wider mb-1">Baselines</p>
           <p className="text-2xl font-bold text-violet-400">{summary.baseline_count}</p>
         </div>
       </div>
 
       {results.length === 0 ? (
-        <div className="text-center py-16 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl">
+        <div className="text-center py-16 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl">
           <Monitor className="w-10 h-10 text-slate-600 mx-auto mb-3" />
           <p className="text-sm text-slate-400">No render results recorded yet</p>
           <p className="text-xs text-slate-500 mt-1">Results appear here once the rendering worker processes this test.</p>
@@ -379,7 +379,7 @@ export default function RenderTestDetailClient({ params }: { params: { id: strin
                         <button
                           key={r.id}
                           onClick={() => setSelectedResult(selectedResult === r.id ? null : r.id)}
-                          className={`bg-[#121215] border rounded-xl p-3 text-left transition-all cursor-pointer ${
+                          className={`bg-[#1E293B] border rounded-xl p-3 text-left transition-all cursor-pointer ${
                             selectedResult === r.id ? 'border-violet-400/50 ring-1 ring-violet-400/20' : 'border-[rgba(255,255,255,0.06)] hover:border-[rgba(255,255,255,0.12)]'
                           }`}
                         >
@@ -425,7 +425,7 @@ export default function RenderTestDetailClient({ params }: { params: { id: strin
           </div>
 
           {selected && (
-            <div className="bg-[#121215] border border-violet-400/20 rounded-2xl overflow-hidden">
+            <div className="bg-[#1E293B] border border-violet-400/20 rounded-2xl overflow-hidden">
               <div className="flex items-center justify-between px-5 py-3 border-b border-[rgba(255,255,255,0.06)]">
                 <div className="flex items-center gap-3">
                   <h3 className="text-sm font-semibold text-white">Screenshot Viewer</h3>

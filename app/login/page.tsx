@@ -43,7 +43,7 @@ const accountCards = [
     description: 'Test software, submit feedback and manage assignments.',
     whoFor: 'For approved UAT testers.',
     icon: 'ri-test-tube-line',
-    href: '/uat/jobs',
+    href: '/uat/login',
     helpLabel: 'Become a tester?',
     helpInfo: 'Visit the UAT TestLab page to apply.',
   },

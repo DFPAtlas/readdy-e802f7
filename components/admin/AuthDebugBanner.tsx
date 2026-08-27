@@ -18,7 +18,7 @@ export function AuthDebugBanner({ entries }: { entries: AuthDebugEntry[] }) {
   if (entries.length === 0) return null;
   const latest = entries[entries.length - 1];
   return (
-    <div className="rounded-xl border border-cyan-500/30 bg-[#0B1120] p-3 text-left">
+    <div className="rounded-xl border border-cyan-500/30 bg-[#1E293B] p-3 text-left">
       <div className="flex items-center justify-between mb-2">
         <span className="text-[11px] font-bold uppercase tracking-widest text-cyan-300">Debug Trace</span>
         <span className="text-[10px] text-slate-500">

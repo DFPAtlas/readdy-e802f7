@@ -50,8 +50,8 @@ export default function AudienceDetailPage() {
 
   if (loading) return (
     <div className="max-w-4xl mx-auto space-y-6">
-      <div className="h-12 w-48 bg-[#121215] rounded-xl animate-pulse" />
-      <div className="h-64 bg-[#121215] border rounded-2xl animate-pulse" />
+      <div className="h-12 w-48 bg-[#1E293B] rounded-xl animate-pulse" />
+      <div className="h-64 bg-[#1E293B] border rounded-2xl animate-pulse" />
     </div>
   )
 
@@ -116,7 +116,7 @@ export default function AudienceDetailPage() {
           { label: 'Suppressed', value: audience.suppression_count || 0, icon: Ban, color: 'text-red-400' },
           { label: 'Consent Coverage', value: audience.consent_coverage_pct != null ? `${audience.consent_coverage_pct}%` : '—', icon: CheckCircle2, color: 'text-emerald-400' },
         ].map(stat => (
-          <div key={stat.label} className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
+          <div key={stat.label} className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-white/[0.03] border border-[rgba(255,255,255,0.04)] flex items-center justify-center">
                 <stat.icon className={`w-5 h-5 ${stat.color}`} />
@@ -131,12 +131,12 @@ export default function AudienceDetailPage() {
       </div>
 
       {audience.description && (
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
           <p className="text-sm text-slate-400">{audience.description}</p>
         </div>
       )}
 
-      <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 space-y-3">
+      <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 space-y-3">
         <h3 className="text-sm font-semibold text-white">Details</h3>
         <div className="grid grid-cols-2 gap-4">
           <div><p className="text-[10px] text-slate-500 uppercase">Type</p><p className="text-sm text-white">{AUDIENCE_TYPE_LABELS[audience.audience_type]}</p></div>

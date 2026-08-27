@@ -74,7 +74,7 @@ export default function AutomationActivityClient({ params }: { params: { id: str
         </div>
       ) : filtered.length === 0 ? (
         <div className="text-center py-20">
-          <div className="w-14 h-14 rounded-2xl bg-[#121215] border border-[rgba(255,255,255,0.06)] flex items-center justify-center mx-auto mb-4">
+          <div className="w-14 h-14 rounded-2xl bg-[#1E293B] border border-[rgba(255,255,255,0.06)] flex items-center justify-center mx-auto mb-4">
             <Activity className="w-6 h-6 text-slate-500" />
           </div>
           <p className="text-sm text-slate-400">No execution records found.</p>

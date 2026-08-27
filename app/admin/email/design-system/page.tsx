@@ -128,7 +128,7 @@ export default function DesignSystemDashboard() {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
         {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-          <div key={i} className="h-24 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl animate-pulse" />
+          <div key={i} className="h-24 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl animate-pulse" />
         ))}
       </div>
     );
@@ -153,7 +153,7 @@ export default function DesignSystemDashboard() {
         {stats.map((card) => {
           const Icon = card.icon;
           return (
-            <Link key={card.key} href={card.href} className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl p-4 hover:border-[rgba(255,255,255,0.1)] transition-all cursor-pointer group">
+            <Link key={card.key} href={card.href} className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl p-4 hover:border-[rgba(255,255,255,0.1)] transition-all cursor-pointer group">
               <div className="flex items-center justify-between mb-3">
                 <span className="text-[11px] font-medium text-slate-400 uppercase tracking-wider">{card.label}</span>
                 <div className={`w-8 h-8 rounded-lg ${card.bg} ${card.border} border flex items-center justify-center`}><Icon className={`w-4 h-4 ${card.color}`} /></div>
@@ -167,7 +167,7 @@ export default function DesignSystemDashboard() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
             <div className="flex items-center justify-between px-6 py-4 border-b border-[rgba(255,255,255,0.06)]">
               <h2 className="text-base font-bold text-white">Library Health</h2>
               <span className="text-[10px] text-slate-500">{health.length} checks</span>
@@ -191,7 +191,7 @@ export default function DesignSystemDashboard() {
             </div>
           </div>
 
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
             <div className="px-6 py-4 border-b border-[rgba(255,255,255,0.06)]">
               <h2 className="text-base font-bold text-white">Recent Releases</h2>
             </div>
@@ -215,7 +215,7 @@ export default function DesignSystemDashboard() {
         </div>
 
         <div className="space-y-6">
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
             <div className="px-6 py-4 border-b border-[rgba(255,255,255,0.06)]"><h2 className="text-base font-bold text-white">Quick Links</h2></div>
             <div className="p-3 space-y-1">
               {QUICK_LINKS.map((link) => {
@@ -231,7 +231,7 @@ export default function DesignSystemDashboard() {
             </div>
           </div>
 
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
             <div className="px-6 py-4 border-b border-[rgba(255,255,255,0.06)]"><h2 className="text-base font-bold text-white">Brand Usage</h2></div>
             <div className="p-4 space-y-4">
               {brandUsage.length === 0 ? (
@@ -254,7 +254,7 @@ export default function DesignSystemDashboard() {
             </div>
           </div>
 
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
             <div className="px-6 py-4 border-b border-[rgba(255,255,255,0.06)]"><h2 className="text-base font-bold text-white">Dependency Warnings</h2></div>
             <div className="p-4 space-y-3">
               {warnings.length === 0 ? (
@@ -279,7 +279,7 @@ export default function DesignSystemDashboard() {
         {QUICK_LINKS.map((link) => {
           const Icon = link.icon;
           return (
-            <Link key={link.href} href={link.href} className="flex items-center gap-3 px-4 py-3 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
+            <Link key={link.href} href={link.href} className="flex items-center gap-3 px-4 py-3 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
               <Icon className="w-4 h-4 text-slate-500 group-hover:text-[#06B6D4]" />
               <span className="text-sm text-slate-300 group-hover:text-white">{link.label}</span>
               <ArrowRight className="w-3.5 h-3.5 text-slate-600 group-hover:text-[#06B6D4] ml-auto" />

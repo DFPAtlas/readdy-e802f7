@@ -367,7 +367,7 @@ export default function PilotControlPage() {
     return (
       <div className="space-y-6 animate-pulse">
         <div className="h-8 w-64 bg-white/[0.04] rounded-lg" />
-        <div className="h-96 bg-[#121215] rounded-2xl" />
+        <div className="h-96 bg-[#1E293B] rounded-2xl" />
       </div>
     );
   }
@@ -430,7 +430,7 @@ export default function PilotControlPage() {
       {activeTab === 'control' && (
         <div className="space-y-6">
           {/* Kill Switch Section */}
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
             <div className="flex items-center justify-between mb-4">
               <div>
                 <h2 className="text-base font-bold text-white">Kill Switch</h2>
@@ -517,7 +517,7 @@ export default function PilotControlPage() {
           </div>
 
           {/* Stage Control */}
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
             <h2 className="text-base font-bold text-white mb-4">Pilot Stage</h2>
             <div className="space-y-2">
               {STAGES.map((stage, i) => {
@@ -566,7 +566,7 @@ export default function PilotControlPage() {
           </div>
 
           {/* Limits */}
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
             <h2 className="text-base font-bold text-white mb-4">Pilot Limits</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {Object.entries(config.limits).map(([key, value]) => (
@@ -583,7 +583,7 @@ export default function PilotControlPage() {
           </div>
 
           {/* Participants */}
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-base font-bold text-white">Pilot Participants</h2>
               <button onClick={addParticipant}
@@ -623,7 +623,7 @@ export default function PilotControlPage() {
           </div>
 
           {/* Module Toggles */}
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
             <h2 className="text-base font-bold text-white mb-4">Allowed Modules</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
               {['templates', 'campaigns', 'automations', 'transactional', 'contacts', 'audiences', 'imports', 'consent', 'preferences', 'brand-kits', 'sections', 'analytics', 'suppressions', 'reports', 'settings'].map(mod => (
@@ -642,21 +642,21 @@ export default function PilotControlPage() {
       {activeTab === 'dashboard' && (
         <div className="space-y-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
+            <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
               <p className="text-[10px] text-slate-500 uppercase tracking-wider">Stage</p>
               <p className="text-lg font-bold text-white mt-1">{STAGES.find(s => s.key === config.current_stage)?.label.split(' — ')[0] || config.current_stage}</p>
               <p className="text-[10px] text-slate-600 mt-0.5">{config.pilot_name}</p>
             </div>
-            <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
+            <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
               <p className="text-[10px] text-slate-500 uppercase tracking-wider">Total Sent</p>
               <p className="text-lg font-bold text-white mt-1">{metricsLoading ? '...' : metrics?.total_sent || 0}</p>
               <p className="text-[10px] text-slate-600 mt-0.5">{metrics?.total_delivered || 0} delivered</p>
             </div>
-            <div className={`bg-[#121215] border rounded-2xl p-4 ${metrics?.provider_healthy ? 'border-emerald-500/10' : 'border-red-500/10'}`}>
+            <div className={`bg-[#1E293B] border rounded-2xl p-4 ${metrics?.provider_healthy ? 'border-emerald-500/10' : 'border-red-500/10'}`}>
               <p className="text-[10px] text-slate-500 uppercase tracking-wider">Provider</p>
               <p className={`text-lg font-bold mt-1 ${metrics?.provider_healthy ? 'text-emerald-400' : 'text-red-400'}`}>{metrics?.provider_healthy ? 'Healthy' : 'Issue'}</p>
             </div>
-            <div className={`bg-[#121215] border rounded-2xl p-4 ${metrics?.webhook_healthy ? 'border-emerald-500/10' : 'border-amber-500/10'}`}>
+            <div className={`bg-[#1E293B] border rounded-2xl p-4 ${metrics?.webhook_healthy ? 'border-emerald-500/10' : 'border-amber-500/10'}`}>
               <p className="text-[10px] text-slate-500 uppercase tracking-wider">Webhooks</p>
               <p className={`text-lg font-bold mt-1 ${metrics?.webhook_healthy ? 'text-emerald-400' : 'text-amber-400'}`}>{metrics?.webhook_healthy ? 'Active' : 'No Events'}</p>
             </div>
@@ -670,7 +670,7 @@ export default function PilotControlPage() {
               { label: 'Failed Jobs', value: metrics?.total_failed || 0, color: 'text-red-400' },
               { label: 'Queue Backlog', value: metrics?.queue_backlog || 0, color: 'text-slate-400' },
             ].map(m => (
-              <div key={m.label} className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
+              <div key={m.label} className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
                 <p className="text-[10px] text-slate-500">{m.label}</p>
                 <p className={`text-xl font-bold ${m.color} mt-1`}>{m.value}</p>
               </div>
@@ -678,7 +678,7 @@ export default function PilotControlPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
+            <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
               <h3 className="text-sm font-semibold text-white mb-3">Exit Criteria</h3>
               {Object.entries(config.exit_criteria).map(([key, met]) => (
                 <div key={key} className="flex items-center justify-between py-1.5 border-b border-[rgba(255,255,255,0.03)] last:border-0">
@@ -689,7 +689,7 @@ export default function PilotControlPage() {
                 </div>
               ))}
             </div>
-            <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
+            <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
               <h3 className="text-sm font-semibold text-white mb-3">Rollback Triggers</h3>
               {Object.entries(config.rollback_triggers).map(([key, threshold]) => (
                 <div key={key} className="flex items-center justify-between py-1.5 border-b border-[rgba(255,255,255,0.03)] last:border-0">
@@ -712,7 +712,7 @@ export default function PilotControlPage() {
           </div>
 
           {incidents.length === 0 ? (
-            <div className="text-center py-16 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl">
+            <div className="text-center py-16 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl">
               <ShieldCheck className="w-10 h-10 text-slate-600 mx-auto mb-3" />
               <p className="text-sm text-slate-500">No incidents recorded</p>
               <p className="text-xs text-slate-600 mt-1">The pilot is running clean</p>
@@ -720,7 +720,7 @@ export default function PilotControlPage() {
           ) : (
             <div className="space-y-2">
               {incidents.map(inc => (
-                <div key={inc.id} className={`bg-[#121215] border rounded-2xl p-4 ${SEVERITY_STYLES[inc.severity]?.split(' ')[1] || 'border-[rgba(255,255,255,0.06)]'} ${inc.status === 'investigating' ? 'border-l-2 border-l-red-500' : ''}`}>
+                <div key={inc.id} className={`bg-[#1E293B] border rounded-2xl p-4 ${SEVERITY_STYLES[inc.severity]?.split(' ')[1] || 'border-[rgba(255,255,255,0.06)]'} ${inc.status === 'investigating' ? 'border-l-2 border-l-red-500' : ''}`}>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-md border ${SEVERITY_STYLES[inc.severity]}`}>{inc.severity}</span>
@@ -742,7 +742,7 @@ export default function PilotControlPage() {
           {/* New Incident Modal */}
           {showNewIncident && (
             <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setShowNewIncident(false)}>
-              <div className="bg-[#1a1a1e] border border-[rgba(255,255,255,0.1)] rounded-2xl w-full max-w-md p-6 shadow-2xl" onClick={e => e.stopPropagation()}>
+              <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.1)] rounded-2xl w-full max-w-md p-6 shadow-2xl" onClick={e => e.stopPropagation()}>
                 <h3 className="text-base font-bold text-white mb-4">Report New Incident</h3>
                 <div className="space-y-3">
                   <div>
@@ -796,7 +796,7 @@ export default function PilotControlPage() {
           {/* Incident Detail Modal */}
           {selectedIncident && (
             <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setSelectedIncident(null)}>
-              <div className="bg-[#1a1a1e] border border-[rgba(255,255,255,0.1)] rounded-2xl w-full max-w-lg max-h-[80vh] overflow-y-auto shadow-2xl" onClick={e => e.stopPropagation()}>
+              <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.1)] rounded-2xl w-full max-w-lg max-h-[80vh] overflow-y-auto shadow-2xl" onClick={e => e.stopPropagation()}>
                 <div className="p-6 border-b border-[rgba(255,255,255,0.06)] flex items-center justify-between">
                   <div>
                     <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md border ${SEVERITY_STYLES[selectedIncident.severity]} mr-2`}>{selectedIncident.severity}</span>
@@ -848,7 +848,7 @@ export default function PilotControlPage() {
 
       {activeTab === 'review' && (
         <div className="space-y-6">
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
             <h2 className="text-base font-bold text-white mb-4">Daily Pilot Review</h2>
             <p className="text-xs text-slate-400 mb-4">Current stage: <strong className="text-white">{STAGES.find(s => s.key === config.current_stage)?.label || config.current_stage}</strong></p>
 
@@ -924,7 +924,7 @@ export default function PilotControlPage() {
       {/* Kill Switch Confirmation Modal */}
       {killSwitchConfirm && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setKillSwitchConfirm(null)}>
-          <div className="bg-[#1a1a1e] border border-red-500/30 rounded-2xl w-full max-w-md p-6 shadow-2xl" onClick={e => e.stopPropagation()}>
+          <div className="bg-[#1E293B] border border-red-500/30 rounded-2xl w-full max-w-md p-6 shadow-2xl" onClick={e => e.stopPropagation()}>
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-xl bg-red-500/10 flex items-center justify-center">
                 <AlertTriangle className="w-5 h-5 text-red-400" />
@@ -959,7 +959,7 @@ export default function PilotControlPage() {
       {/* Stage Advance Confirmation */}
       {stageAdvanceConfirm && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setStageAdvanceConfirm(false)}>
-          <div className="bg-[#1a1a1e] border border-[rgba(255,255,255,0.1)] rounded-2xl w-full max-w-md p-6 shadow-2xl" onClick={e => e.stopPropagation()}>
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.1)] rounded-2xl w-full max-w-md p-6 shadow-2xl" onClick={e => e.stopPropagation()}>
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center">
                 <Play className="w-5 h-5 text-emerald-400" />

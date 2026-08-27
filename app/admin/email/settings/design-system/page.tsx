@@ -25,7 +25,7 @@ export default function DesignSystemSettings() {
       </div>
 
       <div className="space-y-6">
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-5">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-5">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-lg bg-[#06B6D4]/10 border border-[#06B6D4]/20 flex items-center justify-center">
               <Package className="w-4 h-4 text-[#06B6D4]" />
@@ -71,7 +71,7 @@ export default function DesignSystemSettings() {
           </div>
         </div>
 
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-5">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-5">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-lg bg-violet-400/10 border border-violet-400/20 flex items-center justify-center">
               <GitBranch className="w-4 h-4 text-violet-400" />
@@ -119,7 +119,7 @@ export default function DesignSystemSettings() {
           </div>
         </div>
 
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-5">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-5">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-lg bg-sky-400/10 border border-sky-400/20 flex items-center justify-center">
               <Globe className="w-4 h-4 text-sky-400" />
@@ -152,7 +152,7 @@ export default function DesignSystemSettings() {
           </div>
         </div>
 
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-5">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-5">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-lg bg-emerald-400/10 border border-emerald-400/20 flex items-center justify-center">
               <Eye className="w-4 h-4 text-emerald-400" />
@@ -197,7 +197,7 @@ export default function DesignSystemSettings() {
           </div>
         </div>
 
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-5">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-5">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-lg bg-amber-400/10 border border-amber-400/20 flex items-center justify-center">
               <Bell className="w-4 h-4 text-amber-400" />

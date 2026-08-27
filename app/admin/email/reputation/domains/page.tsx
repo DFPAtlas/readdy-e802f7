@@ -92,10 +92,10 @@ export default function ReputationDomains() {
   if (loading) {
     return (
       <div className="space-y-6">
-        <div className="h-10 w-72 bg-[#121215] rounded-xl animate-pulse" />
+        <div className="h-10 w-72 bg-[#1E293B] rounded-xl animate-pulse" />
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
-          <div className="h-64 bg-[#121215] rounded-2xl animate-pulse" />
-          <div className="lg:col-span-3 h-64 bg-[#121215] rounded-2xl animate-pulse" />
+          <div className="h-64 bg-[#1E293B] rounded-2xl animate-pulse" />
+          <div className="lg:col-span-3 h-64 bg-[#1E293B] rounded-2xl animate-pulse" />
         </div>
       </div>
     );
@@ -114,7 +114,7 @@ export default function ReputationDomains() {
       </div>
 
       {domains.length === 0 ? (
-        <div className="text-center py-24 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl">
+        <div className="text-center py-24 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl">
           <Globe className="w-12 h-12 text-slate-600 mx-auto mb-4" />
           <p className="text-sm text-slate-400">No sending domains recorded yet</p>
           <p className="text-xs text-slate-500 mt-1">Configure domains in Reputation Settings to start tracking.</p>
@@ -151,7 +151,7 @@ export default function ReputationDomains() {
           <div className="lg:col-span-3 space-y-6">
             {selectedDomain && (
               <>
-                <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
+                <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
                   <div className="flex items-start justify-between mb-6">
                     <div>
                       <div className="flex items-center gap-2 mb-1">
@@ -216,7 +216,7 @@ export default function ReputationDomains() {
                   </div>
                 </div>
 
-                <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
+                <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
                   <h2 className="text-sm font-bold text-white mb-4">Delivery Signals</h2>
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
                     <div>
@@ -264,7 +264,7 @@ export default function ReputationDomains() {
                   </div>
                 </div>
 
-                <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
+                <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
                   <h2 className="text-sm font-bold text-white mb-3">Remediation Guidance</h2>
                   <div className="space-y-2 text-xs text-slate-400">
                     {selectedDomain.state === 'needs_attention' && (

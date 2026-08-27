@@ -50,7 +50,7 @@ export default function CommandShell({ children }: { children: React.ReactNode }
 
   return (
     <div className="min-h-screen bg-[#0F172A] text-white flex">
-      <aside className="hidden lg:flex flex-col w-64 h-screen fixed left-0 top-0 z-40 bg-[#0D1525] border-r border-[rgba(255,255,255,0.06)]">
+      <aside className="hidden lg:flex flex-col w-64 h-screen fixed left-0 top-0 z-40 bg-[#0F172A] border-r border-[rgba(255,255,255,0.06)]">
         <div className="p-5 border-b border-[rgba(255,255,255,0.06)]">
           <Link href="/admin/command-centre" className="flex items-center gap-2.5 cursor-pointer">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#06B6D4] to-[#22D3EE] flex items-center justify-center">
@@ -116,7 +116,7 @@ export default function CommandShell({ children }: { children: React.ReactNode }
             <motion.aside
               initial={{ x: '-100%' }} animate={{ x: 0 }} exit={{ x: '-100%' }}
               transition={{ type: 'tween', duration: 0.25 }}
-              className="fixed left-0 top-0 bottom-0 w-64 bg-[#0D1525] border-r border-[rgba(255,255,255,0.06)] z-50 flex flex-col lg:hidden shadow-2xl"
+              className="fixed left-0 top-0 bottom-0 w-64 bg-[#0F172A] border-r border-[rgba(255,255,255,0.06)] z-50 flex flex-col lg:hidden shadow-2xl"
             >
               <div className="p-5 border-b border-[rgba(255,255,255,0.06)] flex items-center justify-between">
                 <Link href="/admin/command-centre" className="flex items-center gap-2.5 cursor-pointer" onClick={() => setSidebarOpen(false)}>

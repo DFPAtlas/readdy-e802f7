@@ -150,10 +150,10 @@ export default function ReviewsDashboard() {
       <div className="space-y-6">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="h-24 bg-[#121215] rounded-xl animate-pulse" />
+            <div key={i} className="h-24 bg-[#1E293B] rounded-xl animate-pulse" />
           ))}
         </div>
-        <div className="h-80 bg-[#121215] rounded-2xl animate-pulse" />
+        <div className="h-80 bg-[#1E293B] rounded-2xl animate-pulse" />
       </div>
     );
   }
@@ -175,7 +175,7 @@ export default function ReviewsDashboard() {
         {statCards.map((s) => {
           const Icon = s.icon;
           return (
-            <div key={s.label} className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl p-4">
+            <div key={s.label} className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl p-4">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-[11px] font-medium text-slate-400 uppercase tracking-wider">{s.label}</span>
                 <div className={`w-7 h-7 rounded-lg ${s.bg} flex items-center justify-center`}>
@@ -231,7 +231,7 @@ export default function ReviewsDashboard() {
         </select>
       </div>
 
-      <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+      <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
@@ -330,12 +330,12 @@ export default function ReviewsDashboard() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-        <Link href="/admin/email/reviews" className="flex items-center gap-3 px-4 py-3 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
+        <Link href="/admin/email/reviews" className="flex items-center gap-3 px-4 py-3 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
           <FileCheck className="w-4 h-4 text-slate-500 group-hover:text-[#06B6D4] transition-colors" />
           <span className="text-sm text-slate-300 group-hover:text-white transition-colors">Review Detail & Activity</span>
           <ArrowRight className="w-3.5 h-3.5 text-slate-600 group-hover:text-[#06B6D4] ml-auto transition-colors" />
         </Link>
-        <Link href="/admin/email/settings/external-reviews" className="flex items-center gap-3 px-4 py-3 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
+        <Link href="/admin/email/settings/external-reviews" className="flex items-center gap-3 px-4 py-3 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
           <ShieldCheck className="w-4 h-4 text-slate-500 group-hover:text-[#06B6D4] transition-colors" />
           <span className="text-sm text-slate-300 group-hover:text-white transition-colors">External Review Settings</span>
           <ArrowRight className="w-3.5 h-3.5 text-slate-600 group-hover:text-[#06B6D4] ml-auto transition-colors" />

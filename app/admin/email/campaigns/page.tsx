@@ -190,7 +190,7 @@ export default function CampaignsPage() {
       {campaigns.length > 0 && (
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {statsCards.map((stat) => (
-            <div key={stat.label} className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
+            <div key={stat.label} className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-white/[0.03] border border-[rgba(255,255,255,0.04)] flex items-center justify-center">
                   <stat.icon className={`w-5 h-5 ${stat.color}`} />
@@ -240,7 +240,7 @@ export default function CampaignsPage() {
               {showFilters && (
                 <motion.div
                   initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -4 }}
-                  className="absolute right-0 top-12 w-64 bg-[#1a1a1e] border border-[rgba(255,255,255,0.1)] rounded-2xl shadow-2xl p-4 z-50 space-y-4"
+                  className="absolute right-0 top-12 w-64 bg-[#1E293B] border border-[rgba(255,255,255,0.1)] rounded-2xl shadow-2xl p-4 z-50 space-y-4"
                   onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
                 >
                   <div>
@@ -284,11 +284,11 @@ export default function CampaignsPage() {
       {loading ? (
         <div className="space-y-2">
           {[1, 2, 3, 4, 5].map((i) => (
-            <div key={i} className="h-20 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl animate-pulse" />
+            <div key={i} className="h-20 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl animate-pulse" />
           ))}
         </div>
       ) : sorted.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-20 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl">
+        <div className="flex flex-col items-center justify-center py-20 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl">
           <div className="w-16 h-16 rounded-2xl bg-white/[0.02] border border-[rgba(255,255,255,0.04)] flex items-center justify-center mb-4">
             <Megaphone className="w-7 h-7 text-slate-600" />
           </div>
@@ -314,7 +314,7 @@ export default function CampaignsPage() {
           )}
         </div>
       ) : (
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
@@ -374,7 +374,7 @@ export default function CampaignsPage() {
                             <AnimatePresence>
                               {moreOpenId === campaign.id && (
                                 <motion.div initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -4 }}
-                                  className="absolute right-0 top-10 w-44 bg-[#1a1a1e] border border-[rgba(255,255,255,0.1)] rounded-xl shadow-2xl overflow-hidden z-50"
+                                  className="absolute right-0 top-10 w-44 bg-[#1E293B] border border-[rgba(255,255,255,0.1)] rounded-xl shadow-2xl overflow-hidden z-50"
                                   onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
                                 >
                                   <Link href={`/admin/email/campaigns/${campaign.id}`} onClick={() => setMoreOpenId(null)} className="w-full flex items-center gap-2 px-3 py-2.5 text-xs text-slate-300 hover:bg-white/[0.04] transition-colors cursor-pointer">

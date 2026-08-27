@@ -1,4 +1,18 @@
+import type { Metadata } from "next";
+import { socialMetadata } from "@/lib/seo";
 import CareersApplyClient from './CareersApplyClient';
+
+export const metadata: Metadata = {
+  title: "Apply for a Role — Careers",
+  description:
+    "Apply for a role at Digital Footprint. Submit your CV and cover note and a real person will review every application.",
+  ...socialMetadata({
+    title: "Apply for a Role — Careers",
+    description:
+      "Apply for a role at Digital Footprint. Submit your CV and cover note and a real person will review every application.",
+    path: "/careers",
+  }),
+};
 
 export async function generateStaticParams() {
   return [

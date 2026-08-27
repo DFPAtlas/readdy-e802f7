@@ -47,7 +47,7 @@ function StatusCard({ icon: Icon, title, status, detail, actionLabel, actionHref
   badgeStatus?: string;
 }) {
   return (
-    <div className={`bg-[#121215] border rounded-2xl p-5 ${warning ? 'border-red-500/20' : 'border-[rgba(255,255,255,0.06)]'}`}>
+    <div className={`bg-[#1E293B] border rounded-2xl p-5 ${warning ? 'border-red-500/20' : 'border-[rgba(255,255,255,0.06)]'}`}>
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center gap-3">
           <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${warning ? 'bg-red-500/10 text-red-400' : 'bg-white/[0.04] text-slate-400'}`}>
@@ -135,7 +135,7 @@ export default function EmailSettingsOverview() {
         <div className="h-8 w-48 bg-white/[0.04] rounded-lg" />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="h-40 bg-[#121215] rounded-2xl" />
+            <div key={i} className="h-40 bg-[#1E293B] rounded-2xl" />
           ))}
         </div>
       </div>
@@ -240,32 +240,32 @@ export default function EmailSettingsOverview() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-        <Link href="/admin/email/settings/providers" className="flex items-center gap-3 px-4 py-3 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
+        <Link href="/admin/email/settings/providers" className="flex items-center gap-3 px-4 py-3 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
           <Server className="w-4 h-4 text-slate-500 group-hover:text-[#06B6D4] transition-colors" />
           <span className="text-sm text-slate-300 group-hover:text-white transition-colors">Provider Configuration</span>
           <ArrowRight className="w-3.5 h-3.5 text-slate-600 group-hover:text-[#06B6D4] ml-auto transition-colors" />
         </Link>
-        <Link href="/admin/email/settings/domains" className="flex items-center gap-3 px-4 py-3 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
+        <Link href="/admin/email/settings/domains" className="flex items-center gap-3 px-4 py-3 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
           <GlobeIcon className="w-4 h-4 text-slate-500 group-hover:text-[#06B6D4] transition-colors" />
           <span className="text-sm text-slate-300 group-hover:text-white transition-colors">Sending Domains</span>
           <ArrowRight className="w-3.5 h-3.5 text-slate-600 group-hover:text-[#06B6D4] ml-auto transition-colors" />
         </Link>
-        <Link href="/admin/email/settings/senders" className="flex items-center gap-3 px-4 py-3 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
+        <Link href="/admin/email/settings/senders" className="flex items-center gap-3 px-4 py-3 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
           <UserCheck className="w-4 h-4 text-slate-500 group-hover:text-[#06B6D4] transition-colors" />
           <span className="text-sm text-slate-300 group-hover:text-white transition-colors">Sender Profiles</span>
           <ArrowRight className="w-3.5 h-3.5 text-slate-600 group-hover:text-[#06B6D4] ml-auto transition-colors" />
         </Link>
-        <Link href="/admin/email/settings/tracking" className="flex items-center gap-3 px-4 py-3 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
+        <Link href="/admin/email/settings/tracking" className="flex items-center gap-3 px-4 py-3 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
           <MousePointerClick className="w-4 h-4 text-slate-500 group-hover:text-[#06B6D4] transition-colors" />
           <span className="text-sm text-slate-300 group-hover:text-white transition-colors">Tracking Domain</span>
           <ArrowRight className="w-3.5 h-3.5 text-slate-600 group-hover:text-[#06B6D4] ml-auto transition-colors" />
         </Link>
-        <Link href="/admin/email/settings/webhooks" className="flex items-center gap-3 px-4 py-3 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
+        <Link href="/admin/email/settings/webhooks" className="flex items-center gap-3 px-4 py-3 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
           <Webhook className="w-4 h-4 text-slate-500 group-hover:text-[#06B6D4] transition-colors" />
           <span className="text-sm text-slate-300 group-hover:text-white transition-colors">Webhooks</span>
           <ArrowRight className="w-3.5 h-3.5 text-slate-600 group-hover:text-[#06B6D4] ml-auto transition-colors" />
         </Link>
-        <Link href="/admin/email/settings/deliverability" className="flex items-center gap-3 px-4 py-3 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
+        <Link href="/admin/email/settings/deliverability" className="flex items-center gap-3 px-4 py-3 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
           <ShieldCheck className="w-4 h-4 text-slate-500 group-hover:text-[#06B6D4] transition-colors" />
           <span className="text-sm text-slate-300 group-hover:text-white transition-colors">Deliverability</span>
           <ArrowRight className="w-3.5 h-3.5 text-slate-600 group-hover:text-[#06B6D4] ml-auto transition-colors" />
@@ -434,87 +434,87 @@ export default function EmailSettingsOverview() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-        <Link href="/admin/email/settings/general" className="flex items-center gap-3 px-4 py-3 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
+        <Link href="/admin/email/settings/general" className="flex items-center gap-3 px-4 py-3 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
           <Settings className="w-4 h-4 text-slate-500 group-hover:text-[#06B6D4] transition-colors" />
           <span className="text-sm text-slate-300 group-hover:text-white transition-colors">General</span>
           <ArrowRight className="w-3.5 h-3.5 text-slate-600 group-hover:text-[#06B6D4] ml-auto transition-colors" />
         </Link>
-        <Link href="/admin/email/settings/permissions" className="flex items-center gap-3 px-4 py-3 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
+        <Link href="/admin/email/settings/permissions" className="flex items-center gap-3 px-4 py-3 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
           <Users className="w-4 h-4 text-slate-500 group-hover:text-[#06B6D4] transition-colors" />
           <span className="text-sm text-slate-300 group-hover:text-white transition-colors">Permissions</span>
           <ArrowRight className="w-3.5 h-3.5 text-slate-600 group-hover:text-[#06B6D4] ml-auto transition-colors" />
         </Link>
-        <Link href="/admin/email/settings/compliance" className="flex items-center gap-3 px-4 py-3 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
+        <Link href="/admin/email/settings/compliance" className="flex items-center gap-3 px-4 py-3 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
           <ShieldCheck className="w-4 h-4 text-slate-500 group-hover:text-[#06B6D4] transition-colors" />
           <span className="text-sm text-slate-300 group-hover:text-white transition-colors">Compliance</span>
           <ArrowRight className="w-3.5 h-3.5 text-slate-600 group-hover:text-[#06B6D4] ml-auto transition-colors" />
         </Link>
-        <Link href="/admin/email/settings/audit" className="flex items-center gap-3 px-4 py-3 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
+        <Link href="/admin/email/settings/audit" className="flex items-center gap-3 px-4 py-3 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
           <FileText className="w-4 h-4 text-slate-500 group-hover:text-[#06B6D4] transition-colors" />
           <span className="text-sm text-slate-300 group-hover:text-white transition-colors">Audit Log</span>
           <ArrowRight className="w-3.5 h-3.5 text-slate-600 group-hover:text-[#06B6D4] ml-auto transition-colors" />
         </Link>
-        <Link href="/admin/email/settings/retention" className="flex items-center gap-3 px-4 py-3 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
+        <Link href="/admin/email/settings/retention" className="flex items-center gap-3 px-4 py-3 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
           <Archive className="w-4 h-4 text-slate-500 group-hover:text-[#06B6D4] transition-colors" />
           <span className="text-sm text-slate-300 group-hover:text-white transition-colors">Retention</span>
           <ArrowRight className="w-3.5 h-3.5 text-slate-600 group-hover:text-[#06B6D4] ml-auto transition-colors" />
         </Link>
-        <Link href="/admin/email/settings/health" className="flex items-center gap-3 px-4 py-3 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
+        <Link href="/admin/email/settings/health" className="flex items-center gap-3 px-4 py-3 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
           <Activity className="w-4 h-4 text-slate-500 group-hover:text-[#06B6D4] transition-colors" />
           <span className="text-sm text-slate-300 group-hover:text-white transition-colors">Health</span>
           <ArrowRight className="w-3.5 h-3.5 text-slate-600 group-hover:text-[#06B6D4] ml-auto transition-colors" />
         </Link>
-        <Link href="/admin/email/settings/ai" className="flex items-center gap-3 px-4 py-3 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
+        <Link href="/admin/email/settings/ai" className="flex items-center gap-3 px-4 py-3 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
           <Sparkles className="w-4 h-4 text-slate-500 group-hover:text-[#06B6D4] transition-colors" />
           <span className="text-sm text-slate-300 group-hover:text-white transition-colors">AI Assistant</span>
           <ArrowRight className="w-3.5 h-3.5 text-slate-600 group-hover:text-[#06B6D4] ml-auto transition-colors" />
         </Link>
-        <Link href="/admin/email/settings/languages" className="flex items-center gap-3 px-4 py-3 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
+        <Link href="/admin/email/settings/languages" className="flex items-center gap-3 px-4 py-3 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
           <GlobeIcon className="w-4 h-4 text-slate-500 group-hover:text-[#06B6D4] transition-colors" />
           <span className="text-sm text-slate-300 group-hover:text-white transition-colors">Languages</span>
           <ArrowRight className="w-3.5 h-3.5 text-slate-600 group-hover:text-[#06B6D4] ml-auto transition-colors" />
         </Link>
-        <Link href="/admin/email/settings/experiments" className="flex items-center gap-3 px-4 py-3 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
+        <Link href="/admin/email/settings/experiments" className="flex items-center gap-3 px-4 py-3 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
           <BeakerIcon className="w-4 h-4 text-slate-500 group-hover:text-[#06B6D4] transition-colors" />
           <span className="text-sm text-slate-300 group-hover:text-white transition-colors">Experiments</span>
           <ArrowRight className="w-3.5 h-3.5 text-slate-600 group-hover:text-[#06B6D4] ml-auto transition-colors" />
         </Link>
-        <Link href="/admin/email/settings/personalisation" className="flex items-center gap-3 px-4 py-3 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
+        <Link href="/admin/email/settings/personalisation" className="flex items-center gap-3 px-4 py-3 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
           <UserCog className="w-4 h-4 text-slate-500 group-hover:text-[#06B6D4] transition-colors" />
           <span className="text-sm text-slate-300 group-hover:text-white transition-colors">Personalisation</span>
           <ArrowRight className="w-3.5 h-3.5 text-slate-600 group-hover:text-[#06B6D4] ml-auto transition-colors" />
         </Link>
-        <Link href="/admin/email/settings/rendering" className="flex items-center gap-3 px-4 py-3 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
+        <Link href="/admin/email/settings/rendering" className="flex items-center gap-3 px-4 py-3 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
           <Monitor className="w-4 h-4 text-slate-500 group-hover:text-[#06B6D4] transition-colors" />
           <span className="text-sm text-slate-300 group-hover:text-white transition-colors">Rendering</span>
           <ArrowRight className="w-3.5 h-3.5 text-slate-600 group-hover:text-[#06B6D4] ml-auto transition-colors" />
         </Link>
-        <Link href="/admin/email/settings/reputation" className="flex items-center gap-3 px-4 py-3 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
+        <Link href="/admin/email/settings/reputation" className="flex items-center gap-3 px-4 py-3 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
           <Shield className="w-4 h-4 text-slate-500 group-hover:text-[#06B6D4] transition-colors" />
           <span className="text-sm text-slate-300 group-hover:text-white transition-colors">Reputation</span>
           <ArrowRight className="w-3.5 h-3.5 text-slate-600 group-hover:text-[#06B6D4] ml-auto transition-colors" />
         </Link>
-        <Link href="/admin/email/settings/external-reviews" className="flex items-center gap-3 px-4 py-3 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
+        <Link href="/admin/email/settings/external-reviews" className="flex items-center gap-3 px-4 py-3 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
           <ClipboardCheck className="w-4 h-4 text-slate-500 group-hover:text-[#06B6D4] transition-colors" />
           <span className="text-sm text-slate-300 group-hover:text-white transition-colors">External Reviews</span>
           <ArrowRight className="w-3.5 h-3.5 text-slate-600 group-hover:text-[#06B6D4] ml-auto transition-colors" />
         </Link>
-        <Link href="/admin/email/settings/design-system" className="flex items-center gap-3 px-4 py-3 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
+        <Link href="/admin/email/settings/design-system" className="flex items-center gap-3 px-4 py-3 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
           <PencilRuler className="w-4 h-4 text-slate-500 group-hover:text-[#06B6D4] transition-colors" />
           <span className="text-sm text-slate-300 group-hover:text-white transition-colors">Design System</span>
           <ArrowRight className="w-3.5 h-3.5 text-slate-600 group-hover:text-[#06B6D4] ml-auto transition-colors" />
         </Link>
-        <Link href="/admin/email/settings/integrations" className="flex items-center gap-3 px-4 py-3 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
+        <Link href="/admin/email/settings/integrations" className="flex items-center gap-3 px-4 py-3 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
           <Link2 className="w-4 h-4 text-slate-500 group-hover:text-[#06B6D4] transition-colors" />
           <span className="text-sm text-slate-300 group-hover:text-white transition-colors">Integrations</span>
           <ArrowRight className="w-3.5 h-3.5 text-slate-600 group-hover:text-[#06B6D4] ml-auto transition-colors" />
         </Link>
-        <Link href="/admin/email/settings/api" className="flex items-center gap-3 px-4 py-3 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
+        <Link href="/admin/email/settings/api" className="flex items-center gap-3 px-4 py-3 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
           <Code2 className="w-4 h-4 text-slate-500 group-hover:text-[#06B6D4] transition-colors" />
           <span className="text-sm text-slate-300 group-hover:text-white transition-colors">API & Developer</span>
           <ArrowRight className="w-3.5 h-3.5 text-slate-600 group-hover:text-[#06B6D4] ml-auto transition-colors" />
         </Link>
-        <Link href="/admin/email/settings/backup" className="flex items-center gap-3 px-4 py-3 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
+        <Link href="/admin/email/settings/backup" className="flex items-center gap-3 px-4 py-3 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
           <Package className="w-4 h-4 text-slate-500 group-hover:text-[#06B6D4] transition-colors" />
           <span className="text-sm text-slate-300 group-hover:text-white transition-colors">Backup</span>
           <ArrowRight className="w-3.5 h-3.5 text-slate-600 group-hover:text-[#06B6D4] ml-auto transition-colors" />

@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { socialMetadata } from '@/lib/seo';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import JsonLdScript from '@/components/JsonLdScript';
@@ -17,6 +18,12 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://digital-footprint.uk/pricing',
   },
+  ...socialMetadata({
+    title: 'Pricing | Websites, Software & AI Automation',
+    description:
+      'Explore Digital Footprint pricing for professional websites, business systems, SaaS development, AI automation and ongoing website care.',
+    path: '/pricing',
+  }),
 };
 
 const webPageSchema = {

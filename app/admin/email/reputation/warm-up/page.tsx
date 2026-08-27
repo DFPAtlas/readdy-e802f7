@@ -110,7 +110,7 @@ export default function WarmUpPage() {
     return (
       <div className="space-y-4">
         {[1, 2, 3].map((i) => (
-          <div key={i} className="h-28 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl animate-pulse" />
+          <div key={i} className="h-28 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl animate-pulse" />
         ))}
       </div>
     );
@@ -137,7 +137,7 @@ export default function WarmUpPage() {
       </div>
 
       {showNewPlan && (
-        <div className="bg-[#121215] border border-[#06B6D4]/20 rounded-2xl p-6">
+        <div className="bg-[#1E293B] border border-[#06B6D4]/20 rounded-2xl p-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-base font-bold text-white">Create Warm-up Plan</h2>
             <button onClick={() => setShowNewPlan(false)} className="w-7 h-7 flex items-center justify-center rounded-lg text-slate-400 hover:text-white cursor-pointer">
@@ -152,7 +152,7 @@ export default function WarmUpPage() {
       )}
 
       {plans.length === 0 ? (
-        <div className="text-center py-24 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl">
+        <div className="text-center py-24 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl">
           <Thermometer className="w-12 h-12 text-slate-600 mx-auto mb-4" />
           <p className="text-sm text-slate-400">No warm-up plans recorded yet</p>
         </div>
@@ -164,7 +164,7 @@ export default function WarmUpPage() {
             const cap = plan.daily_cap || 0;
             const pct = cap > 0 ? Math.min(100, ((plan.current_daily_count || 0) / cap) * 100) : 0;
             return (
-              <div key={plan.id} className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+              <div key={plan.id} className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
                 <button
                   onClick={() => setExpandedPlan(isExpanded ? null : plan.id)}
                   className="w-full text-left p-6 hover:bg-white/[0.01] transition-colors cursor-pointer"

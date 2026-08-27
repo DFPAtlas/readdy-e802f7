@@ -24,6 +24,10 @@ export default function UATPortalShell({ children }: { children: React.ReactNode
     return () => { document.body.style.overflow = ''; };
   }, [mobileMenuOpen]);
 
+  if (pathname === '/uat/login') {
+    return <>{children}</>;
+  }
+
   return (
     <div className="min-h-screen bg-[#f8fafc]">
       <UATPortalHeader

@@ -88,7 +88,7 @@ export default function RenderingSettings() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
           <h2 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
             <Monitor className="w-4 h-4 text-violet-400" /> Renderer Provider
           </h2>
@@ -115,7 +115,7 @@ export default function RenderingSettings() {
           </div>
         </div>
 
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
           <h2 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
             <ShieldCheck className="w-4 h-4 text-violet-400" /> Visual Regression Thresholds
           </h2>
@@ -140,7 +140,7 @@ export default function RenderingSettings() {
         </div>
       </div>
 
-      <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
+      <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
         <h2 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
           <Eye className="w-4 h-4 text-violet-400" /> Client Matrix
         </h2>
@@ -197,7 +197,7 @@ export default function RenderingSettings() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
           <h2 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
             <Play className="w-4 h-4 text-violet-400" /> Test Presets
           </h2>
@@ -214,7 +214,7 @@ export default function RenderingSettings() {
           </div>
         </div>
 
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
           <h2 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
             <ShieldCheck className="w-4 h-4 text-violet-400" /> Release Gates
           </h2>
@@ -243,7 +243,7 @@ export default function RenderingSettings() {
           </div>
         </div>
 
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
           <h2 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
             <AlertTriangle className="w-4 h-4 text-violet-400" /> Critical Checks
           </h2>
@@ -267,7 +267,7 @@ export default function RenderingSettings() {
           </div>
         </div>
 
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
           <h2 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
             <Image className="w-4 h-4 text-violet-400" /> Usage & Cost Controls
           </h2>

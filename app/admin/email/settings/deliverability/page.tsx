@@ -63,7 +63,7 @@ export default function DeliverabilitySettingsPage() {
     return (
       <div className="space-y-6 animate-pulse">
         <div className="h-8 w-48 bg-white/[0.04] rounded-lg" />
-        <div className="h-96 bg-[#121215] rounded-2xl" />
+        <div className="h-96 bg-[#1E293B] rounded-2xl" />
       </div>
     );
   }
@@ -80,7 +80,7 @@ export default function DeliverabilitySettingsPage() {
         </div>
       </div>
 
-      <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-6">
+      <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <ShieldCheck className="w-4 h-4 text-emerald-400" />
@@ -231,7 +231,7 @@ export default function DeliverabilitySettingsPage() {
         </div>
       </div>
 
-      <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
+      <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
         <div className="flex items-center gap-2 mb-4">
           <AlertTriangle className="w-4 h-4 text-amber-400" />
           <h3 className="text-sm font-semibold text-white">Safeguards Summary</h3>

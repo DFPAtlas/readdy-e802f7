@@ -109,7 +109,7 @@ export default function DeveloperDashboard() {
           const Icon = card.icon;
           const val = (stats as any)[card.key];
           return (
-            <div key={card.key} className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl p-4 hover:border-[rgba(255,255,255,0.1)] transition-all">
+            <div key={card.key} className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl p-4 hover:border-[rgba(255,255,255,0.1)] transition-all">
               <div className="flex items-center justify-between mb-3">
                 <span className="text-[11px] font-medium text-slate-400 uppercase tracking-wider">{card.label}</span>
                 <div className={`w-8 h-8 rounded-lg ${card.bg} ${card.border} border flex items-center justify-center`}>
@@ -125,7 +125,7 @@ export default function DeveloperDashboard() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
             <div className="flex items-center justify-between px-6 py-4 border-b border-[rgba(255,255,255,0.06)]">
               <div>
                 <h2 className="text-base font-bold text-white">Library Health</h2>
@@ -148,7 +148,7 @@ export default function DeveloperDashboard() {
             </div>
           </div>
 
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
             <div className="flex items-center justify-between px-6 py-4 border-b border-[rgba(255,255,255,0.06)]">
               <div>
                 <h2 className="text-base font-bold text-white">Recent Activity</h2>
@@ -178,7 +178,7 @@ export default function DeveloperDashboard() {
         </div>
 
         <div className="space-y-6">
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
             <div className="px-6 py-4 border-b border-[rgba(255,255,255,0.06)]">
               <h2 className="text-base font-bold text-white">Brand Usage</h2>
             </div>
@@ -196,7 +196,7 @@ export default function DeveloperDashboard() {
             </div>
           </div>
 
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
             <div className="px-6 py-4 border-b border-[rgba(255,255,255,0.06)]">
               <h2 className="text-base font-bold text-white">Alerts & Warnings</h2>
             </div>
@@ -216,7 +216,7 @@ export default function DeveloperDashboard() {
             </div>
           </div>
 
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
             <div className="px-6 py-4 border-b border-[rgba(255,255,255,0.06)]">
               <h2 className="text-base font-bold text-white">Quick Links</h2>
             </div>

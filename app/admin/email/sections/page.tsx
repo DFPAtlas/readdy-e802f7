@@ -84,11 +84,11 @@ export default function ReusableSectionsPage() {
 
       {loading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {[1, 2, 3].map((i) => (<div key={i} className="bg-[#0d0d10] border border-[rgba(255,255,255,0.06)] rounded-xl p-5 animate-pulse"><div className="h-4 bg-white/[0.04] rounded w-32 mb-3" /><div className="h-3 bg-white/[0.03] rounded w-24 mb-4" /><div className="h-20 bg-white/[0.02] rounded-lg" /></div>))}
+          {[1, 2, 3].map((i) => (<div key={i} className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl p-5 animate-pulse"><div className="h-4 bg-white/[0.04] rounded w-32 mb-3" /><div className="h-3 bg-white/[0.03] rounded w-24 mb-4" /><div className="h-20 bg-white/[0.02] rounded-lg" /></div>))}
         </div>
       ) : sections.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-20 text-center">
-          <div className="w-16 h-16 rounded-2xl bg-[#121215] border border-[rgba(255,255,255,0.06)] flex items-center justify-center mb-5"><Layers className="w-7 h-7 text-slate-500" /></div>
+          <div className="w-16 h-16 rounded-2xl bg-[#1E293B] border border-[rgba(255,255,255,0.06)] flex items-center justify-center mb-5"><Layers className="w-7 h-7 text-slate-500" /></div>
           <h2 className="text-lg font-bold text-white mb-2">{search || categoryFilter !== 'all' ? 'No sections match' : 'No reusable sections yet'}</h2>
           <p className="text-sm text-slate-400 max-w-sm mb-6">{search || categoryFilter !== 'all' ? 'Try adjusting your search or filter.' : 'Save sections from templates to reuse them across emails.'}</p>
           {!search && categoryFilter === 'all' && (
@@ -98,7 +98,7 @@ export default function ReusableSectionsPage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {sections.map((s) => (
-            <div key={s.id} className="bg-[#0d0d10] border border-[rgba(255,255,255,0.06)] rounded-xl p-5 hover:border-[rgba(255,255,255,0.12)] transition-all group">
+            <div key={s.id} className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl p-5 hover:border-[rgba(255,255,255,0.12)] transition-all group">
               <div className="flex items-start justify-between mb-3">
                 <div className="min-w-0">
                   <h3 className="font-semibold text-sm text-white truncate">{s.name}</h3>
@@ -113,7 +113,7 @@ export default function ReusableSectionsPage() {
                     <MoreHorizontal className="w-4 h-4" />
                   </button>
                   {actionMenu === s.id && (
-                    <div className="absolute right-0 top-8 w-40 bg-[#1a1a1e] border border-[rgba(255,255,255,0.1)] rounded-xl shadow-xl z-20 overflow-hidden" onClick={(e) => e.stopPropagation()}>
+                    <div className="absolute right-0 top-8 w-40 bg-[#1E293B] border border-[rgba(255,255,255,0.1)] rounded-xl shadow-xl z-20 overflow-hidden" onClick={(e) => e.stopPropagation()}>
                       <button onClick={() => setPreviewSection(s)} className="flex items-center gap-2 px-3 py-2.5 text-sm text-slate-300 hover:bg-white/[0.04] transition-colors cursor-pointer w-full"><Eye className="w-3.5 h-3.5" /> Preview</button>
                       {s.status !== 'archived' ? (
                         <button onClick={() => handleArchive(s)} className="flex items-center gap-2 px-3 py-2.5 text-sm text-amber-400 hover:bg-amber-500/10 transition-colors cursor-pointer w-full"><Archive className="w-3.5 h-3.5" /> Archive</button>
@@ -142,7 +142,7 @@ export default function ReusableSectionsPage() {
 
       {previewSection && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm" onClick={() => setPreviewSection(null)}>
-          <div className="bg-[#1a1a1e] border border-[rgba(255,255,255,0.1)] rounded-2xl shadow-2xl w-[700px] max-h-[80vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.1)] rounded-2xl shadow-2xl w-[700px] max-h-[80vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
             <div className="p-5 border-b border-[rgba(255,255,255,0.06)] flex items-center justify-between">
               <div><h3 className="font-semibold text-white">{previewSection.name}</h3><p className="text-xs text-slate-500 capitalize">{previewSection.category.replace(/-/g, ' ')}</p></div>
               <button onClick={() => setPreviewSection(null)} className="w-8 h-8 flex items-center justify-center rounded-lg text-slate-400 hover:text-white hover:bg-white/[0.06] transition-all cursor-pointer"><X className="w-4 h-4" /></button>

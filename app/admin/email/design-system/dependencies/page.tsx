@@ -80,7 +80,7 @@ export default function DesignSystemDependencies() {
     return (
       <div className="space-y-4">
         {[1, 2, 3, 4, 5, 6].map((i) => (
-          <div key={i} className="h-12 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl animate-pulse" />
+          <div key={i} className="h-12 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl animate-pulse" />
         ))}
       </div>
     );
@@ -98,22 +98,22 @@ export default function DesignSystemDependencies() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl p-4">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl p-4">
           <div className="flex items-center justify-between"><span className="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Current</span><CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" /></div>
           <p className="text-2xl font-bold text-white mt-2">{counts.current}</p>
           <p className="text-[11px] text-slate-500">Up to date</p>
         </div>
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl p-4">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl p-4">
           <div className="flex items-center justify-between"><span className="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Outdated</span><AlertTriangle className="w-3.5 h-3.5 text-amber-400" /></div>
           <p className="text-2xl font-bold text-white mt-2">{counts.outdated}</p>
           <p className="text-[11px] text-slate-500">Need attention</p>
         </div>
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl p-4">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl p-4">
           <div className="flex items-center justify-between"><span className="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Deprecated</span><Archive className="w-3.5 h-3.5 text-rose-400" /></div>
           <p className="text-2xl font-bold text-white mt-2">{counts.deprecated}</p>
           <p className="text-[11px] text-slate-500">Replacement needed</p>
         </div>
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl p-4">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl p-4">
           <div className="flex items-center justify-between"><span className="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Detached</span><Unlink className="w-3.5 h-3.5 text-slate-400" /></div>
           <p className="text-2xl font-bold text-white mt-2">{counts.detached}</p>
           <p className="text-[11px] text-slate-500">Independent copies</p>
@@ -132,12 +132,12 @@ export default function DesignSystemDependencies() {
       </div>
 
       {filtered.length === 0 ? (
-        <div className="text-center py-20 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl">
+        <div className="text-center py-20 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl">
           <GitBranch className="w-12 h-12 text-slate-600 mx-auto mb-4" />
           <p className="text-sm text-slate-400">{dependencies.length === 0 ? 'No dependencies tracked yet' : 'No dependencies match your filters'}</p>
         </div>
       ) : (
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
@@ -204,10 +204,10 @@ export default function DesignSystemDependencies() {
       )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-        <Link href="/admin/email/design-system/tokens" className="flex items-center gap-3 px-4 py-3 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group"><Palette className="w-4 h-4 text-slate-500 group-hover:text-[#06B6D4]" /><span className="text-sm text-slate-300 group-hover:text-white">Tokens</span><ArrowRight className="w-3.5 h-3.5 text-slate-600 group-hover:text-[#06B6D4] ml-auto" /></Link>
-        <Link href="/admin/email/design-system/components" className="flex items-center gap-3 px-4 py-3 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group"><Component className="w-4 h-4 text-slate-500 group-hover:text-[#06B6D4]" /><span className="text-sm text-slate-300 group-hover:text-white">Components</span><ArrowRight className="w-3.5 h-3.5 text-slate-600 group-hover:text-[#06B6D4] ml-auto" /></Link>
-        <Link href="/admin/email/design-system/patterns" className="flex items-center gap-3 px-4 py-3 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group"><Layers className="w-4 h-4 text-slate-500 group-hover:text-[#06B6D4]" /><span className="text-sm text-slate-300 group-hover:text-white">Patterns</span><ArrowRight className="w-3.5 h-3.5 text-slate-600 group-hover:text-[#06B6D4] ml-auto" /></Link>
-        <Link href="/admin/email/design-system/releases" className="flex items-center gap-3 px-4 py-3 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group"><Package className="w-4 h-4 text-slate-500 group-hover:text-[#06B6D4]" /><span className="text-sm text-slate-300 group-hover:text-white">Releases</span><ArrowRight className="w-3.5 h-3.5 text-slate-600 group-hover:text-[#06B6D4] ml-auto" /></Link>
+        <Link href="/admin/email/design-system/tokens" className="flex items-center gap-3 px-4 py-3 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group"><Palette className="w-4 h-4 text-slate-500 group-hover:text-[#06B6D4]" /><span className="text-sm text-slate-300 group-hover:text-white">Tokens</span><ArrowRight className="w-3.5 h-3.5 text-slate-600 group-hover:text-[#06B6D4] ml-auto" /></Link>
+        <Link href="/admin/email/design-system/components" className="flex items-center gap-3 px-4 py-3 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group"><Component className="w-4 h-4 text-slate-500 group-hover:text-[#06B6D4]" /><span className="text-sm text-slate-300 group-hover:text-white">Components</span><ArrowRight className="w-3.5 h-3.5 text-slate-600 group-hover:text-[#06B6D4] ml-auto" /></Link>
+        <Link href="/admin/email/design-system/patterns" className="flex items-center gap-3 px-4 py-3 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group"><Layers className="w-4 h-4 text-slate-500 group-hover:text-[#06B6D4]" /><span className="text-sm text-slate-300 group-hover:text-white">Patterns</span><ArrowRight className="w-3.5 h-3.5 text-slate-600 group-hover:text-[#06B6D4] ml-auto" /></Link>
+        <Link href="/admin/email/design-system/releases" className="flex items-center gap-3 px-4 py-3 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group"><Package className="w-4 h-4 text-slate-500 group-hover:text-[#06B6D4]" /><span className="text-sm text-slate-300 group-hover:text-white">Releases</span><ArrowRight className="w-3.5 h-3.5 text-slate-600 group-hover:text-[#06B6D4] ml-auto" /></Link>
       </div>
     </div>
   );

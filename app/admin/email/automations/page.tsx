@@ -227,7 +227,7 @@ export default function AutomationsPage() {
         </div>
       ) : sorted.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-20 text-center">
-          <div className="w-16 h-16 rounded-2xl bg-[#121215] border border-[rgba(255,255,255,0.06)] flex items-center justify-center mb-5">
+          <div className="w-16 h-16 rounded-2xl bg-[#1E293B] border border-[rgba(255,255,255,0.06)] flex items-center justify-center mb-5">
             <Activity className="w-7 h-7 text-slate-500" />
           </div>
           <h2 className="text-lg font-semibold text-white mb-2">No automations found</h2>
@@ -301,7 +301,7 @@ export default function AutomationsPage() {
                       <MoreHorizontal className="w-4 h-4" />
                     </button>
                     {actionMenuId === a.id && (
-                      <div className="absolute right-0 top-10 w-44 bg-[#1a1a1e] border border-[rgba(255,255,255,0.1)] rounded-xl shadow-xl overflow-hidden z-50">
+                      <div className="absolute right-0 top-10 w-44 bg-[#1E293B] border border-[rgba(255,255,255,0.1)] rounded-xl shadow-xl overflow-hidden z-50">
                         <Link href={`/admin/email/automations/${a.id}`} className="flex items-center gap-2 px-3 py-2.5 text-sm text-slate-300 hover:bg-white/[0.04] transition-colors cursor-pointer">
                           <Activity className="w-4 h-4" /> Edit
                         </Link>

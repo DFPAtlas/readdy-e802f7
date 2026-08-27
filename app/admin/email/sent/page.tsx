@@ -72,11 +72,11 @@ export default function SentPage() {
       {loading ? (
         <div className="space-y-2">
           {[1, 2, 3, 4, 5].map((i) => (
-            <div key={i} className="h-16 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl animate-pulse" />
+            <div key={i} className="h-16 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl animate-pulse" />
           ))}
         </div>
       ) : filtered.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-20 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl">
+        <div className="flex flex-col items-center justify-center py-20 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl">
           <div className="w-16 h-16 rounded-2xl bg-white/[0.02] border border-[rgba(255,255,255,0.04)] flex items-center justify-center mb-4">
             <Send className="w-7 h-7 text-slate-600" />
           </div>
@@ -87,7 +87,7 @@ export default function SentPage() {
           </Link>
         </div>
       ) : (
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>

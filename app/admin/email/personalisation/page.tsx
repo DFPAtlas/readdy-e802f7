@@ -112,7 +112,7 @@ export default function PersonalisationDashboard() {
       <div className="space-y-6 animate-pulse">
         <div className="h-8 w-56 bg-white/[0.04] rounded-lg" />
         <div className="grid grid-cols-5 gap-4">
-          {Array.from({ length: 5 }).map((_, i) => <div key={i} className="h-24 bg-[#121215] rounded-2xl" />)}
+          {Array.from({ length: 5 }).map((_, i) => <div key={i} className="h-24 bg-[#1E293B] rounded-2xl" />)}
         </div>
       </div>
     );
@@ -141,7 +141,7 @@ export default function PersonalisationDashboard() {
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
           <p className="text-2xl font-bold text-white">{stats.totalFields}</p>
           <p className="text-xs text-slate-500 mt-1">Total Fields</p>
         </div>
@@ -149,7 +149,7 @@ export default function PersonalisationDashboard() {
           <p className="text-2xl font-bold text-emerald-400">{stats.approvedFields}</p>
           <p className="text-xs text-emerald-400/70 mt-1">Approved Fields</p>
         </div>
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
           <p className="text-2xl font-bold text-white">{stats.totalRules}</p>
           <p className="text-xs text-slate-500 mt-1">Dynamic Rules</p>
         </div>
@@ -157,14 +157,14 @@ export default function PersonalisationDashboard() {
           <p className="text-2xl font-bold text-sky-400">{stats.activeRules}</p>
           <p className="text-xs text-sky-400/70 mt-1">Active Rules</p>
         </div>
-        <div className={`rounded-2xl p-4 ${stats.warnings > 0 ? 'bg-amber-500/[0.04] border border-amber-500/10' : 'bg-[#121215] border border-[rgba(255,255,255,0.06)]'}`}>
+        <div className={`rounded-2xl p-4 ${stats.warnings > 0 ? 'bg-amber-500/[0.04] border border-amber-500/10' : 'bg-[#1E293B] border border-[rgba(255,255,255,0.06)]'}`}>
           <p className={`text-2xl font-bold ${stats.warnings > 0 ? 'text-amber-400' : 'text-slate-400'}`}>{stats.warnings}</p>
           <p className="text-xs text-slate-500 mt-1">Warnings</p>
         </div>
       </div>
 
       <div className="flex items-center gap-3">
-        <div className="flex gap-0 bg-[#121215] rounded-xl p-1 border border-[rgba(255,255,255,0.04)]">
+        <div className="flex gap-0 bg-[#1E293B] rounded-xl p-1 border border-[rgba(255,255,255,0.04)]">
           <button onClick={() => setFilterTab('fields')} className={`px-4 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer whitespace-nowrap ${filterTab === 'fields' ? 'bg-[#06B6D4]/10 text-[#06B6D4]' : 'text-slate-400 hover:text-white'}`}>
             Fields ({fields.length})
           </button>
@@ -197,7 +197,7 @@ export default function PersonalisationDashboard() {
       </div>
 
       {filterTab === 'fields' ? (
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
@@ -254,7 +254,7 @@ export default function PersonalisationDashboard() {
           </div>
         </div>
       ) : (
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
@@ -298,17 +298,17 @@ export default function PersonalisationDashboard() {
       )}
 
       <div className="flex items-center gap-3">
-        <Link href="/admin/email/settings/personalisation" className="flex items-center gap-2 px-3 py-2 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl text-sm text-slate-300 hover:text-white hover:border-[rgba(255,255,255,0.12)] transition-all cursor-pointer">
+        <Link href="/admin/email/settings/personalisation" className="flex items-center gap-2 px-3 py-2 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl text-sm text-slate-300 hover:text-white hover:border-[rgba(255,255,255,0.12)] transition-all cursor-pointer">
           <Wrench className="w-4 h-4 text-slate-500" />
           Personalisation Settings
           <ArrowRight className="w-3.5 h-3.5 text-slate-500 ml-auto" />
         </Link>
-        <Link href="/admin/email/personalisation/rules" className="flex items-center gap-2 px-3 py-2 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl text-sm text-slate-300 hover:text-white hover:border-[rgba(255,255,255,0.12)] transition-all cursor-pointer">
+        <Link href="/admin/email/personalisation/rules" className="flex items-center gap-2 px-3 py-2 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl text-sm text-slate-300 hover:text-white hover:border-[rgba(255,255,255,0.12)] transition-all cursor-pointer">
           <GitBranch className="w-4 h-4 text-slate-500" />
           Rule Builder
           <ArrowRight className="w-3.5 h-3.5 text-slate-500 ml-auto" />
         </Link>
-        <Link href="/admin/email/personalisation/test-data" className="flex items-center gap-2 px-3 py-2 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl text-sm text-slate-300 hover:text-white hover:border-[rgba(255,255,255,0.12)] transition-all cursor-pointer">
+        <Link href="/admin/email/personalisation/test-data" className="flex items-center gap-2 px-3 py-2 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl text-sm text-slate-300 hover:text-white hover:border-[rgba(255,255,255,0.12)] transition-all cursor-pointer">
           <Eye className="w-4 h-4 text-slate-500" />
           Test Preview
           <ArrowRight className="w-3.5 h-3.5 text-slate-500 ml-auto" />

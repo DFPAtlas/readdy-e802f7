@@ -41,6 +41,9 @@ export default function TeamProfileForm({ profile, existingProfiles, onClose, on
   const [services, setServices] = useState<string[]>(profile?.services || []);
   const [profileAssetId, setProfileAssetId] = useState(profile?.profile_asset_id || '');
   const [imageAltText, setImageAltText] = useState(profile?.image_alt_text || '');
+  const [galleryImage1, setGalleryImage1] = useState(profile?.gallery_image_1 || '');
+  const [galleryImage2, setGalleryImage2] = useState(profile?.gallery_image_2 || '');
+  const [galleryImage3, setGalleryImage3] = useState(profile?.gallery_image_3 || '');
   const [links, setLinks] = useState<LinkEntry[]>(
     Object.entries(profile?.professional_links || {}).map(([platform, url]) => ({ platform, url }))
   );
@@ -129,6 +132,9 @@ export default function TeamProfileForm({ profile, existingProfiles, onClose, on
       services: cleanList(services),
       profile_asset_id: profileAssetId.trim() || null,
       image_alt_text: imageAltText.trim() || null,
+      gallery_image_1: galleryImage1.trim() || null,
+      gallery_image_2: galleryImage2.trim() || null,
+      gallery_image_3: galleryImage3.trim() || null,
       professional_links: Object.keys(cleanLinks).length > 0 ? cleanLinks : null,
       display_order: Number(displayOrder) || 0,
       featured,
@@ -272,6 +278,33 @@ export default function TeamProfileForm({ profile, existingProfiles, onClose, on
               onChange={setProfileAssetId}
               onAltTextChange={setImageAltText}
             />
+          </div>
+
+          <div className="border-t border-[rgba(255,255,255,0.08)] pt-5">
+            <p className="text-xs font-medium text-slate-400 mb-4">Additional Images (up to 3)</p>
+            <div className="space-y-5">
+              <ProfileImageEditor
+                value={galleryImage1}
+                altText=""
+                name={publicName}
+                onChange={setGalleryImage1}
+                onAltTextChange={() => {}}
+              />
+              <ProfileImageEditor
+                value={galleryImage2}
+                altText=""
+                name={publicName}
+                onChange={setGalleryImage2}
+                onAltTextChange={() => {}}
+              />
+              <ProfileImageEditor
+                value={galleryImage3}
+                altText=""
+                name={publicName}
+                onChange={setGalleryImage3}
+                onAltTextChange={() => {}}
+              />
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 border-t border-[rgba(255,255,255,0.08)] pt-5">

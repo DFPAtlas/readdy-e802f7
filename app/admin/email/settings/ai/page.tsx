@@ -130,7 +130,7 @@ export default function AISettingsPage() {
     return (
       <div className="space-y-6 animate-pulse">
         <div className="h-8 w-48 bg-white/[0.04] rounded-lg" />
-        <div className="h-96 bg-[#121215] rounded-2xl" />
+        <div className="h-96 bg-[#1E293B] rounded-2xl" />
       </div>
     );
   }
@@ -149,7 +149,7 @@ export default function AISettingsPage() {
         </p>
       </div>
 
-      <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-6">
+      <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-6">
         <div>
           <div className="flex items-center justify-between mb-4">
             <div>

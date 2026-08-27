@@ -78,7 +78,7 @@ export default function AppDetailClient({ id }: { id: string }) {
         ].map((stat) => {
           const Icon = stat.icon;
           return (
-            <div key={stat.label} className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl p-4">
+            <div key={stat.label} className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl p-4">
               <div className="flex items-center gap-2 mb-2">
                 <Icon className="w-4 h-4 text-slate-500" />
                 <span className="text-[11px] text-slate-400 uppercase tracking-wider">{stat.label}</span>
@@ -89,7 +89,7 @@ export default function AppDetailClient({ id }: { id: string }) {
         })}
       </div>
 
-      <div className="flex gap-1 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl p-1">
+      <div className="flex gap-1 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl p-1">
         {(['overview','keys','webhooks'] as const).map((tab) => (
           <button key={tab} onClick={() => setActiveTab(tab)} className={`flex-1 px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap cursor-pointer ${activeTab === tab ? 'bg-[#06B6D4]/10 text-[#06B6D4]' : 'text-slate-400 hover:text-white'}`}>
             {tab === 'overview' ? 'Overview' : tab === 'keys' ? 'Integration Keys' : 'Webhooks'}
@@ -99,7 +99,7 @@ export default function AppDetailClient({ id }: { id: string }) {
 
       {activeTab === 'overview' && (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
             <h2 className="text-sm font-bold text-white mb-4">Application Details</h2>
             <dl className="space-y-3">
               {[
@@ -118,7 +118,7 @@ export default function AppDetailClient({ id }: { id: string }) {
             </dl>
           </div>
 
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
             <h2 className="text-sm font-bold text-white mb-4">Granted Scopes</h2>
             <div className="space-y-2">
               {(app.required_scopes || []).map((scope: string) => {
@@ -135,7 +135,7 @@ export default function AppDetailClient({ id }: { id: string }) {
           </div>
 
           {app.review_notes && (
-            <div className="lg:col-span-2 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
+            <div className="lg:col-span-2 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
               <h2 className="text-sm font-bold text-white mb-2">Review Notes</h2>
               <p className="text-xs text-slate-400">{app.review_notes}</p>
             </div>
@@ -144,7 +144,7 @@ export default function AppDetailClient({ id }: { id: string }) {
       )}
 
       {activeTab === 'keys' && (
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
           <div className="flex items-center justify-between px-6 py-4 border-b border-[rgba(255,255,255,0.06)]">
             <h2 className="text-sm font-bold text-white">Integration Keys</h2>
             <button className="flex items-center gap-2 px-3 py-1.5 bg-[#06B6D4]/10 text-[#06B6D4] border border-[#06B6D4]/20 rounded-lg text-xs font-semibold hover:bg-[#06B6D4]/20 transition-all cursor-pointer whitespace-nowrap">
@@ -194,7 +194,7 @@ export default function AppDetailClient({ id }: { id: string }) {
       )}
 
       {activeTab === 'webhooks' && (
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
           <div className="flex items-center justify-between px-6 py-4 border-b border-[rgba(255,255,255,0.06)]">
             <h2 className="text-sm font-bold text-white">Webhook Endpoints</h2>
             <button className="flex items-center gap-2 px-3 py-1.5 bg-[#06B6D4]/10 text-[#06B6D4] border border-[#06B6D4]/20 rounded-lg text-xs font-semibold hover:bg-[#06B6D4]/20 transition-all cursor-pointer whitespace-nowrap">

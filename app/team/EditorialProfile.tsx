@@ -22,6 +22,9 @@ export interface PublicTeamProfile {
   services: string[] | null;
   profile_asset_id: string | null;
   image_alt_text: string | null;
+  gallery_image_1: string | null;
+  gallery_image_2: string | null;
+  gallery_image_3: string | null;
   professional_links: Record<string, string> | null;
   display_order: number;
   featured: boolean;
@@ -125,6 +128,10 @@ export default function EditorialProfile({ profile }: { profile: PublicTeamProfi
       : ['GuardianHub', 'LetHub', 'QuickGuard', 'Synqoro'];
 
   const sideLabel = p.department || 'Digital Footprint';
+
+  const galleryImages = [p.gallery_image_1, p.gallery_image_2, p.gallery_image_3].filter(
+    (src): src is string => !!src && src.trim() !== ''
+  );
 
   return (
     <div className="bg-white min-h-screen relative overflow-hidden">
@@ -364,6 +371,46 @@ export default function EditorialProfile({ profile }: { profile: PublicTeamProfi
             ))}
           </div>
         </motion.div>
+
+        {/* Additional Image Gallery */}
+        {galleryImages.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="mt-16"
+          >
+            <div className="flex items-center gap-3 mb-6">
+              <span className="text-[10px] font-semibold tracking-[0.25em] uppercase text-[#1C2333]/40">
+                In the frame
+              </span>
+              <div className="h-px flex-1 bg-[#1C2333]/8" />
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-5">
+              {galleryImages.map((src, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.75 + i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                  className="relative rounded-[20px] overflow-hidden border border-[#1C2333]/8 bg-[#E8E0D6] aspect-[4/5] shadow-[0_1px_2px_rgba(28,35,51,0.04)]"
+                >
+                  <img
+                    src={src}
+                    alt={`${p.public_name} — additional image ${i + 1}`}
+                    className="w-full h-full object-cover object-top"
+                  />
+                  <span
+                    className="absolute top-4 left-4 w-8 h-8 rounded-full flex items-center justify-center text-white text-[11px] font-semibold"
+                    style={{ backgroundColor: accent }}
+                  >
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        )}
 
         {/* Contact CTA */}
         <motion.div

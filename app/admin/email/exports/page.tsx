@@ -98,7 +98,7 @@ export default function ExportsPage() {
                 className={`text-left p-4 rounded-2xl border transition-all cursor-pointer ${
                   selectedType === type.id
                     ? 'bg-[#06B6D4]/10 border-[#06B6D4]/30'
-                    : 'bg-[#121215] border-[rgba(255,255,255,0.06)] hover:border-[rgba(255,255,255,0.15)]'
+                    : 'bg-[#1E293B] border-[rgba(255,255,255,0.06)] hover:border-[rgba(255,255,255,0.15)]'
                 }`}
               >
                 <type.icon className="w-8 h-8 text-slate-400 mb-3" />
@@ -112,7 +112,7 @@ export default function ExportsPage() {
       case 'select':
         return (
           <div className="space-y-4">
-            <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+            <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
               <div className="flex items-center gap-2 mb-4">
                 <Search className="w-4 h-4 text-slate-500" />
                 <input
@@ -148,7 +148,7 @@ export default function ExportsPage() {
         return (
           <div className="space-y-4">
             <p className="text-sm text-slate-400">Review detected dependencies. Required dependencies cannot be excluded.</p>
-            <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+            <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-[rgba(255,255,255,0.06)]">
@@ -178,17 +178,17 @@ export default function ExportsPage() {
           <div className="space-y-4">
             <p className="text-sm text-slate-400">Choose how to handle assets in the export package.</p>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              <button className="p-5 bg-[#121215] border border-[#06B6D4]/30 rounded-2xl text-left cursor-pointer hover:border-[#06B6D4]/50 transition-all">
+              <button className="p-5 bg-[#1E293B] border border-[#06B6D4]/30 rounded-2xl text-left cursor-pointer hover:border-[#06B6D4]/50 transition-all">
                 <FileArchive className="w-8 h-8 text-[#06B6D4] mb-3" />
                 <p className="text-sm font-semibold text-white mb-1">Embed Assets</p>
                 <p className="text-xs text-slate-500">Include assets directly in the package (increases size)</p>
               </button>
-              <button className="p-5 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl text-left cursor-pointer hover:border-[rgba(255,255,255,0.15)] transition-all">
+              <button className="p-5 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl text-left cursor-pointer hover:border-[rgba(255,255,255,0.15)] transition-all">
                 <Eye className="w-8 h-8 text-slate-400 mb-3" />
                 <p className="text-sm font-semibold text-white mb-1">Reference URLs</p>
                 <p className="text-xs text-slate-500">Keep public URL references (requires connectivity)</p>
               </button>
-              <button className="p-5 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl text-left cursor-pointer hover:border-[rgba(255,255,255,0.15)] transition-all">
+              <button className="p-5 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl text-left cursor-pointer hover:border-[rgba(255,255,255,0.15)] transition-all">
                 <XCircle className="w-8 h-8 text-slate-400 mb-3" />
                 <p className="text-sm font-semibold text-white mb-1">Placeholders</p>
                 <p className="text-xs text-slate-500">Use placeholders — replace during import</p>
@@ -247,7 +247,7 @@ export default function ExportsPage() {
               </div>
             </div>
 
-            <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
+            <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
               <h4 className="text-xs font-semibold text-white mb-3">Sanitisation Report</h4>
               <div className="text-xs text-slate-400 space-y-1">
                 {mockSanitisation.removed.map((r, i) => <p key={i} className="text-red-400/70">Removed: {r}</p>)}
@@ -260,7 +260,7 @@ export default function ExportsPage() {
       case 'confirm':
         return (
           <div className="space-y-4">
-            <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+            <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
               <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
                 <FileArchive className="w-4 h-4 text-slate-400" /> Export Summary
               </h3>
@@ -274,7 +274,7 @@ export default function ExportsPage() {
               </div>
             </div>
 
-            <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
+            <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
               <h4 className="text-xs font-semibold text-white mb-2">Excluded by Policy</h4>
               <div className="flex flex-wrap gap-2">
                 {['Contacts', 'Recipients', 'Provider Keys', 'Tokens', 'Delivery Logs', 'Consent Records'].map((item) => (
@@ -307,7 +307,7 @@ export default function ExportsPage() {
               <p className="text-xs text-slate-600 mt-3">Link expires in 24 hours · Signed download · Audit logged</p>
             </div>
 
-            <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
+            <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
               <h4 className="text-xs font-semibold text-white mb-2">Package Structure</h4>
               <div className="font-mono text-xs text-slate-400 space-y-0.5">
                 <p>manifest.json</p>
@@ -372,7 +372,7 @@ export default function ExportsPage() {
             if (prev) setCurrentStep(prev.key);
           }}
           disabled={stepIndex === 0}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-[#121215] border border-[rgba(255,255,255,0.08)] text-white text-sm rounded-xl hover:border-[rgba(255,255,255,0.15)] transition-all cursor-pointer whitespace-nowrap disabled:opacity-30 disabled:cursor-not-allowed"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-[#1E293B] border border-[rgba(255,255,255,0.08)] text-white text-sm rounded-xl hover:border-[rgba(255,255,255,0.15)] transition-all cursor-pointer whitespace-nowrap disabled:opacity-30 disabled:cursor-not-allowed"
         >
           <ArrowLeft className="w-4 h-4" /> Previous
         </button>

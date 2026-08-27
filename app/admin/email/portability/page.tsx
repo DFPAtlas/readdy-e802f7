@@ -38,7 +38,7 @@ const mockMigrations = [
 
 function StatCard({ icon: Icon, label, value, sub, color = 'default' }: { icon: React.ElementType; label: string; value: string; sub: string; color?: string }) {
   const colorMap: Record<string, string> = {
-    default: 'border-[rgba(255,255,255,0.06)] bg-[#121215]',
+    default: 'border-[rgba(255,255,255,0.06)] bg-[#1E293B]',
     green: 'border-emerald-500/15 bg-emerald-500/5',
     amber: 'border-amber-500/15 bg-amber-500/5',
     red: 'border-red-500/15 bg-red-500/5',
@@ -96,7 +96,7 @@ export default function PortabilityDashboard() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-        <Link href="/admin/email/exports" className="flex items-center gap-3 px-5 py-4 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
+        <Link href="/admin/email/exports" className="flex items-center gap-3 px-5 py-4 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
           <div className="w-10 h-10 rounded-lg bg-[#06B6D4]/10 flex items-center justify-center shrink-0">
             <Download className="w-5 h-5 text-[#06B6D4]" />
           </div>
@@ -106,7 +106,7 @@ export default function PortabilityDashboard() {
           </div>
           <ArrowRight className="w-4 h-4 text-slate-600 group-hover:text-[#06B6D4] ml-auto shrink-0 transition-colors" />
         </Link>
-        <Link href="/admin/email/imports/templates" className="flex items-center gap-3 px-5 py-4 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
+        <Link href="/admin/email/imports/templates" className="flex items-center gap-3 px-5 py-4 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer group">
           <div className="w-10 h-10 rounded-lg bg-[#06B6D4]/10 flex items-center justify-center shrink-0">
             <Upload className="w-5 h-5 text-[#06B6D4]" />
           </div>
@@ -122,7 +122,7 @@ export default function PortabilityDashboard() {
         <h2 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
           <Download className="w-4 h-4 text-slate-400" /> Recent Exports
         </h2>
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-[rgba(255,255,255,0.06)]">
@@ -152,7 +152,7 @@ export default function PortabilityDashboard() {
         <h2 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
           <Upload className="w-4 h-4 text-slate-400" /> Recent Imports
         </h2>
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-[rgba(255,255,255,0.06)]">
@@ -182,7 +182,7 @@ export default function PortabilityDashboard() {
         <h2 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
           <Archive className="w-4 h-4 text-slate-400" /> Backup Snapshots
         </h2>
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-[rgba(255,255,255,0.06)]">
@@ -218,7 +218,7 @@ export default function PortabilityDashboard() {
         <h2 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
           <GitCompare className="w-4 h-4 text-slate-400" /> Package Migrators
         </h2>
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-[rgba(255,255,255,0.06)]">
@@ -246,13 +246,13 @@ export default function PortabilityDashboard() {
         <Link href="/admin/email/exports" className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#06B6D4] text-black text-sm font-semibold rounded-xl hover:bg-[#22D3EE] transition-all cursor-pointer whitespace-nowrap">
           <Download className="w-4 h-4" /> New Export
         </Link>
-        <Link href="/admin/email/imports/templates" className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#121215] border border-[rgba(255,255,255,0.1)] text-white text-sm font-semibold rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer whitespace-nowrap">
+        <Link href="/admin/email/imports/templates" className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#1E293B] border border-[rgba(255,255,255,0.1)] text-white text-sm font-semibold rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer whitespace-nowrap">
           <Upload className="w-4 h-4" /> New Import
         </Link>
-        <Link href="/admin/email/backups" className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#121215] border border-[rgba(255,255,255,0.1)] text-white text-sm font-semibold rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer whitespace-nowrap">
+        <Link href="/admin/email/backups" className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#1E293B] border border-[rgba(255,255,255,0.1)] text-white text-sm font-semibold rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer whitespace-nowrap">
           <Archive className="w-4 h-4" /> Manage Backups
         </Link>
-        <Link href="/admin/email/migrations" className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#121215] border border-[rgba(255,255,255,0.1)] text-white text-sm font-semibold rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer whitespace-nowrap">
+        <Link href="/admin/email/migrations" className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#1E293B] border border-[rgba(255,255,255,0.1)] text-white text-sm font-semibold rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer whitespace-nowrap">
           <GitCompare className="w-4 h-4" /> Migrations
         </Link>
       </div>

@@ -38,7 +38,7 @@ export default function TemplateEditorPage() {
 
   if (loading) {
     return (
-      <div className="h-[calc(100vh-57px)] flex items-center justify-center bg-[#0a0a0c]">
+      <div className="h-[calc(100vh-57px)] flex items-center justify-center bg-[#0F172A]">
         <div className="text-center">
           <div className="w-10 h-10 border-2 border-[#06B6D4]/30 border-t-[#06B6D4] rounded-full animate-spin mx-auto mb-4" />
           <p className="text-sm text-slate-400">Loading editor...</p>
@@ -49,7 +49,7 @@ export default function TemplateEditorPage() {
 
   if (error || !template) {
     return (
-      <div className="h-[calc(100vh-57px)] flex items-center justify-center bg-[#0a0a0c]">
+      <div className="h-[calc(100vh-57px)] flex items-center justify-center bg-[#0F172A]">
         <div className="text-center max-w-sm">
           <div className="w-16 h-16 rounded-2xl bg-red-500/10 border border-red-500/20 flex items-center justify-center mx-auto mb-6">
             {error === 'Template not found' ? (

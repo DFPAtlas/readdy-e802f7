@@ -78,7 +78,7 @@ export default function DeveloperDocs() {
             <input type="text" placeholder="Search documentation..." value={search} onChange={(e) => setSearch(e.target.value)}
               className="w-full pl-10 pr-4 py-2.5 bg-white/[0.04] border border-[rgba(255,255,255,0.08)] rounded-xl text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-[#06B6D4]/20 focus:border-[#06B6D4]/30" />
           </div>
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
             <div className="p-1 space-y-0.5">
               {filtered.map((section) => {
                 const Icon = section.icon;
@@ -105,7 +105,7 @@ export default function DeveloperDocs() {
         </div>
 
         <div className="lg:col-span-2 space-y-6">
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
             <h2 className="text-sm font-bold text-white mb-4">Quick Start</h2>
             <div className="space-y-4">
               <div className="flex items-start gap-3">
@@ -135,7 +135,7 @@ export default function DeveloperDocs() {
             </div>
           </div>
 
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
             <div className="px-6 py-4 border-b border-[rgba(255,255,255,0.06)]">
               <h2 className="text-sm font-bold text-white">Error Code Reference</h2>
             </div>

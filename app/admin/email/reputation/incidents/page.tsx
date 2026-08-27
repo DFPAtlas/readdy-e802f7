@@ -95,10 +95,10 @@ export default function ReputationIncidents() {
       <div className="space-y-6">
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
           {[1, 2, 3, 4, 5].map((i) => (
-            <div key={i} className="h-20 bg-[#121215] rounded-xl animate-pulse" />
+            <div key={i} className="h-20 bg-[#1E293B] rounded-xl animate-pulse" />
           ))}
         </div>
-        <div className="h-96 bg-[#121215] rounded-2xl animate-pulse" />
+        <div className="h-96 bg-[#1E293B] rounded-2xl animate-pulse" />
       </div>
     );
   }
@@ -124,7 +124,7 @@ export default function ReputationIncidents() {
         {statusCounts.map(({ status, count }) => {
           const meta = STATUS_META[status];
           return (
-            <div key={status} className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl p-3">
+            <div key={status} className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl p-3">
               <span className={`px-1.5 py-0.5 rounded text-[10px] font-medium ${meta.bg} ${meta.color}`}>{meta.label}</span>
               <p className="text-2xl font-bold text-white mt-1.5">{count}</p>
             </div>
@@ -133,7 +133,7 @@ export default function ReputationIncidents() {
       </div>
 
       {incidents.length === 0 ? (
-        <div className="text-center py-24 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl">
+        <div className="text-center py-24 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl">
           <AlertTriangle className="w-12 h-12 text-slate-600 mx-auto mb-4" />
           <p className="text-sm text-slate-400">No deliverability incidents recorded</p>
         </div>
@@ -171,7 +171,7 @@ export default function ReputationIncidents() {
           <div className="lg:col-span-2 space-y-6">
             {selectedIncident && (
               <>
-                <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
+                <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
                   <div className="flex items-start justify-between mb-4">
                     <div>
                       <div className="flex items-center gap-2 mb-1">
@@ -280,7 +280,7 @@ export default function ReputationIncidents() {
                   </div>
                 </div>
 
-                <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
+                <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
                   <h3 className="text-sm font-bold text-white mb-3">Incident Timeline</h3>
                   {timeline.length === 0 ? (
                     <p className="text-xs text-slate-500">No timeline events recorded</p>
@@ -300,7 +300,7 @@ export default function ReputationIncidents() {
                 </div>
 
                 {selectedIncident.status !== 'resolved' && selectedIncident.status !== 'closed' && (
-                  <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
+                  <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
                     <h3 className="text-sm font-bold text-white mb-3">Recovery Actions</h3>
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                       <button className="px-4 py-2.5 rounded-lg text-xs font-medium bg-white/[0.04] border border-[rgba(255,255,255,0.08)] text-slate-300 hover:text-white transition-colors cursor-pointer whitespace-nowrap">

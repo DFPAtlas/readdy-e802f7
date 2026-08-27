@@ -156,10 +156,10 @@ export default function ReputationDashboard() {
       <div className="space-y-6">
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
           {[1, 2, 3, 4, 5, 6].map((i) => (
-            <div key={i} className="h-24 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl animate-pulse" />
+            <div key={i} className="h-24 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl animate-pulse" />
           ))}
         </div>
-        <div className="h-72 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl animate-pulse" />
+        <div className="h-72 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl animate-pulse" />
       </div>
     );
   }
@@ -182,7 +182,7 @@ export default function ReputationDashboard() {
         {metricCards.map((card) => {
           const Icon = card.icon;
           return (
-            <div key={card.key} className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl p-4 hover:border-[rgba(255,255,255,0.1)] transition-all">
+            <div key={card.key} className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl p-4 hover:border-[rgba(255,255,255,0.1)] transition-all">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-[11px] font-medium text-slate-400 uppercase tracking-wider">{card.label}</span>
                 <Icon className={`w-4 h-4 ${card.color}`} />
@@ -196,7 +196,7 @@ export default function ReputationDashboard() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
             <div className="flex items-center justify-between px-6 py-4 border-b border-[rgba(255,255,255,0.06)]">
               <div>
                 <h2 className="text-base font-bold text-white">Sender Asset Inventory</h2>
@@ -290,7 +290,7 @@ export default function ReputationDashboard() {
             )}
           </div>
 
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
             <div className="flex items-center justify-between px-6 py-4 border-b border-[rgba(255,255,255,0.06)]">
               <div>
                 <h2 className="text-base font-bold text-white">Active Warm-up Plans</h2>
@@ -332,7 +332,7 @@ export default function ReputationDashboard() {
         </div>
 
         <div className="space-y-6">
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
             <div className="px-6 py-4 border-b border-[rgba(255,255,255,0.06)]">
               <h2 className="text-base font-bold text-white">Quick Actions</h2>
             </div>
@@ -355,7 +355,7 @@ export default function ReputationDashboard() {
             </div>
           </div>
 
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
             <div className="px-6 py-4 border-b border-[rgba(255,255,255,0.06)]">
               <h2 className="text-base font-bold text-white">Active Incidents</h2>
             </div>
@@ -388,7 +388,7 @@ export default function ReputationDashboard() {
             </div>
           </div>
 
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
             <div className="px-6 py-4 border-b border-[rgba(255,255,255,0.06)]">
               <h2 className="text-base font-bold text-white">Blocklist Status</h2>
             </div>

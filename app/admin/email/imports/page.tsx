@@ -240,7 +240,7 @@ export default function ImportsPage() {
       </div>
 
       {step === 'upload' && (
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-8 space-y-6">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-8 space-y-6">
           <div className="border-2 border-dashed border-[rgba(255,255,255,0.08)] rounded-2xl p-10 text-center hover:border-[#06B6D4]/30 transition-colors">
             <Upload className="w-10 h-10 text-slate-500 mx-auto mb-3" />
             <p className="text-sm font-semibold text-white mb-1">Upload CSV File</p>
@@ -278,7 +278,7 @@ export default function ImportsPage() {
       )}
 
       {step === 'map' && (
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-6">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-6">
           <h3 className="text-sm font-semibold text-white">Map CSV Columns</h3>
           <div className="space-y-3">
             {APPROVED_FIELDS.map(f => (
@@ -310,7 +310,7 @@ export default function ImportsPage() {
       )}
 
       {step === 'preview' && (
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-6">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-6">
           <h3 className="text-sm font-semibold text-white">Preview Import</h3>
 
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -354,7 +354,7 @@ export default function ImportsPage() {
       )}
 
       {(step === 'confirm' || step === 'results') && (
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-8 text-center space-y-4">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-8 text-center space-y-4">
           <div className="w-16 h-16 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mx-auto">
             <CheckCircle2 className="w-8 h-8 text-emerald-400" />
           </div>
@@ -373,7 +373,7 @@ export default function ImportsPage() {
       )}
 
       {step === 'upload' && (
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
           <div className="p-5 border-b border-[rgba(255,255,255,0.06)]">
             <h3 className="text-sm font-semibold text-white">Import History</h3>
           </div>

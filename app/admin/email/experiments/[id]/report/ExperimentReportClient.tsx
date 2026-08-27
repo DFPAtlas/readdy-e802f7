@@ -75,21 +75,21 @@ export default function ExperimentReportClient({ params }: { params: { id: strin
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-10 h-10 rounded-xl bg-violet-500/10 flex items-center justify-center"><BarChart3 className="w-5 h-5 text-violet-400" /></div>
             <div><h3 className="text-sm font-semibold text-white">Primary Metric</h3><p className="text-[10px] text-slate-500">{METRIC_LABELS[primaryMetric]||primaryMetric}</p></div>
           </div>
           <p className="text-xs text-slate-400">Secondary: {exp.metrics_config?.secondary?.map(s=>s.name.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase())).join(', ')||'None'}</p>
         </div>
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center"><Trophy className="w-5 h-5 text-amber-400" /></div>
             <div><h3 className="text-sm font-semibold text-white">Verdict</h3><p className="text-[10px] text-slate-500">{exp.status}</p></div>
           </div>
           <p className="text-xs text-slate-400">{verdict}</p>
         </div>
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center"><Clock className="w-5 h-5 text-emerald-400" /></div>
             <div><h3 className="text-sm font-semibold text-white">Timeline</h3></div>
@@ -103,7 +103,7 @@ export default function ExperimentReportClient({ params }: { params: { id: strin
         </div>
       </div>
 
-      <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
+      <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
         <h2 className="text-base font-semibold text-white mb-4">Hypothesis</h2>
         <div className="space-y-2 text-sm">
           {[
@@ -118,7 +118,7 @@ export default function ExperimentReportClient({ params }: { params: { id: strin
         </div>
       </div>
 
-      <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
+      <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
         <h2 className="text-base font-semibold text-white mb-4">Variants & Allocation</h2>
         <div className="overflow-x-auto">
           <table className="w-full">
@@ -157,7 +157,7 @@ export default function ExperimentReportClient({ params }: { params: { id: strin
         <p className="text-xs text-slate-500 mt-3">Allocation: {exp.allocation_config?.type==='equal'?`Equal split (${Math.floor(100/exp.variants.length)}% each)`:`${exp.allocation_config?.type}`}. Assignment is deterministic and stable per experiment.</p>
       </div>
 
-      <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
+      <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
         <h2 className="text-base font-semibold text-white mb-4">Guardrails</h2>
         <div className="space-y-2">
           {guardrailItems.map(g => (
@@ -174,7 +174,7 @@ export default function ExperimentReportClient({ params }: { params: { id: strin
         </div>
       </div>
 
-      <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
+      <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
         <h2 className="text-base font-semibold text-white mb-4">Decision & Notes</h2>
         <div className="space-y-2 text-sm">
           {exp.decision?.winner_variant

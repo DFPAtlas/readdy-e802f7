@@ -242,7 +242,7 @@ export default function PersonalisationRules() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-5">
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 space-y-4">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 space-y-4">
             <h2 className="text-sm font-semibold text-white">Rule Details</h2>
             <div className="grid grid-cols-2 gap-4">
               <div>
@@ -317,7 +317,7 @@ export default function PersonalisationRules() {
             </div>
           </div>
 
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 space-y-4">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 space-y-4">
             <div className="flex items-center justify-between">
               <h2 className="text-sm font-semibold text-white">Conditions</h2>
               <button onClick={addCondition}
@@ -406,7 +406,7 @@ export default function PersonalisationRules() {
             )}
           </div>
 
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 space-y-4">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 space-y-4">
             <div className="flex items-center justify-between">
               <h2 className="text-sm font-semibold text-white">Variants</h2>
               <button onClick={addVariant}
@@ -473,12 +473,12 @@ export default function PersonalisationRules() {
         </div>
 
         <div className="space-y-5">
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
             <h3 className="text-sm font-semibold text-white mb-3">Plain-English Summary</h3>
             <pre className="text-xs text-slate-300 whitespace-pre-wrap font-sans leading-relaxed bg-white/[0.02] rounded-xl p-4 border border-[rgba(255,255,255,0.04)]">{buildPlainEnglish()}</pre>
           </div>
 
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 space-y-3">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 space-y-3">
             <h3 className="text-sm font-semibold text-white">Quick Reference</h3>
             <div className="text-xs text-slate-400 space-y-2">
               <p><strong className="text-slate-300">Source:</strong> {form.sourceType || 'template'}</p>
@@ -500,7 +500,7 @@ export default function PersonalisationRules() {
             </div>
           </div>
 
-          <Link href="/admin/email/personalisation/test-data" className="flex items-center gap-2 px-4 py-3 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl text-sm text-slate-300 hover:text-white hover:border-[rgba(255,255,255,0.12)] transition-all cursor-pointer w-full">
+          <Link href="/admin/email/personalisation/test-data" className="flex items-center gap-2 px-4 py-3 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl text-sm text-slate-300 hover:text-white hover:border-[rgba(255,255,255,0.12)] transition-all cursor-pointer w-full">
             <Eye className="w-4 h-4 text-slate-500" />
             Preview with Test Data
             <ArrowLeft className="w-3.5 h-3.5 text-slate-500 ml-auto rotate-180" />

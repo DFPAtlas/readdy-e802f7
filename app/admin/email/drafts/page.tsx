@@ -4,7 +4,7 @@ import { FileEdit, ArrowLeft } from 'lucide-react';
 export default function DraftsPlaceholder() {
   return (
     <div className="flex flex-col items-center justify-center py-24 text-center">
-      <div className="w-16 h-16 rounded-2xl bg-[#121215] border border-[rgba(255,255,255,0.06)] flex items-center justify-center mb-5">
+      <div className="w-16 h-16 rounded-2xl bg-[#1E293B] border border-[rgba(255,255,255,0.06)] flex items-center justify-center mb-5">
         <FileEdit className="w-7 h-7 text-slate-500" />
       </div>
       <h2 className="text-xl font-bold text-white mb-2">Drafts</h2>

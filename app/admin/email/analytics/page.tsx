@@ -180,7 +180,7 @@ export default function AnalyticsDashboard() {
         <div className="flex items-center gap-2">
           <div className="relative" onClick={(e) => e.stopPropagation()}>
             <button onClick={() => setDateDropdownOpen(!dateDropdownOpen)}
-              className="flex items-center gap-2 px-3 py-2 bg-[#121215] border border-[rgba(255,255,255,0.08)] rounded-xl text-sm text-slate-300 hover:text-white hover:border-[rgba(255,255,255,0.15)] transition-all cursor-pointer whitespace-nowrap"
+              className="flex items-center gap-2 px-3 py-2 bg-[#1E293B] border border-[rgba(255,255,255,0.08)] rounded-xl text-sm text-slate-300 hover:text-white hover:border-[rgba(255,255,255,0.15)] transition-all cursor-pointer whitespace-nowrap"
             >
               <Calendar className="w-4 h-4 text-slate-500" />
               {DATE_RANGE_LABELS[dateRange]}
@@ -219,7 +219,7 @@ export default function AnalyticsDashboard() {
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {KPI_CARDS.map(kpi => (
-          <div key={kpi.label} className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
+          <div key={kpi.label} className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
             <div className="flex items-center justify-between mb-2">
               <span className="text-[11px] text-slate-500 uppercase tracking-wider">{kpi.label}</span>
               <div className={`w-8 h-8 rounded-lg ${kpi.bg} flex items-center justify-center`}>
@@ -232,7 +232,7 @@ export default function AnalyticsDashboard() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <div className="lg:col-span-2 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+        <div className="lg:col-span-2 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
           <h3 className="text-sm font-semibold text-white mb-4">Sends & Deliveries</h3>
           <div className="h-[260px]">
             {chartData.length > 0 ? (
@@ -253,7 +253,7 @@ export default function AnalyticsDashboard() {
           </div>
         </div>
 
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
           <h3 className="text-sm font-semibold text-white mb-4">Quick Navigation</h3>
           <div className="space-y-2">
             <Link href="/admin/email/analytics/campaigns" className="flex items-center gap-3 px-4 py-3 rounded-xl bg-white/[0.02] border border-[rgba(255,255,255,0.04)] hover:border-[#06B6D4]/20 hover:bg-[#06B6D4]/5 transition-all cursor-pointer group">
@@ -284,7 +284,7 @@ export default function AnalyticsDashboard() {
         </div>
       </div>
 
-      <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+      <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-sm font-semibold text-white">Recent Campaigns</h3>
           <Link href="/admin/email/analytics/campaigns" className="text-xs text-[#06B6D4] hover:underline cursor-pointer">View all</Link>

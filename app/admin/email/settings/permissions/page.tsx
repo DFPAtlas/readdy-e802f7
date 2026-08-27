@@ -130,7 +130,7 @@ export default function PermissionsPage() {
     return (
       <div className="space-y-6 animate-pulse">
         <div className="h-8 w-48 bg-white/[0.04] rounded-lg" />
-        <div className="h-96 bg-[#121215] rounded-2xl" />
+        <div className="h-96 bg-[#1E293B] rounded-2xl" />
       </div>
     );
   }
@@ -166,7 +166,7 @@ export default function PermissionsPage() {
         </div>
       )}
 
-      <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+      <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
         <div className="p-4 border-b border-[rgba(255,255,255,0.06)] flex flex-col sm:flex-row items-start sm:items-center gap-3 flex-wrap">
           <div className="relative flex-1 min-w-[200px]">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
@@ -288,7 +288,7 @@ export default function PermissionsPage() {
         </div>
       </div>
 
-      <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+      <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
         <div className="flex items-start gap-3">
           <Lock className="w-4 h-4 text-slate-500 mt-0.5 shrink-0" />
           <div>

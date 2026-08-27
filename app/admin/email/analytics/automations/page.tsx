@@ -107,7 +107,7 @@ export default function AutomationAnalytics() {
           <p className="text-sm text-slate-400">No automation reports found</p>
         </div>
       ) : (
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>

@@ -201,7 +201,7 @@ export default function TransactionalPage() {
 
       {showEditor && editingMapping && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center">
-          <div className="bg-[#1a1a1e] border border-[rgba(255,255,255,0.1)] rounded-2xl p-6 w-full max-w-lg shadow-2xl max-h-[90vh] overflow-y-auto">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.1)] rounded-2xl p-6 w-full max-w-lg shadow-2xl max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-5">
               <div>
                 <h3 className="text-base font-semibold text-white">{editingMapping.internal_name}</h3>

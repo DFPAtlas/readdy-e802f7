@@ -153,7 +153,7 @@ export default function HealthPage() {
         <div className="h-8 w-48 bg-white/[0.04] rounded-lg" />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
           {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="h-24 bg-[#121215] rounded-2xl" />
+            <div key={i} className="h-24 bg-[#1E293B] rounded-2xl" />
           ))}
         </div>
       </div>
@@ -176,19 +176,19 @@ export default function HealthPage() {
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <div className="bg-[#121215] border border-emerald-500/10 rounded-2xl p-4">
+        <div className="bg-[#1E293B] border border-emerald-500/10 rounded-2xl p-4">
           <p className="text-xs text-slate-500">Healthy</p>
           <p className="text-2xl font-bold text-emerald-400 mt-0.5">{healthyCount}</p>
         </div>
-        <div className="bg-[#121215] border border-amber-500/10 rounded-2xl p-4">
+        <div className="bg-[#1E293B] border border-amber-500/10 rounded-2xl p-4">
           <p className="text-xs text-slate-500">Degraded</p>
           <p className="text-2xl font-bold text-amber-400 mt-0.5">{degradedCount}</p>
         </div>
-        <div className="bg-[#121215] border border-red-500/10 rounded-2xl p-4">
+        <div className="bg-[#1E293B] border border-red-500/10 rounded-2xl p-4">
           <p className="text-xs text-slate-500">Failed</p>
           <p className="text-2xl font-bold text-red-400 mt-0.5">{failedCount}</p>
         </div>
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
           <p className="text-xs text-slate-500">Not Configured</p>
           <p className="text-2xl font-bold text-slate-400 mt-0.5">{notConfiguredCount}</p>
         </div>
@@ -218,7 +218,7 @@ export default function HealthPage() {
           return (
             <div
               key={check.key}
-              className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4 flex items-start gap-4"
+              className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4 flex items-start gap-4"
             >
               <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${STATUS_STYLES[check.status]}`}>
                 <check.icon className="w-4 h-4" />
@@ -243,7 +243,7 @@ export default function HealthPage() {
         })}
       </div>
 
-      <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+      <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
         <div className="flex items-start gap-3">
           <ShieldCheck className="w-4 h-4 text-slate-500 mt-0.5 shrink-0" />
           <div>

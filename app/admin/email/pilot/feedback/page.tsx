@@ -101,7 +101,7 @@ export default function PilotFeedbackPage() {
     return (
       <div className="space-y-6 animate-pulse">
         <div className="h-8 w-48 bg-white/[0.04] rounded-lg" />
-        <div className="h-96 bg-[#121215] rounded-2xl" />
+        <div className="h-96 bg-[#1E293B] rounded-2xl" />
       </div>
     );
   }
@@ -128,7 +128,7 @@ export default function PilotFeedbackPage() {
       </div>
 
       {/* Guidance Banner */}
-      <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+      <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
         <h2 className="text-sm font-semibold text-white mb-3">Pilot Guidance</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs text-slate-400">
           <div>
@@ -166,7 +166,7 @@ export default function PilotFeedbackPage() {
       {/* Submit Form Modal */}
       {showForm && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setShowForm(false)}>
-          <div className="bg-[#1a1a1e] border border-[rgba(255,255,255,0.1)] rounded-2xl w-full max-w-lg max-h-[85vh] overflow-y-auto shadow-2xl" onClick={e => e.stopPropagation()}>
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.1)] rounded-2xl w-full max-w-lg max-h-[85vh] overflow-y-auto shadow-2xl" onClick={e => e.stopPropagation()}>
             <div className="p-6 border-b border-[rgba(255,255,255,0.06)] flex items-center justify-between">
               <h2 className="text-base font-bold text-white">Submit Feedback</h2>
               <button onClick={() => setShowForm(false)}
@@ -253,7 +253,7 @@ export default function PilotFeedbackPage() {
       )}
 
       {/* Feedback List */}
-      <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+      <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
         <div className="p-4 border-b border-[rgba(255,255,255,0.06)] flex items-center gap-3 flex-wrap">
           <div className="relative flex-1 min-w-[180px]">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />

@@ -229,7 +229,7 @@ export default function BrandKitEditorPage() {
 
         <div className="flex-1 min-w-0">
           {activeTab === 'overview' && (
-            <div className="bg-[#0d0d10] border border-[rgba(255,255,255,0.06)] rounded-xl p-6 space-y-5">
+            <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl p-6 space-y-5">
               <h3 className="font-semibold text-white text-sm">Brand Overview</h3>
               <div className="grid grid-cols-2 gap-4">
                 <div>
@@ -269,7 +269,7 @@ export default function BrandKitEditorPage() {
           )}
 
           {activeTab === 'logos' && (
-            <div className="bg-[#0d0d10] border border-[rgba(255,255,255,0.06)] rounded-xl p-6 space-y-5">
+            <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl p-6 space-y-5">
               <h3 className="font-semibold text-white text-sm">Logos</h3>
               <p className="text-xs text-slate-500 -mt-3">Upload or link brand logos for different contexts.</p>
               {(['primary', 'lightBg', 'darkBg', 'compactIcon', 'emailHeader', 'footerLogo'] as const).map((key) => (
@@ -291,7 +291,7 @@ export default function BrandKitEditorPage() {
           )}
 
           {activeTab === 'colours' && (
-            <div className="bg-[#0d0d10] border border-[rgba(255,255,255,0.06)] rounded-xl p-6 space-y-5">
+            <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl p-6 space-y-5">
               <h3 className="font-semibold text-white text-sm">Colours</h3>
               <div className="grid grid-cols-2 gap-4">
                 {colourInput('Primary', colours.primary, (v) => update('colour_settings', { ...colours, primary: v }), contrastWarning(colours.headingText, colours.primary))}
@@ -314,7 +314,7 @@ export default function BrandKitEditorPage() {
           )}
 
           {activeTab === 'typography' && (
-            <div className="bg-[#0d0d10] border border-[rgba(255,255,255,0.06)] rounded-xl p-6 space-y-5">
+            <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl p-6 space-y-5">
               <h3 className="font-semibold text-white text-sm">Typography</h3>
               <div className="grid grid-cols-2 gap-4">
                 <div>
@@ -356,7 +356,7 @@ export default function BrandKitEditorPage() {
           )}
 
           {activeTab === 'buttons' && (
-            <div className="bg-[#0d0d10] border border-[rgba(255,255,255,0.06)] rounded-xl p-6 space-y-5">
+            <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl p-6 space-y-5">
               <h3 className="font-semibold text-white text-sm">Buttons</h3>
               <div className="grid grid-cols-2 gap-4">
                 {colourInput('Primary Background', buttons.primaryBg, (v) => update('button_settings', { ...buttons, primaryBg: v }), contrastWarning(buttons.primaryText, buttons.primaryBg))}
@@ -400,7 +400,7 @@ export default function BrandKitEditorPage() {
           )}
 
           {activeTab === 'layout' && (
-            <div className="bg-[#0d0d10] border border-[rgba(255,255,255,0.06)] rounded-xl p-6 space-y-5">
+            <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl p-6 space-y-5">
               <h3 className="font-semibold text-white text-sm">Email Layout</h3>
               <div className="grid grid-cols-2 gap-4">
                 {colourInput('Outer Background', layout.outerBackground, (v) => update('layout_settings', { ...layout, outerBackground: v }))}
@@ -436,7 +436,7 @@ export default function BrandKitEditorPage() {
           )}
 
           {activeTab === 'header' && (
-            <div className="bg-[#0d0d10] border border-[rgba(255,255,255,0.06)] rounded-xl p-6 space-y-5">
+            <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl p-6 space-y-5">
               <h3 className="font-semibold text-white text-sm">Email Header</h3>
               <div className="grid grid-cols-2 gap-4">
                 <div>
@@ -475,7 +475,7 @@ export default function BrandKitEditorPage() {
           )}
 
           {activeTab === 'footer' && (
-            <div className="bg-[#0d0d10] border border-[rgba(255,255,255,0.06)] rounded-xl p-6 space-y-5">
+            <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl p-6 space-y-5">
               <h3 className="font-semibold text-white text-sm">Email Footer</h3>
               <div className="grid grid-cols-2 gap-4">
                 {colourInput('Background', footer.backgroundColor, (v) => update('footer_settings', { ...footer, backgroundColor: v }))}
@@ -528,7 +528,7 @@ export default function BrandKitEditorPage() {
           )}
 
           {activeTab === 'contact' && (
-            <div className="bg-[#0d0d10] border border-[rgba(255,255,255,0.06)] rounded-xl p-6 space-y-5">
+            <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl p-6 space-y-5">
               <h3 className="font-semibold text-white text-sm">Contact & Legal</h3>
               <div className="grid grid-cols-2 gap-4">
                 {(['publicName', 'legalName', 'registeredOffice', 'companyNumber', 'vatNumber', 'supportEmail', 'noreplyEmail', 'replyToEmail', 'telephone', 'website', 'privacyUrl', 'termsUrl', 'preferencesUrl', 'unsubscribePlaceholder'] as const).map((key) => (
@@ -545,7 +545,7 @@ export default function BrandKitEditorPage() {
           )}
 
           {activeTab === 'social' && (
-            <div className="bg-[#0d0d10] border border-[rgba(255,255,255,0.06)] rounded-xl p-6 space-y-5">
+            <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl p-6 space-y-5">
               <div className="flex items-center justify-between">
                 <h3 className="font-semibold text-white text-sm">Social Links</h3>
                 <button
@@ -594,7 +594,7 @@ export default function BrandKitEditorPage() {
           )}
 
           {activeTab === 'ai_voice' && (
-            <div className="bg-[#0d0d10] border border-[rgba(255,255,255,0.06)] rounded-xl p-6 space-y-5">
+            <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl p-6 space-y-5">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-8 h-8 rounded-lg bg-[#06B6D4]/10 flex items-center justify-center">
                   <Sparkles className="w-4 h-4 text-[#06B6D4]" />
@@ -735,7 +735,7 @@ export default function BrandKitEditorPage() {
           )}
 
           {activeTab === 'locale_overrides' && (
-            <div className="bg-[#0d0d10] border border-[rgba(255,255,255,0.06)] rounded-xl p-6 space-y-5">
+            <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl p-6 space-y-5">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-8 h-8 rounded-lg bg-[#06B6D4]/10 flex items-center justify-center">
                   <Globe className="w-4 h-4 text-[#06B6D4]" />
@@ -817,7 +817,7 @@ export default function BrandKitEditorPage() {
           )}
 
           {activeTab === 'preview' && (
-            <div className="bg-[#0d0d10] border border-[rgba(255,255,255,0.06)] rounded-xl p-6 space-y-5">
+            <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl p-6 space-y-5">
               <div className="flex items-center justify-between">
                 <h3 className="font-semibold text-white text-sm">Brand Preview</h3>
                 <div className="flex items-center gap-2">

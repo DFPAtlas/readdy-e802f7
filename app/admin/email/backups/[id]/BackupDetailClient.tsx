@@ -59,7 +59,7 @@ export default function BackupDetailClient() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
             <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
               <FileText className="w-4 h-4 text-slate-400" /> Snapshot Metadata
             </h3>
@@ -79,7 +79,7 @@ export default function BackupDetailClient() {
             </div>
           </div>
 
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
             <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
               <Layers className="w-4 h-4 text-slate-400" /> Modules & Counts
             </h3>
@@ -117,17 +117,17 @@ export default function BackupDetailClient() {
         </div>
 
         <div className="space-y-6">
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
             <h3 className="text-sm font-semibold text-white mb-4">Restore Actions</h3>
             {!showRestore ? (
               <div className="space-y-3">
                 <button onClick={() => setShowRestore(true)} className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-[#06B6D4] text-black text-sm font-semibold rounded-xl hover:bg-[#22D3EE] transition-all cursor-pointer whitespace-nowrap">
                   <RefreshCw className="w-4 h-4" /> Restore Snapshot
                 </button>
-                <button className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-[#121215] border border-[rgba(255,255,255,0.1)] text-white text-sm font-semibold rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer whitespace-nowrap">
+                <button className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-[#1E293B] border border-[rgba(255,255,255,0.1)] text-white text-sm font-semibold rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer whitespace-nowrap">
                   <Eye className="w-4 h-4" /> Run Restore Test
                 </button>
-                <button className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-[#121215] border border-[rgba(255,255,255,0.1)] text-white text-sm font-semibold rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer whitespace-nowrap">
+                <button className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-[#1E293B] border border-[rgba(255,255,255,0.1)] text-white text-sm font-semibold rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer whitespace-nowrap">
                   <Download className="w-4 h-4" /> Download Snapshot
                 </button>
               </div>
@@ -174,7 +174,7 @@ export default function BackupDetailClient() {
             )}
           </div>
 
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
             <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
               <ShieldCheck className="w-4 h-4 text-slate-400" /> Safety Rules
             </h3>

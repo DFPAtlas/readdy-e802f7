@@ -115,7 +115,7 @@ export default function CompatibilityPage() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        <div className="bg-[#121215] border border-emerald-400/10 rounded-xl p-4">
+        <div className="bg-[#1E293B] border border-emerald-400/10 rounded-xl p-4">
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Passed</span>
             <CheckCircle2 className="w-4 h-4 text-emerald-400" />
@@ -123,7 +123,7 @@ export default function CompatibilityPage() {
           <p className="text-2xl font-bold text-emerald-400 mt-2">{totalPassed}</p>
           <p className="text-xs text-slate-500 mt-1">{((totalPassed / allItems.length) * 100).toFixed(0)}% of checks</p>
         </div>
-        <div className="bg-[#121215] border border-amber-400/10 rounded-xl p-4">
+        <div className="bg-[#1E293B] border border-amber-400/10 rounded-xl p-4">
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Warnings</span>
             <AlertTriangle className="w-4 h-4 text-amber-400" />
@@ -131,7 +131,7 @@ export default function CompatibilityPage() {
           <p className="text-2xl font-bold text-amber-400 mt-2">{totalWarnings}</p>
           <p className="text-xs text-slate-500 mt-1">Needs attention</p>
         </div>
-        <div className="bg-[#121215] border border-red-400/10 rounded-xl p-4">
+        <div className="bg-[#1E293B] border border-red-400/10 rounded-xl p-4">
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Failed</span>
             <XCircle className="w-4 h-4 text-red-400" />
@@ -149,13 +149,13 @@ export default function CompatibilityPage() {
             placeholder="Search diagnostics..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-4 py-2.5 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+            className="w-full pl-9 pr-4 py-2.5 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
           />
         </div>
         <select
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
-          className="px-4 py-2.5 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-violet-500/20 cursor-pointer pr-8"
+          className="px-4 py-2.5 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-violet-500/20 cursor-pointer pr-8"
         >
           {categories.map((cat) => (
             <option key={cat} value={cat}>{cat === 'all' ? 'All Categories' : cat}</option>
@@ -165,7 +165,7 @@ export default function CompatibilityPage() {
 
       <div className="space-y-4">
         {DIAGNOSTICS.filter((cat) => selectedCategory === 'all' || cat.category === selectedCategory).map((cat) => (
-          <div key={cat.category} className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+          <div key={cat.category} className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
             <div className="px-5 py-3 border-b border-[rgba(255,255,255,0.06)]">
               <h2 className="text-sm font-semibold text-white">{cat.category}</h2>
             </div>
@@ -196,7 +196,7 @@ export default function CompatibilityPage() {
         ))}
       </div>
 
-      <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
+      <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
         <h2 className="text-sm font-semibold text-white mb-4">Plain Text Output</h2>
         <div className="bg-white/[0.02] border border-[rgba(255,255,255,0.04)] rounded-xl p-4">
           <pre className="text-xs text-slate-400 font-mono whitespace-pre-wrap leading-relaxed">

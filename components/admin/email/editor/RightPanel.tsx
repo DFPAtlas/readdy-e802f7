@@ -33,7 +33,7 @@ export default function RightPanel({
 
   if (collapsed) {
     return (
-      <div className="w-12 bg-[#0a0a0c] border-l border-[rgba(255,255,255,0.06)] flex flex-col items-center py-3 gap-1 shrink-0">
+      <div className="w-12 bg-[#0F172A] border-l border-[rgba(255,255,255,0.06)] flex flex-col items-center py-3 gap-1 shrink-0">
         <button onClick={onToggle} className="w-8 h-8 flex items-center justify-center text-slate-500 hover:text-white cursor-pointer" title="Expand panel">
           <ChevronLeft className="w-4 h-4" />
         </button>
@@ -53,7 +53,7 @@ export default function RightPanel({
   const selectedBlock = selectedBlockId ? findBlock(document, selectedBlockId) : null;
 
   return (
-    <div className="w-[320px] bg-[#0a0a0c] border-l border-[rgba(255,255,255,0.06)] flex flex-col shrink-0 overflow-hidden">
+    <div className="w-[320px] bg-[#0F172A] border-l border-[rgba(255,255,255,0.06)] flex flex-col shrink-0 overflow-hidden">
       <div className="flex items-center justify-between px-4 py-3 border-b border-[rgba(255,255,255,0.06)]">
         <div className="flex items-center gap-1">
           <button
@@ -568,7 +568,7 @@ function MergeTagButton({ onInsert }: { onInsert: (tag: string) => void }) {
         Merge Tags
       </button>
       {open && (
-        <div className="absolute right-0 top-6 w-48 bg-[#1a1a1e] border border-[rgba(255,255,255,0.1)] rounded-xl shadow-2xl overflow-hidden z-50">
+        <div className="absolute right-0 top-6 w-48 bg-[#1E293B] border border-[rgba(255,255,255,0.1)] rounded-xl shadow-2xl overflow-hidden z-50">
           <div className="max-h-48 overflow-y-auto p-1">
             {MERGE_TAGS.map((mt) => (
               <button

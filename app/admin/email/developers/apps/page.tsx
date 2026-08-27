@@ -75,7 +75,7 @@ export default function DeveloperApps() {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {[1, 2, 3, 4, 5, 6].map((i) => (
-          <div key={i} className="h-44 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl animate-pulse" />
+          <div key={i} className="h-44 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl animate-pulse" />
         ))}
       </div>
     );
@@ -110,11 +110,11 @@ export default function DeveloperApps() {
         <select value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)} className="px-4 py-2.5 pr-8 bg-white/[0.04] border border-[rgba(255,255,255,0.08)] rounded-xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#06B6D4]/20 cursor-pointer">
           {types.map((t) => {
             const meta = APP_TYPE_META[t];
-            return <option key={t} value={t} className="bg-[#1a1a1e] text-white">{t === 'all' ? 'All Types' : meta?.label || t}</option>;
+            return <option key={t} value={t} className="bg-[#1E293B] text-white">{t === 'all' ? 'All Types' : meta?.label || t}</option>;
           })}
         </select>
         <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="px-4 py-2.5 pr-8 bg-white/[0.04] border border-[rgba(255,255,255,0.08)] rounded-xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#06B6D4]/20 cursor-pointer">
-          {statuses.map((s) => <option key={s} value={s} className="bg-[#1a1a1e] text-white">{s === 'all' ? 'All Statuses' : s.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())}</option>)}
+          {statuses.map((s) => <option key={s} value={s} className="bg-[#1E293B] text-white">{s === 'all' ? 'All Statuses' : s.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())}</option>)}
         </select>
       </div>
 
@@ -126,7 +126,7 @@ export default function DeveloperApps() {
           const statusColor = STATUS_COLORS[app.status] || 'text-slate-400 bg-slate-400/10 border-slate-400/20';
 
           return (
-            <Link key={app.id} href={`/admin/email/developers/apps/${app.id}`} className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 hover:border-[#06B6D4]/20 transition-all cursor-pointer group">
+            <Link key={app.id} href={`/admin/email/developers/apps/${app.id}`} className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 hover:border-[#06B6D4]/20 transition-all cursor-pointer group">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-white/[0.04] border border-[rgba(255,255,255,0.06)] flex items-center justify-center">
@@ -162,7 +162,7 @@ export default function DeveloperApps() {
       </div>
 
       {filtered.length === 0 && (
-        <div className="text-center py-20 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl">
+        <div className="text-center py-20 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl">
           <AppWindow className="w-12 h-12 text-slate-600 mx-auto mb-4" />
           <p className="text-sm text-slate-400">{apps.length === 0 ? 'No applications registered yet' : 'No applications match your filters'}</p>
         </div>

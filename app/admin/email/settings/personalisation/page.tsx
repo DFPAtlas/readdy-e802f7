@@ -102,7 +102,7 @@ export default function PersonalisationSettings() {
       )}
 
       {showForm && (
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-5">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-5">
           <div className="flex items-center justify-between">
             <h2 className="text-sm font-semibold text-white">Register Approved Field</h2>
             <button onClick={() => setShowForm(false)} className="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-white/[0.04] text-slate-500 hover:text-white cursor-pointer">
@@ -227,7 +227,7 @@ export default function PersonalisationSettings() {
       )}
 
       <div className="grid grid-cols-1 gap-4">
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
           <h3 className="text-sm font-semibold text-white mb-4">Restricted Field Types</h3>
           <p className="text-xs text-slate-400 mb-4">The following data categories are blocked or heavily restricted from email personalisation. Fields of these types cannot be registered for use in email content.</p>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -247,7 +247,7 @@ export default function PersonalisationSettings() {
           </div>
         </div>
 
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
           <h3 className="text-sm font-semibold text-white mb-4">Configuration Notes</h3>
           <div className="text-xs text-slate-400 space-y-2">
             <p>1. Register source fields that exist in your CRM, leads table, or brand kit before using them in templates.</p>
@@ -262,11 +262,11 @@ export default function PersonalisationSettings() {
       </div>
 
       <div className="flex items-center gap-3">
-        <Link href="/admin/email/personalisation" className="flex items-center gap-2 px-4 py-3 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl text-sm text-slate-300 hover:text-white hover:border-[rgba(255,255,255,0.12)] transition-all cursor-pointer">
+        <Link href="/admin/email/personalisation" className="flex items-center gap-2 px-4 py-3 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl text-sm text-slate-300 hover:text-white hover:border-[rgba(255,255,255,0.12)] transition-all cursor-pointer">
           <ArrowLeft className="w-4 h-4 text-slate-500" />
           Back to Personalisation
         </Link>
-        <Link href="/admin/email/personalisation/rules" className="flex items-center gap-2 px-4 py-3 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl text-sm text-slate-300 hover:text-white hover:border-[rgba(255,255,255,0.12)] transition-all cursor-pointer">
+        <Link href="/admin/email/personalisation/rules" className="flex items-center gap-2 px-4 py-3 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl text-sm text-slate-300 hover:text-white hover:border-[rgba(255,255,255,0.12)] transition-all cursor-pointer">
           Rule Builder
           <ArrowLeft className="w-3.5 h-3.5 text-slate-500 ml-auto rotate-180" />
         </Link>

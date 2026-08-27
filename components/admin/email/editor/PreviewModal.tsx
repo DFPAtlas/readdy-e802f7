@@ -22,7 +22,7 @@ export default function PreviewModal({ open, onClose, document, subject, templat
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-start justify-center p-4 pt-[5vh] overflow-y-auto" onClick={onClose}>
-      <div className="bg-[#1a1a1e] border border-[rgba(255,255,255,0.08)] rounded-2xl shadow-2xl w-full max-w-4xl my-4" onClick={(e) => e.stopPropagation()}>
+      <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.08)] rounded-2xl shadow-2xl w-full max-w-4xl my-4" onClick={(e) => e.stopPropagation()}>
         <div className="flex items-center justify-between px-6 py-4 border-b border-[rgba(255,255,255,0.06)]">
           <div>
             <h3 className="text-base font-bold text-white">{templateName}</h3>

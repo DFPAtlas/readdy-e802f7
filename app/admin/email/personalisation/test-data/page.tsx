@@ -113,7 +113,7 @@ export default function PersonalisationTestData() {
     return (
       <div className="space-y-6 animate-pulse">
         <div className="h-8 w-48 bg-white/[0.04] rounded-lg" />
-        <div className="h-64 bg-[#121215] rounded-2xl" />
+        <div className="h-64 bg-[#1E293B] rounded-2xl" />
       </div>
     );
   }
@@ -148,7 +148,7 @@ export default function PersonalisationTestData() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="space-y-4">
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
             <h3 className="text-sm font-semibold text-white mb-3">Test Profile</h3>
             <div className="space-y-2">
               {BUILT_IN_PROFILES.map((profile, idx) => (
@@ -165,7 +165,7 @@ export default function PersonalisationTestData() {
             </div>
           </div>
 
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
             <h3 className="text-sm font-semibold text-white mb-3">Custom Values</h3>
             <p className="text-xs text-slate-500 mb-3">Override individual field values for testing. Changes reflect immediately in the trace.</p>
             <div className="space-y-3 max-h-[400px] overflow-y-auto">
@@ -198,7 +198,7 @@ export default function PersonalisationTestData() {
         </div>
 
         <div className="lg:col-span-2 space-y-5">
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
             <h3 className="text-sm font-semibold text-white mb-4">Inline Preview</h3>
             <div className={`bg-white rounded-xl border border-[rgba(255,255,255,0.06)] overflow-hidden ${previewMode === 'mobile' ? 'max-w-[375px] mx-auto' : ''}`}>
               <div className="bg-slate-100 px-4 py-2 text-xs text-slate-500 flex items-center gap-2">
@@ -242,7 +242,7 @@ export default function PersonalisationTestData() {
             </div>
           </div>
 
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
             <div className="flex items-center justify-between mb-3">
               <h3 className="text-sm font-semibold text-white">Resolution Trace</h3>
               <span className="text-[10px] text-slate-500">Internal only — never appears in outgoing email</span>

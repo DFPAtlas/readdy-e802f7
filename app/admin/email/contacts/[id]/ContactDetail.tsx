@@ -82,8 +82,8 @@ export default function ContactDetailPage() {
 
   if (loading) return (
     <div className="max-w-5xl mx-auto space-y-6">
-      <div className="h-12 w-48 bg-[#121215] rounded-xl animate-pulse" />
-      <div className="h-64 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl animate-pulse" />
+      <div className="h-12 w-48 bg-[#1E293B] rounded-xl animate-pulse" />
+      <div className="h-64 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl animate-pulse" />
     </div>
   )
 
@@ -137,7 +137,7 @@ export default function ContactDetailPage() {
         </div>
       </div>
 
-      <div className="flex items-center gap-1 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-1">
+      <div className="flex items-center gap-1 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-1">
         {tabs.map(tab => (
           <button key={tab.key} onClick={() => setActiveTab(tab.key)}
             className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold cursor-pointer transition-all whitespace-nowrap ${activeTab === tab.key ? 'bg-[#06B6D4]/10 text-[#06B6D4]' : 'text-slate-400 hover:text-white'}`}>
@@ -149,7 +149,7 @@ export default function ContactDetailPage() {
 
       {activeTab === 'overview' && (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-4">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-4">
             <h3 className="text-sm font-semibold text-white">Contact Details</h3>
             <div className="space-y-3">
               {contactDetails.map(({ label, value, Icon }) => (
@@ -166,7 +166,7 @@ export default function ContactDetailPage() {
             </div>
           </div>
 
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-4">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-4">
             <h3 className="text-sm font-semibold text-white">Email Health</h3>
             <div className="grid grid-cols-2 gap-3">
               <div className="bg-white/[0.02] border border-[rgba(255,255,255,0.04)] rounded-xl p-4">
@@ -191,7 +191,7 @@ export default function ContactDetailPage() {
       )}
 
       {activeTab === 'preferences' && (
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-4">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-4">
           <h3 className="text-sm font-semibold text-white">Subscription Preferences</h3>
           {preferences ? (
             <div className="space-y-4">
@@ -221,7 +221,7 @@ export default function ContactDetailPage() {
       )}
 
       {activeTab === 'consent' && (
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
           <div className="p-5 border-b border-[rgba(255,255,255,0.06)]">
             <h3 className="text-sm font-semibold text-white">Consent Ledger</h3>
           </div>
@@ -262,7 +262,7 @@ export default function ContactDetailPage() {
       )}
 
       {activeTab === 'activity' && (
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-8 text-center">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-8 text-center">
           <History className="w-8 h-8 text-slate-600 mx-auto mb-3" />
           <p className="text-sm text-slate-400">Email activity tracking is managed through the Analytics system.</p>
           <Link href="/admin/email/analytics" className="text-xs text-[#06B6D4] hover:underline mt-2 inline-block">View Analytics</Link>
@@ -270,7 +270,7 @@ export default function ContactDetailPage() {
       )}
 
       {activeTab === 'audiences' && (
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-8 text-center">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-8 text-center">
           <Users className="w-8 h-8 text-slate-600 mx-auto mb-3" />
           <p className="text-sm text-slate-400">Audience membership is tracked on each audience detail page.</p>
           <Link href="/admin/email/audiences" className="text-xs text-[#06B6D4] hover:underline mt-2 inline-block">View Audiences</Link>

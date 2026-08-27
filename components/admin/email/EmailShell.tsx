@@ -248,9 +248,9 @@ export default function EmailShell({ children }: { children: React.ReactNode }) 
   );
 
   return (
-    <div className="min-h-screen bg-[#0a0a0c] text-white flex">
+    <div className="min-h-screen bg-[#0F172A] text-white flex">
       <aside
-        className={`hidden lg:flex flex-col h-screen fixed left-0 top-0 z-40 bg-[#0a0a0c] border-r border-[rgba(255,255,255,0.06)] transition-all duration-200 ${
+        className={`hidden lg:flex flex-col h-screen fixed left-0 top-0 z-40 bg-[#0F172A] border-r border-[rgba(255,255,255,0.06)] transition-all duration-200 ${
           collapsed ? 'w-[64px]' : 'w-[220px]'
         }`}
       >
@@ -268,7 +268,7 @@ export default function EmailShell({ children }: { children: React.ReactNode }) 
             <motion.aside
               initial={{ x: '-100%' }} animate={{ x: 0 }} exit={{ x: '-100%' }}
               transition={{ type: 'tween', duration: 0.25 }}
-              className="fixed left-0 top-0 bottom-0 w-[260px] bg-[#0a0a0c] border-r border-[rgba(255,255,255,0.08)] z-50 flex flex-col lg:hidden shadow-2xl"
+              className="fixed left-0 top-0 bottom-0 w-[260px] bg-[#0F172A] border-r border-[rgba(255,255,255,0.08)] z-50 flex flex-col lg:hidden shadow-2xl"
             >
               <div className="p-4 border-b border-[rgba(255,255,255,0.08)] flex items-center justify-between">
                 <Link href="/admin/email" className="flex items-center gap-3 cursor-pointer" onClick={() => setMobileOpen(false)}>
@@ -297,7 +297,7 @@ export default function EmailShell({ children }: { children: React.ReactNode }) 
       >
         <header
           className={`sticky top-0 z-30 transition-all duration-300 ${
-            scrolled ? 'bg-[#0a0a0c]/85 backdrop-blur-xl border-b border-[rgba(255,255,255,0.06)]' : 'bg-transparent'
+            scrolled ? 'bg-[#0F172A]/85 backdrop-blur-xl border-b border-[rgba(255,255,255,0.06)]' : 'bg-transparent'
           }`}
         >
           <div className="flex items-center justify-between px-5 py-3">
@@ -344,7 +344,7 @@ export default function EmailShell({ children }: { children: React.ReactNode }) 
                   {searchOpen && (
                     <motion.div
                       initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -4 }}
-                      className="absolute right-0 top-11 w-80 bg-[#1a1a1e] border border-[rgba(255,255,255,0.1)] rounded-2xl shadow-2xl overflow-hidden z-50"
+                      className="absolute right-0 top-11 w-80 bg-[#1E293B] border border-[rgba(255,255,255,0.1)] rounded-2xl shadow-2xl overflow-hidden z-50"
                       onClick={(e: React.MouseEvent<HTMLElement>) => e.stopPropagation()}
                     >
                       <div className="p-3 border-b border-[rgba(255,255,255,0.06)]">
@@ -412,7 +412,7 @@ export default function EmailShell({ children }: { children: React.ReactNode }) 
                     <motion.div
                       initial={{ opacity: 0, y: 8, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 8, scale: 0.95 }}
                       transition={{ duration: 0.15 }}
-                      className="absolute right-0 top-12 w-56 bg-[#1a1a1e] rounded-2xl border border-[rgba(255,255,255,0.1)] shadow-xl overflow-hidden"
+                      className="absolute right-0 top-12 w-56 bg-[#1E293B] rounded-2xl border border-[rgba(255,255,255,0.1)] shadow-xl overflow-hidden"
                     >
                       <div className="p-4 border-b border-[rgba(255,255,255,0.06)]">
                         <p className="font-semibold text-sm text-white">{userDisplayName}</p>

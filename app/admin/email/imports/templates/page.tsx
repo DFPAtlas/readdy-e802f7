@@ -122,7 +122,7 @@ export default function ImportTemplatesPage() {
               )}
             </div>
 
-            <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+            <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
               <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-slate-400" /> What gets imported
               </h3>
@@ -167,7 +167,7 @@ export default function ImportTemplatesPage() {
               </div>
             </div>
 
-            <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+            <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
               <h3 className="text-sm font-semibold text-white mb-3">Rejected Content Policy</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
                 {['Executable files', 'Unsafe SVG', 'Scripts & event handlers', 'Forms & iframes', 'JavaScript/data URLs', 'SQL statements', 'Path traversal attempts', 'Zip bombs'].map((item) => (
@@ -183,7 +183,7 @@ export default function ImportTemplatesPage() {
       case 'manifest':
         return (
           <div className="space-y-6">
-            <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+            <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
               <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
                 <FileText className="w-4 h-4 text-slate-400" /> Package Manifest
               </h3>
@@ -196,7 +196,7 @@ export default function ImportTemplatesPage() {
               </div>
             </div>
 
-            <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+            <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
               <h3 className="text-sm font-semibold text-white mb-3">Modules & Counts</h3>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 {Object.entries(mockManifest.counts).map(([key, count]) => (
@@ -208,7 +208,7 @@ export default function ImportTemplatesPage() {
               </div>
             </div>
 
-            <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+            <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
               <h3 className="text-sm font-semibold text-white mb-2">Dependencies</h3>
               <div className="flex flex-wrap gap-2">
                 {mockManifest.dependencies.map((dep) => (
@@ -217,7 +217,7 @@ export default function ImportTemplatesPage() {
               </div>
             </div>
 
-            <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+            <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
               <h3 className="text-sm font-semibold text-white mb-2">Excluded Content</h3>
               <div className="flex flex-wrap gap-2">
                 {mockManifest.excluded.map((ex) => (
@@ -243,7 +243,7 @@ export default function ImportTemplatesPage() {
               </div>
             </div>
 
-            <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+            <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-[rgba(255,255,255,0.06)]">
@@ -295,7 +295,7 @@ export default function ImportTemplatesPage() {
             <p className="text-sm text-slate-400">Resolve conflicts before importing. Choose how to handle each conflicting item.</p>
             <div className="space-y-3">
               {mockConflicts.map((conflict) => (
-                <div key={conflict.id} className="bg-[#121215] border border-amber-500/15 rounded-2xl p-4">
+                <div key={conflict.id} className="bg-[#1E293B] border border-amber-500/15 rounded-2xl p-4">
                   <div className="flex items-start justify-between mb-3">
                     <div>
                       <p className="text-sm font-semibold text-white">{conflict.name}</p>
@@ -345,15 +345,15 @@ export default function ImportTemplatesPage() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-              <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl p-4 text-center">
+              <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl p-4 text-center">
                 <p className="text-2xl font-bold text-emerald-400">{mockDryRun.to_create}</p>
                 <p className="text-xs text-slate-500 mt-1">Records to Create</p>
               </div>
-              <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl p-4 text-center">
+              <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl p-4 text-center">
                 <p className="text-2xl font-bold text-sky-400">{mockDryRun.to_update_drafts}</p>
                 <p className="text-xs text-slate-500 mt-1">Drafts to Update</p>
               </div>
-              <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl p-4 text-center">
+              <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl p-4 text-center">
                 <p className="text-2xl font-bold text-slate-400">{mockDryRun.to_skip}</p>
                 <p className="text-xs text-slate-500 mt-1">To Skip</p>
               </div>
@@ -368,7 +368,7 @@ export default function ImportTemplatesPage() {
               </div>
             )}
 
-            <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
+            <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
               <h4 className="text-xs font-semibold text-white mb-2">Import Defaults</h4>
               <div className="text-xs text-slate-400 space-y-1">
                 <p>All imported content defaults to <span className="text-slate-300">Draft</span>, <span className="text-slate-300">Inactive</span> or <span className="text-slate-300">Needs Review</span></p>
@@ -382,7 +382,7 @@ export default function ImportTemplatesPage() {
       case 'import':
         return (
           <div className="space-y-6">
-            <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 text-center">
+            <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 text-center">
               {!importStarted ? (
                 <>
                   <Package className="w-12 h-12 text-slate-600 mx-auto mb-4" />
@@ -420,27 +420,27 @@ export default function ImportTemplatesPage() {
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-              <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl p-4 text-center">
+              <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl p-4 text-center">
                 <p className="text-2xl font-bold text-emerald-400">{mockImportResults.created}</p>
                 <p className="text-xs text-slate-500 mt-1">Created</p>
               </div>
-              <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl p-4 text-center">
+              <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl p-4 text-center">
                 <p className="text-2xl font-bold text-sky-400">{mockImportResults.mapped_existing}</p>
                 <p className="text-xs text-slate-500 mt-1">Mapped</p>
               </div>
-              <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl p-4 text-center">
+              <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl p-4 text-center">
                 <p className="text-2xl font-bold text-violet-400">{mockImportResults.updated_drafts}</p>
                 <p className="text-xs text-slate-500 mt-1">Updated Drafts</p>
               </div>
-              <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl p-4 text-center">
+              <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl p-4 text-center">
                 <p className="text-2xl font-bold text-slate-400">{mockImportResults.skipped}</p>
                 <p className="text-xs text-slate-500 mt-1">Skipped</p>
               </div>
-              <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl p-4 text-center">
+              <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl p-4 text-center">
                 <p className="text-2xl font-bold text-red-400">{mockImportResults.failed}</p>
                 <p className="text-xs text-slate-500 mt-1">Failed</p>
               </div>
-              <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl p-4 text-center">
+              <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl p-4 text-center">
                 <p className="text-2xl font-bold text-white">{mockImportResults.assets_imported}</p>
                 <p className="text-xs text-slate-500 mt-1">Assets</p>
               </div>
@@ -459,7 +459,7 @@ export default function ImportTemplatesPage() {
               <Link href="/admin/email/templates" className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#06B6D4] text-black text-sm font-semibold rounded-xl hover:bg-[#22D3EE] transition-all cursor-pointer whitespace-nowrap">
                 Review Imported Templates
               </Link>
-              <Link href="/admin/email/portability" className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#121215] border border-[rgba(255,255,255,0.1)] text-white text-sm font-semibold rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer whitespace-nowrap">
+              <Link href="/admin/email/portability" className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#1E293B] border border-[rgba(255,255,255,0.1)] text-white text-sm font-semibold rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer whitespace-nowrap">
                 Back to Portability
               </Link>
             </div>
@@ -515,7 +515,7 @@ export default function ImportTemplatesPage() {
             if (prev) setCurrentStep(prev.key);
           }}
           disabled={stepIndex === 0}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-[#121215] border border-[rgba(255,255,255,0.08)] text-white text-sm rounded-xl hover:border-[rgba(255,255,255,0.15)] transition-all cursor-pointer whitespace-nowrap disabled:opacity-30 disabled:cursor-not-allowed"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-[#1E293B] border border-[rgba(255,255,255,0.08)] text-white text-sm rounded-xl hover:border-[rgba(255,255,255,0.15)] transition-all cursor-pointer whitespace-nowrap disabled:opacity-30 disabled:cursor-not-allowed"
         >
           <ArrowLeft className="w-4 h-4" /> Previous
         </button>

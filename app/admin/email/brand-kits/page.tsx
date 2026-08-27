@@ -221,7 +221,7 @@ export default function BrandKitsPage() {
       </div>
 
       {showFilters && (
-        <div className="mb-5 p-4 bg-[#0d0d10] border border-[rgba(255,255,255,0.06)] rounded-xl flex items-center gap-4 flex-wrap">
+        <div className="mb-5 p-4 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl flex items-center gap-4 flex-wrap">
           <div className="flex items-center gap-2">
             <span className="text-xs text-slate-500">Status:</span>
             {['all', 'draft', 'active', 'archived'].map((s) => (
@@ -243,7 +243,7 @@ export default function BrandKitsPage() {
       {loading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="bg-[#0d0d10] border border-[rgba(255,255,255,0.06)] rounded-xl p-5 animate-pulse">
+            <div key={i} className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl p-5 animate-pulse">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-10 h-10 rounded-lg bg-white/[0.04]" />
                 <div className="space-y-1.5 flex-1">
@@ -261,7 +261,7 @@ export default function BrandKitsPage() {
         </div>
       ) : filteredKits.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-20 text-center">
-          <div className="w-16 h-16 rounded-2xl bg-[#121215] border border-[rgba(255,255,255,0.06)] flex items-center justify-center mb-5">
+          <div className="w-16 h-16 rounded-2xl bg-[#1E293B] border border-[rgba(255,255,255,0.06)] flex items-center justify-center mb-5">
             <Palette className="w-7 h-7 text-slate-500" />
           </div>
           <h2 className="text-lg font-bold text-white mb-2">
@@ -279,7 +279,7 @@ export default function BrandKitsPage() {
       ) : viewMode === 'grid' ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filteredKits.map((kit) => (
-            <div key={kit.id} className="bg-[#0d0d10] border border-[rgba(255,255,255,0.06)] rounded-xl p-5 hover:border-[rgba(255,255,255,0.12)] transition-all group">
+            <div key={kit.id} className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl p-5 hover:border-[rgba(255,255,255,0.12)] transition-all group">
               <div className="flex items-start justify-between mb-3">
                 <div className="flex items-center gap-3 min-w-0">
                   <div className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style={{ backgroundColor: kit.colour_settings?.primary || '#06B6D4' }}>
@@ -300,7 +300,7 @@ export default function BrandKitsPage() {
                     <MoreHorizontal className="w-4 h-4" />
                   </button>
                   {actionMenu === kit.id && (
-                    <div className="absolute right-0 top-8 w-44 bg-[#1a1a1e] border border-[rgba(255,255,255,0.1)] rounded-xl shadow-xl z-20 overflow-hidden" onClick={(e) => e.stopPropagation()}>
+                    <div className="absolute right-0 top-8 w-44 bg-[#1E293B] border border-[rgba(255,255,255,0.1)] rounded-xl shadow-xl z-20 overflow-hidden" onClick={(e) => e.stopPropagation()}>
                       <Link href={`/admin/email/brand-kits/${kit.id}`} className="flex items-center gap-2 px-3 py-2.5 text-sm text-slate-300 hover:bg-white/[0.04] transition-colors cursor-pointer">
                         <Edit3 className="w-3.5 h-3.5" /> Edit
                       </Link>
@@ -353,7 +353,7 @@ export default function BrandKitsPage() {
           ))}
         </div>
       ) : (
-        <div className="bg-[#0d0d10] border border-[rgba(255,255,255,0.06)] rounded-xl overflow-hidden">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl overflow-hidden">
           <div className="grid grid-cols-[1fr_120px_100px_80px_120px_60px] gap-3 px-5 py-3 text-[11px] font-medium text-slate-500 border-b border-[rgba(255,255,255,0.04)] uppercase tracking-wider">
             <span>Brand Kit</span><span>Status</span><span>Templates</span><span>Default</span><span>Updated</span><span></span>
           </div>
@@ -384,7 +384,7 @@ export default function BrandKitsPage() {
 
       {confirmAction && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-          <div className="bg-[#1a1a1e] border border-[rgba(255,255,255,0.1)] rounded-2xl p-6 w-[400px] shadow-2xl">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.1)] rounded-2xl p-6 w-[400px] shadow-2xl">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center shrink-0">
                 <AlertTriangle className="w-5 h-5 text-amber-400" />

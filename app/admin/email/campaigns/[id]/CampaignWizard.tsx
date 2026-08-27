@@ -521,7 +521,7 @@ export default function CampaignWizard({ campaign, isNew }: CampaignWizardProps)
                   return (
                     <div key={t.id}
                       onClick={() => handleSelectTemplate(t)}
-                      className={`bg-[#121215] border rounded-2xl overflow-hidden cursor-pointer transition-all ${
+                      className={`bg-[#1E293B] border rounded-2xl overflow-hidden cursor-pointer transition-all ${
                         isSelected ? 'border-[#06B6D4] ring-1 ring-[#06B6D4]/30' : 'border-[rgba(255,255,255,0.06)] hover:border-[rgba(255,255,255,0.12)]'
                       }`}
                     >
@@ -529,7 +529,7 @@ export default function CampaignWizard({ campaign, isNew }: CampaignWizardProps)
                         <div className="absolute inset-0 p-3 scale-[0.3] origin-top-left w-[333%]">
                           <div className="max-w-[600px] text-[6px] leading-tight text-slate-600" dangerouslySetInnerHTML={{ __html: t.html_content.slice(0, 400) }} />
                         </div>
-                        <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-[#121215] to-transparent" />
+                        <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-[#1E293B] to-transparent" />
                         {isSelected && (
                           <div className="absolute top-2 right-2 w-7 h-7 rounded-lg bg-[#06B6D4] flex items-center justify-center">
                             <Check className="w-4 h-4 text-white" />
@@ -676,7 +676,7 @@ export default function CampaignWizard({ campaign, isNew }: CampaignWizardProps)
               </select>
             </div>
 
-            <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+            <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
               <h3 className="text-sm font-semibold text-white mb-3">Recipient Estimate</h3>
               {estimating ? (
                 <div className="flex items-center gap-2 text-sm text-slate-400">
@@ -726,7 +726,7 @@ export default function CampaignWizard({ campaign, isNew }: CampaignWizardProps)
           <div className="max-w-2xl mx-auto p-6 space-y-5">
             <h2 className="text-lg font-bold text-white">Sender & Tracking</h2>
 
-            <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 space-y-4">
+            <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 space-y-4">
               <h3 className="text-sm font-semibold text-white">Sender Profile</h3>
               <div className="grid grid-cols-2 gap-4">
                 <div>
@@ -756,7 +756,7 @@ export default function CampaignWizard({ campaign, isNew }: CampaignWizardProps)
               </div>
             </div>
 
-            <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 space-y-4">
+            <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 space-y-4">
               <h3 className="text-sm font-semibold text-white">Tracking</h3>
               <div className="space-y-3">
                 <label className="flex items-center gap-3 cursor-pointer">
@@ -808,7 +808,7 @@ export default function CampaignWizard({ campaign, isNew }: CampaignWizardProps)
           <div className="max-w-3xl mx-auto p-6 space-y-5">
             <h2 className="text-lg font-bold text-white">Review & Test</h2>
 
-            <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 space-y-4">
+            <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 space-y-4">
               <h3 className="text-sm font-semibold text-white">Campaign Summary</h3>
               <div className="grid grid-cols-2 gap-3 text-sm">
                 <div><span className="text-slate-500">Name:</span> <span className="text-white ml-1">{state.name}</span></div>
@@ -820,7 +820,7 @@ export default function CampaignWizard({ campaign, isNew }: CampaignWizardProps)
               </div>
             </div>
 
-            <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+            <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
               <div className="flex items-center justify-between mb-3">
                 <h3 className="text-sm font-semibold text-white">Send Test</h3>
                 <div className="flex items-center gap-2">
@@ -841,7 +841,7 @@ export default function CampaignWizard({ campaign, isNew }: CampaignWizardProps)
               </div>
             </div>
 
-            <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 space-y-3">
+            <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 space-y-3">
               <h3 className="text-sm font-semibold text-white">Test Recipients</h3>
               {testRecipients.map((r, i) => (
                 <div key={i} className="flex items-center gap-2">
@@ -876,7 +876,7 @@ export default function CampaignWizard({ campaign, isNew }: CampaignWizardProps)
           <div className="max-w-2xl mx-auto p-6 space-y-5">
             <h2 className="text-lg font-bold text-white">Schedule or Send</h2>
 
-            <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 space-y-4">
+            <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 space-y-4">
               <div className="flex gap-3">
                 <button onClick={() => updateState({ scheduleType: 'now' })}
                   className={`flex-1 py-3 rounded-xl border text-sm font-semibold transition-all cursor-pointer whitespace-nowrap ${

@@ -78,7 +78,7 @@ export default function DeveloperLogs() {
     return (
       <div className="space-y-4">
         {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-          <div key={i} className="h-12 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl animate-pulse" />
+          <div key={i} className="h-12 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl animate-pulse" />
         ))}
       </div>
     );
@@ -106,7 +106,7 @@ export default function DeveloperLogs() {
           { label: 'Rate Limited', value: logs.filter((l) => l.errorCode === 'rate_limit_exceeded').length, color: 'text-orange-400' },
           { label: 'Avg Duration', value: logs.length > 0 ? `${avgDuration}ms` : '—', color: 'text-violet-400' },
         ].map((stat) => (
-          <div key={stat.label} className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl p-4">
+          <div key={stat.label} className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl p-4">
             <p className="text-[11px] text-slate-400 uppercase tracking-wider mb-1">{stat.label}</p>
             <p className={`text-2xl font-bold ${stat.color}`}>{stat.value}</p>
           </div>
@@ -120,21 +120,21 @@ export default function DeveloperLogs() {
             className="w-full pl-10 pr-4 py-2.5 bg-white/[0.04] border border-[rgba(255,255,255,0.08)] rounded-xl text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-[#06B6D4]/20 focus:border-[#06B6D4]/30" />
         </div>
         <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="px-4 py-2.5 pr-8 bg-white/[0.04] border border-[rgba(255,255,255,0.08)] rounded-xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#06B6D4]/20 cursor-pointer">
-          <option value="all" className="bg-[#1a1a1e] text-white">All Requests</option>
-          <option value="2xx" className="bg-[#1a1a1e] text-white">2xx Success</option>
-          <option value="4xx" className="bg-[#1a1a1e] text-white">4xx Client Error</option>
-          <option value="5xx" className="bg-[#1a1a1e] text-white">5xx Server Error</option>
-          <option value="rate_limit" className="bg-[#1a1a1e] text-white">Rate Limited</option>
+          <option value="all" className="bg-[#1E293B] text-white">All Requests</option>
+          <option value="2xx" className="bg-[#1E293B] text-white">2xx Success</option>
+          <option value="4xx" className="bg-[#1E293B] text-white">4xx Client Error</option>
+          <option value="5xx" className="bg-[#1E293B] text-white">5xx Server Error</option>
+          <option value="rate_limit" className="bg-[#1E293B] text-white">Rate Limited</option>
         </select>
       </div>
 
       {filtered.length === 0 ? (
-        <div className="text-center py-20 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl">
+        <div className="text-center py-20 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl">
           <FileText className="w-12 h-12 text-slate-600 mx-auto mb-4" />
           <p className="text-sm text-slate-400">{logs.length === 0 ? 'No API requests logged yet' : 'No requests match your filters'}</p>
         </div>
       ) : (
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>

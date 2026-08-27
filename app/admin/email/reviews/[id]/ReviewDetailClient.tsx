@@ -275,7 +275,7 @@ export default function ReviewDetailClient({ id }: { id: string }) {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
             <div className="flex border-b border-[rgba(255,255,255,0.06)]">
               {tabs.map((tab) => {
                 const TabIcon = tab.icon;
@@ -477,7 +477,7 @@ export default function ReviewDetailClient({ id }: { id: string }) {
         </div>
 
         <div className="space-y-4">
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
             <h3 className="text-sm font-semibold text-white mb-4">Review Details</h3>
             <div className="space-y-3">
               <div className="flex justify-between">
@@ -519,7 +519,7 @@ export default function ReviewDetailClient({ id }: { id: string }) {
             </div>
           </div>
 
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
             <h3 className="text-sm font-semibold text-white mb-4">Decision Summary</h3>
             <div className="space-y-2">
               <div className="flex items-center justify-between p-2.5 bg-emerald-400/[0.04] rounded-lg">

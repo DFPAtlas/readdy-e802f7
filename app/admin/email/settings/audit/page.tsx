@@ -101,7 +101,7 @@ export default function AuditPage() {
     return (
       <div className="space-y-6 animate-pulse">
         <div className="h-8 w-48 bg-white/[0.04] rounded-lg" />
-        <div className="h-96 bg-[#121215] rounded-2xl" />
+        <div className="h-96 bg-[#1E293B] rounded-2xl" />
       </div>
     );
   }
@@ -120,7 +120,7 @@ export default function AuditPage() {
         </p>
       </div>
 
-      <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+      <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
         <div className="p-4 border-b border-[rgba(255,255,255,0.06)] flex flex-col sm:flex-row items-start sm:items-center gap-3 flex-wrap">
           <div className="relative flex-1 min-w-[200px]">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
@@ -267,7 +267,7 @@ export default function AuditPage() {
 
       {selectedEntry && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setSelectedEntry(null)}>
-          <div className="bg-[#1a1a1e] border border-[rgba(255,255,255,0.1)] rounded-2xl w-full max-w-lg max-h-[80vh] overflow-y-auto shadow-2xl" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.1)] rounded-2xl w-full max-w-lg max-h-[80vh] overflow-y-auto shadow-2xl" onClick={(e) => e.stopPropagation()}>
             <div className="p-6 border-b border-[rgba(255,255,255,0.06)] flex items-center justify-between">
               <h2 className="text-sm font-semibold text-white">Audit Entry Detail</h2>
               <button onClick={() => setSelectedEntry(null)} className="w-8 h-8 flex items-center justify-center rounded-lg text-slate-500 hover:text-white hover:bg-white/[0.04] cursor-pointer">

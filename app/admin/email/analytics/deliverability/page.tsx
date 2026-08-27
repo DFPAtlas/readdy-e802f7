@@ -91,7 +91,7 @@ export default function DeliverabilityDashboard() {
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
         {METRICS.map(m => (
-          <div key={m.label} className={`bg-[#121215] border rounded-2xl p-4 ${m.warning ? 'border-red-500/20' : 'border-[rgba(255,255,255,0.06)]'}`}>
+          <div key={m.label} className={`bg-[#1E293B] border rounded-2xl p-4 ${m.warning ? 'border-red-500/20' : 'border-[rgba(255,255,255,0.06)]'}`}>
             <div className="flex items-center justify-between mb-2">
               <span className="text-[10px] text-slate-500 uppercase tracking-wider">{m.label}</span>
               <m.icon className={`w-4 h-4 ${m.color}`} />
@@ -103,7 +103,7 @@ export default function DeliverabilityDashboard() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
           <h3 className="text-sm font-semibold text-white mb-4">Bounce & Complaint Breakdown</h3>
           <div className="h-[240px]">
             {chartData.length > 0 ? (
@@ -124,7 +124,7 @@ export default function DeliverabilityDashboard() {
           </div>
         </div>
 
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 space-y-4">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 space-y-4">
           <h3 className="text-sm font-semibold text-white">Sender Profile Health</h3>
           {summary.senderHealth.map((s, i) => (
             <div key={i} className="flex items-center justify-between p-3 bg-white/[0.02] rounded-xl border border-[rgba(255,255,255,0.04)]">
@@ -141,7 +141,7 @@ export default function DeliverabilityDashboard() {
         </div>
       </div>
 
-      <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+      <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
         <h3 className="text-sm font-semibold text-white mb-4">Domain Health</h3>
         {summary.domainHealth.length === 0 ? (
           <p className="text-sm text-slate-500">No domain data available</p>

@@ -91,7 +91,7 @@ export default function TrackingDomainPage() {
       {loading ? (
         <div className="space-y-3">
           {Array.from({ length: 3 }).map((_, i) => (
-            <div key={i} className="h-20 bg-[#121215] rounded-2xl animate-pulse" />
+            <div key={i} className="h-20 bg-[#1E293B] rounded-2xl animate-pulse" />
           ))}
         </div>
       ) : (
@@ -100,7 +100,7 @@ export default function TrackingDomainPage() {
             <div
               key={domain.id}
               onClick={() => handleSelectDomain(domain)}
-              className={`bg-[#121215] border rounded-2xl p-5 transition-all cursor-pointer ${
+              className={`bg-[#1E293B] border rounded-2xl p-5 transition-all cursor-pointer ${
                 selectedDomain?.id === domain.id ? 'border-[#06B6D4]/30 bg-[#06B6D4]/[0.02]' : 'border-[rgba(255,255,255,0.06)] hover:border-[rgba(255,255,255,0.1)]'
               }`}
             >
@@ -134,7 +134,7 @@ export default function TrackingDomainPage() {
       )}
 
       {selectedDomain && (
-        <div className="bg-[#121215] border border-[#06B6D4]/20 rounded-2xl p-6">
+        <div className="bg-[#1E293B] border border-[#06B6D4]/20 rounded-2xl p-6">
           <h2 className="text-sm font-semibold text-white mb-4">Configure Tracking for {selectedDomain.domain}</h2>
 
           <div className="space-y-4">
@@ -196,7 +196,7 @@ export default function TrackingDomainPage() {
 
       {showConfirm && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setShowConfirm(false)}>
-          <div className="bg-[#1a1a1e] border border-[rgba(255,255,255,0.1)] rounded-2xl p-6 w-full max-w-md" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.1)] rounded-2xl p-6 w-full max-w-md" onClick={(e) => e.stopPropagation()}>
             <h2 className="text-lg font-bold text-white mb-2">Confirm Tracking Domain</h2>
             <p className="text-sm text-slate-400 mb-4">
               Changing the tracking domain will affect {affectedCount} campaign{affectedCount !== 1 ? 's' : ''}. Previously sent emails will keep their original links.

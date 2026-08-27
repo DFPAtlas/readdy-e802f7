@@ -79,7 +79,7 @@ export default function TransactionalAnalytics() {
           <Link href="/admin/email/transactional" className="text-xs text-[#06B6D4] hover:underline mt-2 inline-block">Configure transactional emails</Link>
         </div>
       ) : (
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>

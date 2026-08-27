@@ -51,7 +51,7 @@ export default function EditorToolbar({
   const StatusIcon = cfg.icon;
 
   return (
-    <div className="flex items-center justify-between px-4 py-2.5 bg-[#0a0a0c] border-b border-[rgba(255,255,255,0.06)]">
+    <div className="flex items-center justify-between px-4 py-2.5 bg-[#0F172A] border-b border-[rgba(255,255,255,0.06)]">
       <div className="flex items-center gap-3">
         <Link
           href="/admin/email/templates"
@@ -189,7 +189,7 @@ export default function EditorToolbar({
           >
             <MoreHorizontal className="w-4 h-4" />
           </button>
-          <div className="absolute right-0 top-10 w-48 bg-[#1a1a1e] border border-[rgba(255,255,255,0.1)] rounded-xl shadow-2xl overflow-hidden opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
+          <div className="absolute right-0 top-10 w-48 bg-[#1E293B] border border-[rgba(255,255,255,0.1)] rounded-xl shadow-2xl overflow-hidden opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
             <button onClick={onDuplicate} className="w-full text-left px-3 py-2.5 text-xs text-slate-300 hover:bg-white/[0.04] transition-colors cursor-pointer">Duplicate</button>
             <button onClick={onArchive} className="w-full text-left px-3 py-2.5 text-xs text-slate-300 hover:bg-white/[0.04] transition-colors cursor-pointer">Archive</button>
             <div className="border-t border-[rgba(255,255,255,0.06)]" />

@@ -209,7 +209,7 @@ export default function LanguageSettingsPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="space-y-6">
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
             <h2 className="text-base font-bold text-white mb-4">Core Language Settings</h2>
 
             <div className="space-y-4">
@@ -256,7 +256,7 @@ export default function LanguageSettingsPage() {
             </div>
           </div>
 
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-base font-bold text-white">Enabled Languages</h2>
               <button onClick={() => setShowAddLang(true)}
@@ -310,7 +310,7 @@ export default function LanguageSettingsPage() {
         </div>
 
         <div className="space-y-6">
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
             <h2 className="text-base font-bold text-white mb-4">Review & Approval Requirements</h2>
             <p className="text-xs text-slate-500 mb-4">Roles that can approve translations and legal content. Translators cannot approve their own work when separation of duties is enabled.</p>
 
@@ -334,7 +334,7 @@ export default function LanguageSettingsPage() {
             </div>
           </div>
 
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
             <h2 className="text-base font-bold text-white mb-4">Required Localised Legal Content</h2>
             <p className="text-xs text-slate-500 mb-4">Each enabled marketing locale must have approved localised versions of these items before activation.</p>
 
@@ -358,7 +358,7 @@ export default function LanguageSettingsPage() {
             </div>
           </div>
 
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
             <h2 className="text-base font-bold text-white mb-4">Brand Language Availability</h2>
             <p className="text-xs text-slate-500 mb-4">Specify which brands support which languages. Templates and campaigns can only use languages declared here for each brand.</p>
 

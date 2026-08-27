@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import {
   Search, Filter, RefreshCw, UserCheck, UserX, Eye, ChevronDown,
   FileText, Users, Zap, ChevronDown as ChevronDownIcon,
-  MapPin, MonitorSmartphone, Bug, Clock, MessageSquare,
+  MapPin, MonitorSmartphone, Bug, Clock, MessageSquare, KeyRound, Loader2,
 } from 'lucide-react';
 
 interface TesterApplication {
@@ -61,6 +61,8 @@ export default function AdminTesterApplicationsPage() {
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [appNote, setAppNote] = useState<Record<string, string>>({});
   const [selectedApp, setSelectedApp] = useState<TesterApplication | null>(null);
+  const [creatingLogin, setCreatingLogin] = useState<string | null>(null);
+  const [loginResult, setLoginResult] = useState<Record<string, { ok: boolean; msg: string; password?: string }>>({});
 
   useEffect(() => { fetchData(); }, []);
 
@@ -101,6 +103,41 @@ export default function AdminTesterApplicationsPage() {
 
     setAppNote((prev) => { const n = { ...prev }; delete n[app.id]; return n; });
     fetchData();
+  };
+
+  const handleCreateLogin = async (app: TesterApplication) => {
+    if (!app.email) {
+      setLoginResult((prev) => ({ ...prev, [app.id]: { ok: false, msg: 'No email on this application.' } }));
+      return;
+    }
+    setCreatingLogin(app.id);
+    setLoginResult((prev) => { const n = { ...prev }; delete n[app.id]; return n; });
+    try {
+      const { data, error } = await supabase.functions.invoke('create-uat-tester-account', {
+        body: { email: app.email },
+      });
+      if (error) {
+        let msg = 'Failed to create account.';
+        try {
+          const ctx = (error as any)?.context;
+          if (ctx && typeof ctx.json === 'function') {
+            const parsed = await ctx.json();
+            if (parsed?.error) msg = parsed.error;
+          } else if (error.message) {
+            msg = error.message;
+          }
+        } catch { /* ignore */ }
+        setLoginResult((prev) => ({ ...prev, [app.id]: { ok: false, msg } }));
+      } else if (data?.error) {
+        setLoginResult((prev) => ({ ...prev, [app.id]: { ok: false, msg: data.error } }));
+      } else {
+        setLoginResult((prev) => ({ ...prev, [app.id]: { ok: true, msg: data.message || 'Account ready.', password: data.password } }));
+      }
+    } catch {
+      setLoginResult((prev) => ({ ...prev, [app.id]: { ok: false, msg: 'Unexpected error. Please try again.' } }));
+    } finally {
+      setCreatingLogin(null);
+    }
   };
 
   const getConflictBadge = (app: TesterApplication) => {
@@ -258,6 +295,16 @@ export default function AdminTesterApplicationsPage() {
                         )}
 
                         {(app.status === 'accepted' || app.status === 'onboarding' || app.status === 'active') && (
+                          <div className="flex items-center gap-1">
+                            <button onClick={() => handleCreateLogin(app)} disabled={creatingLogin === app.id}
+                              className="px-3 py-1.5 rounded-lg bg-[#06B6D4]/10 text-[#06B6D4] hover:bg-[#06B6D4]/20 text-xs cursor-pointer whitespace-nowrap flex items-center gap-1 disabled:opacity-50">
+                              {creatingLogin === app.id ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <KeyRound className="w-3.5 h-3.5" />}
+                              Create login
+                            </button>
+                          </div>
+                        )}
+
+                        {(app.status === 'accepted' || app.status === 'onboarding' || app.status === 'active') && (
                           <button onClick={() => {
                             const noteVal = appNote[app.id] || '';
                             handleStatus(app, 'rejected');
@@ -265,6 +312,15 @@ export default function AdminTesterApplicationsPage() {
                         )}
                       </div>
                     </div>
+
+                    {loginResult[app.id] && (
+                      <div className={`mt-3 rounded-lg px-3 py-2 text-xs ${loginResult[app.id].ok ? 'bg-emerald-500/10 text-emerald-300' : 'bg-red-500/10 text-red-400'}`}>
+                        <p>{loginResult[app.id].msg}</p>
+                        {loginResult[app.id].password && (
+                          <p className="mt-1 font-mono text-white">Temp password: {loginResult[app.id].password}</p>
+                        )}
+                      </div>
+                    )}
 
                     {(app.status === 'submitted' || app.status === 'under_review') && (
                       <div className="mt-3 flex items-center gap-2">

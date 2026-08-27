@@ -282,7 +282,7 @@ export default function EmailTemplatesPage() {
         <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40">
           <button
             onClick={handleCloseEditor}
-            className="flex items-center gap-2 px-5 py-2.5 bg-[#1a1a1e] border border-[rgba(255,255,255,0.12)] text-slate-300 rounded-xl font-semibold text-sm hover:bg-white/[0.06] hover:text-white transition-all cursor-pointer whitespace-nowrap shadow-2xl"
+            className="flex items-center gap-2 px-5 py-2.5 bg-[#1E293B] border border-[rgba(255,255,255,0.12)] text-slate-300 rounded-xl font-semibold text-sm hover:bg-white/[0.06] hover:text-white transition-all cursor-pointer whitespace-nowrap shadow-2xl"
           >
             <ArrowUpDown className="w-4 h-4" />
             Back to Templates
@@ -294,7 +294,7 @@ export default function EmailTemplatesPage() {
 
   if (editLoading) {
     return (
-      <div className="h-[calc(100vh-57px)] flex items-center justify-center bg-[#0a0a0c]">
+      <div className="h-[calc(100vh-57px)] flex items-center justify-center bg-[#0F172A]">
         <div className="text-center">
           <div className="w-10 h-10 border-2 border-[#06B6D4]/30 border-t-[#06B6D4] rounded-full animate-spin mx-auto mb-4" />
           <p className="text-sm text-slate-400">Loading editor...</p>
@@ -404,7 +404,7 @@ export default function EmailTemplatesPage() {
               {showFilters && (
                 <motion.div
                   initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -4 }}
-                  className="absolute right-0 top-12 w-72 bg-[#1a1a1e] border border-[rgba(255,255,255,0.1)] rounded-2xl shadow-2xl p-4 z-50 space-y-4"
+                  className="absolute right-0 top-12 w-72 bg-[#1E293B] border border-[rgba(255,255,255,0.1)] rounded-2xl shadow-2xl p-4 z-50 space-y-4"
                   onClick={(e: React.MouseEvent<HTMLElement>) => e.stopPropagation()}
                 >
                   <div>
@@ -480,7 +480,7 @@ export default function EmailTemplatesPage() {
         <div className={`${viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5' : 'space-y-2'}`}>
           {viewMode === 'grid' ? (
             [1, 2, 3, 4, 5, 6].map((i) => (
-              <div key={i} className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden animate-pulse">
+              <div key={i} className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden animate-pulse">
                 <div className="h-36 bg-white/[0.02]" />
                 <div className="p-5 space-y-3">
                   <div className="h-4 bg-white/[0.04] rounded w-2/3" />
@@ -491,12 +491,12 @@ export default function EmailTemplatesPage() {
             ))
           ) : (
             Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="h-16 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl animate-pulse" />
+              <div key={i} className="h-16 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl animate-pulse" />
             ))
           )}
         </div>
       ) : sorted.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-20 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl">
+        <div className="flex flex-col items-center justify-center py-20 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl">
           <div className="w-16 h-16 rounded-2xl bg-white/[0.02] border border-[rgba(255,255,255,0.04)] flex items-center justify-center mb-4">
             {templates.length === 0 ? <Mail className="w-7 h-7 text-slate-600" /> : <Search className="w-7 h-7 text-slate-600" />}
           </div>
@@ -535,7 +535,7 @@ export default function EmailTemplatesPage() {
             return (
               <div
                 key={template.id}
-                className={`group bg-[#121215] border rounded-2xl overflow-hidden transition-all ${
+                className={`group bg-[#1E293B] border rounded-2xl overflow-hidden transition-all ${
                   isSelected ? 'border-[#06B6D4] ring-1 ring-[#06B6D4]/30' : 'border-[rgba(255,255,255,0.06)] hover:border-[rgba(255,255,255,0.12)]'
                 }`}
               >
@@ -548,7 +548,7 @@ export default function EmailTemplatesPage() {
                       </div>
                     </div>
                   </div>
-                  <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-[#121215] to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-[#1E293B] to-transparent" />
 
                   <button
                     onClick={(e: React.MouseEvent<HTMLElement>) => { e.stopPropagation(); toggleSelect(template.id); }}
@@ -627,7 +627,7 @@ export default function EmailTemplatesPage() {
                         {moreOpenId === template.id && (
                           <motion.div
                             initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -4 }}
-                            className="absolute right-0 bottom-10 w-44 bg-[#1a1a1e] border border-[rgba(255,255,255,0.1)] rounded-xl shadow-2xl overflow-hidden z-50"
+                            className="absolute right-0 bottom-10 w-44 bg-[#1E293B] border border-[rgba(255,255,255,0.1)] rounded-xl shadow-2xl overflow-hidden z-50"
                             onClick={(e: React.MouseEvent<HTMLElement>) => e.stopPropagation()}
                           >
 <button onClick={() => { handleEdit(template.id); setMoreOpenId(null); }} className="w-full flex items-center gap-2 px-3 py-2.5 text-xs text-slate-300 hover:bg-white/[0.04] transition-colors cursor-pointer">
@@ -657,7 +657,7 @@ export default function EmailTemplatesPage() {
           })}
         </div>
       ) : (
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
@@ -720,7 +720,7 @@ export default function EmailTemplatesPage() {
                             <AnimatePresence>
                               {moreOpenId === template.id && (
                                 <motion.div initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -4 }}
-                                  className="absolute right-0 top-10 w-44 bg-[#1a1a1e] border border-[rgba(255,255,255,0.1)] rounded-xl shadow-2xl overflow-hidden z-50"
+                                  className="absolute right-0 top-10 w-44 bg-[#1E293B] border border-[rgba(255,255,255,0.1)] rounded-xl shadow-2xl overflow-hidden z-50"
                                   onClick={(e: React.MouseEvent<HTMLElement>) => e.stopPropagation()}
                                 >
 <button onClick={() => { handleEdit(template.id); setMoreOpenId(null); }} className="w-full flex items-center gap-2 px-3 py-2.5 text-xs text-slate-300 hover:bg-white/[0.04] transition-colors cursor-pointer"><Edit3 className="w-3.5 h-3.5" /> Edit</button>
@@ -751,7 +751,7 @@ export default function EmailTemplatesPage() {
             onClick={() => setDeleteConfirm(null)}
           >
             <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }}
-              className="bg-[#1a1a1e] border border-[rgba(255,255,255,0.08)] rounded-2xl shadow-2xl max-w-sm w-full p-6"
+              className="bg-[#1E293B] border border-[rgba(255,255,255,0.08)] rounded-2xl shadow-2xl max-w-sm w-full p-6"
               onClick={(e: React.MouseEvent<HTMLElement>) => e.stopPropagation()}
             >
               <div className="flex items-center gap-3 mb-5">
@@ -779,7 +779,7 @@ export default function EmailTemplatesPage() {
             onClick={() => { setRenameId(null); setRenameValue(''); }}
           >
             <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }}
-              className="bg-[#1a1a1e] border border-[rgba(255,255,255,0.08)] rounded-2xl shadow-2xl max-w-sm w-full p-6"
+              className="bg-[#1E293B] border border-[rgba(255,255,255,0.08)] rounded-2xl shadow-2xl max-w-sm w-full p-6"
               onClick={(e: React.MouseEvent<HTMLElement>) => e.stopPropagation()}
             >
               <h3 className="text-lg font-bold text-white mb-4">Rename Template</h3>
@@ -808,7 +808,7 @@ export default function EmailTemplatesPage() {
             onClick={() => setPreviewTemplate(null)}
           >
             <motion.div initial={{ scale: 0.95, opacity: 0, y: 20 }} animate={{ scale: 1, opacity: 1, y: 0 }} exit={{ scale: 0.95, opacity: 0, y: 20 }}
-              className="bg-[#1a1a1e] border border-[rgba(255,255,255,0.08)] rounded-2xl shadow-2xl w-full max-w-2xl my-4"
+              className="bg-[#1E293B] border border-[rgba(255,255,255,0.08)] rounded-2xl shadow-2xl w-full max-w-2xl my-4"
               onClick={(e: React.MouseEvent<HTMLElement>) => e.stopPropagation()}
             >
               <div className="flex items-center justify-between px-6 py-4 border-b border-[rgba(255,255,255,0.06)]">

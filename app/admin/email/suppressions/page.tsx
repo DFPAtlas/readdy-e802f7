@@ -129,7 +129,7 @@ export default function SuppressionsPage() {
       </div>
 
       {addOpen && (
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
           <h3 className="text-sm font-semibold text-white mb-4">Add Manual Suppression</h3>
           {error && <p className="text-xs text-red-400 mb-3">{error}</p>}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
@@ -177,7 +177,7 @@ export default function SuppressionsPage() {
           <p className="text-sm text-slate-400">No suppressions found</p>
         </div>
       ) : (
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>

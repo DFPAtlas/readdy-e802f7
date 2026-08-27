@@ -318,23 +318,53 @@ export default function UATApplyPage() {
 
   const handleNext = () => {
     const errs = validateStep(step);
-    if (errs.length > 0) { setErrors(errs); return; }
+    if (errs.length > 0) {
+      setErrors(errs);
+      return;
+    }
     if (step < TOTAL_STEPS) {
       const ns = step + 1;
       setStep(ns);
       autosave(data, ns);
-      requestAnimationFrame(() => {
-        formTopRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
     }
   };
   const handleBack = () => { if (step > 1) { setStep(step - 1); setErrors([]); } };
-  const handleSubmit = () => { const errs = validateStep(9); if (errs.length > 0) { setErrors(errs); return; } setShowConfirmModal(true); };
+  const handleSubmit = () => {
+    const errs = validateStep(9);
+    if (errs.length > 0) {
+      setErrors(errs);
+      return;
+    }
+    setShowConfirmModal(true);
+  };
 
+  const isInitialStepRef = useRef(true);
 
+  useEffect(() => {
+    if (isInitialStepRef.current) {
+      isInitialStepRef.current = false;
+      return;
+    }
+    formTopRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, [step]);
+
+  useEffect(() => {
+    if (errors.length > 0) {
+      formTopRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, [errors]);
+
+  const goToStep = (targetStep: number) => {
+    if (targetStep < step) {
+      setStep(targetStep);
+      setErrors([]);
+    }
+  };
 
   const doSubmit = async () => {
-    setShowConfirmModal(false); setSubmitting(true); setServerError('');
+    setShowConfirmModal(false);
+    setSubmitting(true);
+    setServerError('');
     try {
       const ref = applicationRef || generateRef();
 
@@ -420,16 +450,6 @@ export default function UATApplyPage() {
     } catch {
       setServerError('Network error. Please check your connection and try again.');
       setSubmitting(false);
-    }
-  };
-
-  const goToStep = (targetStep: number) => {
-    if (targetStep < step) {
-      setStep(targetStep);
-      setErrors([]);
-      requestAnimationFrame(() => {
-        formTopRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
     }
   };
 

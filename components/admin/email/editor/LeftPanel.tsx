@@ -37,7 +37,7 @@ export default function LeftPanel({
 
   if (collapsed) {
     return (
-      <div className="w-12 bg-[#0a0a0c] border-r border-[rgba(255,255,255,0.06)] flex flex-col items-center py-3 gap-1 shrink-0">
+      <div className="w-12 bg-[#0F172A] border-r border-[rgba(255,255,255,0.06)] flex flex-col items-center py-3 gap-1 shrink-0">
         <button onClick={onToggle} className="w-8 h-8 flex items-center justify-center text-slate-500 hover:text-white cursor-pointer" title="Expand panel">
           <ChevronRight className="w-4 h-4" />
         </button>
@@ -55,7 +55,7 @@ export default function LeftPanel({
   }
 
   return (
-    <div className="w-[260px] bg-[#0a0a0c] border-r border-[rgba(255,255,255,0.06)] flex flex-col shrink-0 overflow-hidden">
+    <div className="w-[260px] bg-[#0F172A] border-r border-[rgba(255,255,255,0.06)] flex flex-col shrink-0 overflow-hidden">
       <div className="flex items-center justify-between px-4 py-3 border-b border-[rgba(255,255,255,0.06)]">
         <div className="flex items-center gap-1">
           <button

@@ -127,10 +127,10 @@ export default function RenderTestsDashboard() {
       <div className="space-y-6">
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
           {[1, 2, 3, 4, 5, 6].map((i) => (
-            <div key={i} className="h-24 bg-[#121215] rounded-xl animate-pulse" />
+            <div key={i} className="h-24 bg-[#1E293B] rounded-xl animate-pulse" />
           ))}
         </div>
-        <div className="h-72 bg-[#121215] rounded-2xl animate-pulse" />
+        <div className="h-72 bg-[#1E293B] rounded-2xl animate-pulse" />
       </div>
     );
   }
@@ -162,7 +162,7 @@ export default function RenderTestsDashboard() {
         {statCards.map((card) => {
           const Icon = card.icon;
           return (
-            <div key={card.key} className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl p-4">
+            <div key={card.key} className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl p-4">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-[11px] font-medium text-slate-400 uppercase tracking-wider">{card.label}</span>
                 <div className={`w-7 h-7 rounded-lg ${card.bg} flex items-center justify-center`}>
@@ -183,13 +183,13 @@ export default function RenderTestsDashboard() {
             placeholder="Search render tests..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-4 py-2.5 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500/30"
+            className="w-full pl-9 pr-4 py-2.5 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500/30"
           />
         </div>
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          className="px-4 py-2.5 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-violet-500/20 cursor-pointer pr-8"
+          className="px-4 py-2.5 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-violet-500/20 cursor-pointer pr-8"
         >
           <option value="all">All Statuses</option>
           <option value="waiting">Waiting</option>
@@ -202,7 +202,7 @@ export default function RenderTestsDashboard() {
         <select
           value={sourceFilter}
           onChange={(e) => setSourceFilter(e.target.value)}
-          className="px-4 py-2.5 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-violet-500/20 cursor-pointer pr-8"
+          className="px-4 py-2.5 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-violet-500/20 cursor-pointer pr-8"
         >
           <option value="all">All Sources</option>
           <option value="template">Templates</option>
@@ -212,7 +212,7 @@ export default function RenderTestsDashboard() {
         </select>
       </div>
 
-      <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+      <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
         {filtered.length === 0 ? (
           <div className="text-center py-16">
             <Monitor className="w-10 h-10 text-slate-600 mx-auto mb-3" />
@@ -296,17 +296,17 @@ export default function RenderTestsDashboard() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-        <Link href="/admin/email/compatibility" className="flex items-center gap-3 px-4 py-3 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-violet-400/30 transition-all cursor-pointer group">
+        <Link href="/admin/email/compatibility" className="flex items-center gap-3 px-4 py-3 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-violet-400/30 transition-all cursor-pointer group">
           <Sparkles className="w-4 h-4 text-slate-500 group-hover:text-violet-400 transition-colors" />
           <span className="text-sm text-slate-300 group-hover:text-white transition-colors">Compatibility Diagnostics</span>
           <ArrowRight className="w-3.5 h-3.5 text-slate-600 group-hover:text-violet-400 ml-auto transition-colors" />
         </Link>
-        <Link href="/admin/email/visual-regression" className="flex items-center gap-3 px-4 py-3 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-violet-400/30 transition-all cursor-pointer group">
+        <Link href="/admin/email/visual-regression" className="flex items-center gap-3 px-4 py-3 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-violet-400/30 transition-all cursor-pointer group">
           <Image className="w-4 h-4 text-slate-500 group-hover:text-violet-400 transition-colors" />
           <span className="text-sm text-slate-300 group-hover:text-white transition-colors">Visual Regression</span>
           <ArrowRight className="w-3.5 h-3.5 text-slate-600 group-hover:text-violet-400 ml-auto transition-colors" />
         </Link>
-        <Link href="/admin/email/settings/rendering" className="flex items-center gap-3 px-4 py-3 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-violet-400/30 transition-all cursor-pointer group">
+        <Link href="/admin/email/settings/rendering" className="flex items-center gap-3 px-4 py-3 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl hover:border-violet-400/30 transition-all cursor-pointer group">
           <ShieldCheck className="w-4 h-4 text-slate-500 group-hover:text-violet-400 transition-colors" />
           <span className="text-sm text-slate-300 group-hover:text-white transition-colors">Rendering Settings</span>
           <ArrowRight className="w-3.5 h-3.5 text-slate-600 group-hover:text-violet-400 ml-auto transition-colors" />

@@ -73,7 +73,7 @@ export default function ReportsPage() {
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 rounded-xl bg-cyan-500/10 flex items-center justify-center">
               <BarChart3 className="w-5 h-5 text-cyan-400" />
@@ -91,7 +91,7 @@ export default function ReportsPage() {
           </button>
         </div>
 
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center">
               <ShieldOff className="w-5 h-5 text-emerald-400" />
@@ -109,7 +109,7 @@ export default function ReportsPage() {
           </button>
         </div>
 
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 rounded-xl bg-violet-500/10 flex items-center justify-center">
               <FileText className="w-5 h-5 text-violet-400" />
@@ -127,7 +127,7 @@ export default function ReportsPage() {
           </button>
         </div>
 
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 rounded-xl bg-rose-500/10 flex items-center justify-center">
               <FileText className="w-5 h-5 text-rose-400" />
@@ -146,7 +146,7 @@ export default function ReportsPage() {
         </div>
       </div>
 
-      <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+      <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
         <h3 className="text-sm font-semibold text-white mb-3">Scheduled Reports</h3>
         <p className="text-xs text-slate-500">Scheduled recurring reports are not yet available. Exports above use the current data snapshot.</p>
       </div>

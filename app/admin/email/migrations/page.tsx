@@ -83,12 +83,12 @@ export default function MigrationsPage() {
               <input
                 type="text"
                 placeholder="Search migrators..."
-                className="w-full pl-9 pr-4 py-2 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-[#06B6D4]/20"
+                className="w-full pl-9 pr-4 py-2 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-[#06B6D4]/20"
               />
             </div>
           </div>
 
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-[rgba(255,255,255,0.06)]">
@@ -117,7 +117,7 @@ export default function MigrationsPage() {
             </table>
           </div>
 
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
             <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
               <ShieldCheck className="w-4 h-4 text-slate-400" /> Migrator Rules
             </h3>
@@ -136,7 +136,7 @@ export default function MigrationsPage() {
       {activeTab === 'adapters' && (
         <div className="space-y-4">
           {mockAdapters.map((adapter) => (
-            <div key={adapter.id} className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+            <div key={adapter.id} className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
               <div className="flex items-start justify-between mb-3">
                 <div>
                   <h3 className="text-sm font-semibold text-white">{adapter.name}</h3>
@@ -182,14 +182,14 @@ export default function MigrationsPage() {
       )}
 
       {activeTab === 'test' && (
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-8 text-center">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-8 text-center">
           <Package className="w-12 h-12 text-slate-600 mx-auto mb-4" />
           <p className="text-sm font-semibold text-white mb-2">Test Fixtures</p>
           <p className="text-xs text-slate-500 mb-6">
             Each migrator should include test fixtures — representative packages at the from-version to validate transformations.
             Upload test fixtures to verify migrator correctness.
           </p>
-          <button className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#121215] border border-[rgba(255,255,255,0.1)] text-white text-sm font-semibold rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer whitespace-nowrap">
+          <button className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#1E293B] border border-[rgba(255,255,255,0.1)] text-white text-sm font-semibold rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer whitespace-nowrap">
             <FileText className="w-4 h-4" /> Upload Test Fixture
           </button>
         </div>

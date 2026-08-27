@@ -27,7 +27,7 @@ export default function ExternalReviewsSettings() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-6">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-6">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-[#06B6D4]/10 flex items-center justify-center">
               <Link2 className="w-4 h-4 text-[#06B6D4]" />
@@ -84,7 +84,7 @@ export default function ExternalReviewsSettings() {
           </div>
         </div>
 
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-6">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-6">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-violet-400/10 flex items-center justify-center">
               <ShieldCheck className="w-4 h-4 text-violet-400" />
@@ -116,7 +116,7 @@ export default function ExternalReviewsSettings() {
           </div>
         </div>
 
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-6">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-6">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-amber-400/10 flex items-center justify-center">
               <Bell className="w-4 h-4 text-amber-400" />
@@ -145,7 +145,7 @@ export default function ExternalReviewsSettings() {
           </div>
         </div>
 
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-6">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-6">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-emerald-400/10 flex items-center justify-center">
               <Clock className="w-4 h-4 text-emerald-400" />

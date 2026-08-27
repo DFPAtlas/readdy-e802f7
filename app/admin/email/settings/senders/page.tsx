@@ -173,11 +173,11 @@ export default function SenderProfilesPage() {
       {loading ? (
         <div className="space-y-3">
           {Array.from({ length: 3 }).map((_, i) => (
-            <div key={i} className="h-20 bg-[#121215] rounded-2xl animate-pulse" />
+            <div key={i} className="h-20 bg-[#1E293B] rounded-2xl animate-pulse" />
           ))}
         </div>
       ) : filtered.length === 0 ? (
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-12 text-center">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-12 text-center">
           <div className="w-14 h-14 rounded-2xl bg-slate-500/10 flex items-center justify-center mx-auto mb-4">
             <UserCheck className="w-6 h-6 text-slate-400" />
           </div>
@@ -196,7 +196,7 @@ export default function SenderProfilesPage() {
             const verifInfo = CLICKABLE_STATUS_LABELS[profile.verification_status] || { label: profile.verification_status, color: 'text-slate-400 bg-slate-400/10' };
             const typeLabel = PROFILE_TYPE_LABELS[profile.profile_type as keyof typeof PROFILE_TYPE_LABELS] || profile.profile_type;
             return (
-              <div key={profile.id} className="bg-[#121215] border border-[rgba(255,255,255,0.06)] hover:border-[rgba(255,255,255,0.1)] rounded-2xl p-5 transition-all">
+              <div key={profile.id} className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] hover:border-[rgba(255,255,255,0.1)] rounded-2xl p-5 transition-all">
                 <div className="flex items-start justify-between">
                   <div className="flex items-start gap-4 min-w-0">
                     <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${profile.verification_status === 'verified' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-slate-500/10 text-slate-400'}`}>
@@ -231,7 +231,7 @@ export default function SenderProfilesPage() {
                       <MoreHorizontal className="w-4 h-4" />
                     </button>
                     {actionMenuOpen === profile.id && (
-                      <div className="absolute right-0 top-10 w-44 bg-[#1a1a1e] border border-[rgba(255,255,255,0.1)] rounded-xl shadow-xl overflow-hidden z-50">
+                      <div className="absolute right-0 top-10 w-44 bg-[#1E293B] border border-[rgba(255,255,255,0.1)] rounded-xl shadow-xl overflow-hidden z-50">
                         <button onClick={() => handleSetDefault(profile)} className="flex items-center gap-2 w-full px-3 py-2.5 text-sm text-slate-300 hover:bg-white/[0.04] transition-colors cursor-pointer">
                           <CheckCircle2 className="w-4 h-4" /> Set as Default
                         </button>
@@ -251,7 +251,7 @@ export default function SenderProfilesPage() {
 
       {showAddModal && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setShowAddModal(false)}>
-          <div className="bg-[#1a1a1e] border border-[rgba(255,255,255,0.1)] rounded-2xl p-6 w-full max-w-lg" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.1)] rounded-2xl p-6 w-full max-w-lg" onClick={(e) => e.stopPropagation()}>
             <h2 className="text-lg font-bold text-white mb-4">New Sender Profile</h2>
             <div className="space-y-4">
               <div>

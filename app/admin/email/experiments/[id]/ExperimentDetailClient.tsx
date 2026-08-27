@@ -152,7 +152,7 @@ export default function ExperimentDetailClient({ params }: { params: { id: strin
       {error&&<div className="px-4 py-2.5 bg-red-500/10 border border-red-500/20 rounded-xl text-xs text-red-400">{error}</div>}
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 space-y-4">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 space-y-4">
           <h3 className="text-sm font-semibold text-white">Hypothesis</h3>
           <div className="space-y-3 text-xs">
             {[{label:'Changes',value:(exp.hypothesis as Record<string,string>)?.changes},{label:'Reason',value:(exp.hypothesis as Record<string,string>)?.reason},{label:'Audience',value:(exp.hypothesis as Record<string,string>)?.intended_audience},{label:'Expected',value:(exp.hypothesis as Record<string,string>)?.expected_direction},{label:'Decision Rule',value:(exp.hypothesis as Record<string,string>)?.decision_rule}].map(i=>(
@@ -161,7 +161,7 @@ export default function ExperimentDetailClient({ params }: { params: { id: strin
           </div>
         </div>
 
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 space-y-4">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 space-y-4">
           <h3 className="text-sm font-semibold text-white">Variants</h3>
           <div className="space-y-3">
             {exp.variants.map((v,i)=>(
@@ -178,7 +178,7 @@ export default function ExperimentDetailClient({ params }: { params: { id: strin
           </div>
         </div>
 
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 space-y-4">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 space-y-4">
           <h3 className="text-sm font-semibold text-white">Audience & Allocation</h3>
           <div className="grid grid-cols-2 gap-3">
             {[{label:'Estimated Total',value:exp.audience_config?.estimated_total||0},{label:'Eligible',value:exp.audience_config?.estimated_eligible||0,color:'text-emerald-400'},{label:'Suppressed',value:exp.audience_config?.suppressed||0},{label:'Unsubscribed',value:exp.audience_config?.unsubscribed||0}].map(s=>(
@@ -191,7 +191,7 @@ export default function ExperimentDetailClient({ params }: { params: { id: strin
           </p>
         </div>
 
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 space-y-4">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 space-y-4">
           <h3 className="text-sm font-semibold text-white">Metrics & Method</h3>
           <div className="space-y-2 text-xs">
             <p><span className="text-slate-500">Primary:</span> <span className="text-white ml-1">{METRIC_LABELS[primaryMetric]||primaryMetric}</span></p>
@@ -202,7 +202,7 @@ export default function ExperimentDetailClient({ params }: { params: { id: strin
           </div>
         </div>
 
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 space-y-3">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 space-y-3">
           <h3 className="text-sm font-semibold text-white">Guardrails</h3>
           {exp.guardrails_config && Object.entries(exp.guardrails_config).map(([k,v]: [string, unknown]) => {
             const gv = v as { enabled: boolean; threshold: number };
@@ -214,7 +214,7 @@ export default function ExperimentDetailClient({ params }: { params: { id: strin
           )})}
         </div>
 
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 space-y-3">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 space-y-3">
           <h3 className="text-sm font-semibold text-white">Meta</h3>
           <div className="text-xs space-y-1">
             <p><span className="text-slate-500">Source:</span> <span className="text-white ml-1 capitalize">{exp.source_type}</span></p>

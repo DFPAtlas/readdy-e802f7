@@ -112,7 +112,7 @@ export default function BackupsPage() {
     return (
       <div className="space-y-4">
         {[1, 2, 3, 4, 5].map((i) => (
-          <div key={i} className="h-14 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl animate-pulse" />
+          <div key={i} className="h-14 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl animate-pulse" />
         ))}
       </div>
     );
@@ -138,22 +138,22 @@ export default function BackupsPage() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
           <div className="flex items-center gap-2 mb-3"><Archive className="w-4 h-4 text-slate-400" /><span className="text-xs text-slate-400 uppercase tracking-wider">Snapshots</span></div>
           <p className="text-2xl font-bold text-white">{backups.length}</p>
           <p className="text-xs text-slate-500 mt-1">{validBackups.length} valid</p>
         </div>
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
           <div className="flex items-center gap-2 mb-3"><HardDrive className="w-4 h-4 text-slate-400" /><span className="text-xs text-slate-400 uppercase tracking-wider">Storage</span></div>
           <p className="text-2xl font-bold text-white">{totalSizeMB.toFixed(1)} MB</p>
           <p className="text-xs text-slate-500 mt-1">Total across valid snapshots</p>
         </div>
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
           <div className="flex items-center gap-2 mb-3"><RefreshCw className="w-4 h-4 text-slate-400" /><span className="text-xs text-slate-400 uppercase tracking-wider">Restore Tests</span></div>
           <p className="text-2xl font-bold text-emerald-400">{passedTests}</p>
           <p className="text-xs text-slate-500 mt-1">Passed · {pendingTests} pending · {notTested} not tested</p>
         </div>
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
           <div className="flex items-center gap-2 mb-3"><ShieldCheck className="w-4 h-4 text-slate-400" /><span className="text-xs text-slate-400 uppercase tracking-wider">Protected</span></div>
           <p className="text-2xl font-bold text-violet-400">{protectedCount}</p>
           <p className="text-xs text-slate-500 mt-1">Protected snapshots</p>
@@ -168,7 +168,7 @@ export default function BackupsPage() {
             placeholder="Search backups..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-[#06B6D4]/20"
+            className="w-full pl-9 pr-4 py-2 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-[#06B6D4]/20"
           />
         </div>
         <button
@@ -180,7 +180,7 @@ export default function BackupsPage() {
       </div>
 
       {showCreate && (
-        <div className="bg-[#121215] border border-[#06B6D4]/20 rounded-2xl p-5">
+        <div className="bg-[#1E293B] border border-[#06B6D4]/20 rounded-2xl p-5">
           <h3 className="text-sm font-semibold text-white mb-2">Create Backup Snapshot</h3>
           <p className="text-xs text-amber-400 mb-4">Snapshot creation requires the backup worker. This action is not yet wired to the scheduler.</p>
           <button onClick={() => setShowCreate(false)} className="text-xs text-slate-500 hover:text-slate-300 cursor-pointer">Cancel</button>
@@ -188,12 +188,12 @@ export default function BackupsPage() {
       )}
 
       {filtered.length === 0 ? (
-        <div className="text-center py-20 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl">
+        <div className="text-center py-20 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl">
           <Archive className="w-12 h-12 text-slate-600 mx-auto mb-4" />
           <p className="text-sm text-slate-400">{backups.length === 0 ? 'No backup snapshots yet' : 'No backups match your search'}</p>
         </div>
       ) : (
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-[rgba(255,255,255,0.06)]">
@@ -230,7 +230,7 @@ export default function BackupsPage() {
       )}
 
       <div className="flex flex-wrap gap-3">
-        <Link href="/admin/email/settings/backup" className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#121215] border border-[rgba(255,255,255,0.1)] text-white text-sm font-semibold rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer whitespace-nowrap">
+        <Link href="/admin/email/settings/backup" className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#1E293B] border border-[rgba(255,255,255,0.1)] text-white text-sm font-semibold rounded-xl hover:border-[#06B6D4]/30 transition-all cursor-pointer whitespace-nowrap">
           <ShieldCheck className="w-4 h-4" /> Backup Settings
         </Link>
       </div>

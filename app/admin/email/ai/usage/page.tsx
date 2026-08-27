@@ -116,7 +116,7 @@ export default function AIUsagePage() {
     return (
       <div className="space-y-6 animate-pulse">
         <div className="h-8 w-48 bg-white/[0.04] rounded-lg" />
-        <div className="h-96 bg-[#121215] rounded-2xl" />
+        <div className="h-96 bg-[#1E293B] rounded-2xl" />
       </div>
     );
   }
@@ -161,7 +161,7 @@ export default function AIUsagePage() {
 
       {stats && (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
             <div className="flex items-center gap-2 mb-3">
               <div className="w-7 h-7 rounded-lg bg-[#06B6D4]/10 flex items-center justify-center"><Zap className="w-3.5 h-3.5 text-[#06B6D4]" /></div>
               <span className="text-[10px] text-slate-500 uppercase tracking-wider">Requests</span>
@@ -172,7 +172,7 @@ export default function AIUsagePage() {
               {stats.failed > 0 && <span className="text-red-400">{stats.failed} failed</span>}
             </div>
           </div>
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
             <div className="flex items-center gap-2 mb-3">
               <div className="w-7 h-7 rounded-lg bg-emerald-500/10 flex items-center justify-center"><TrendingUp className="w-3.5 h-3.5 text-emerald-400" /></div>
               <span className="text-[10px] text-slate-500 uppercase tracking-wider">Tokens</span>
@@ -183,7 +183,7 @@ export default function AIUsagePage() {
               <span>Out: {stats.total_output_tokens.toLocaleString()}</span>
             </div>
           </div>
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
             <div className="flex items-center gap-2 mb-3">
               <div className="w-7 h-7 rounded-lg bg-amber-500/10 flex items-center justify-center"><BarChart3 className="w-3.5 h-3.5 text-amber-400" /></div>
               <span className="text-[10px] text-slate-500 uppercase tracking-wider">Est. Cost</span>
@@ -191,7 +191,7 @@ export default function AIUsagePage() {
             <p className="text-2xl font-bold text-white">${stats.estimated_total_cost.toFixed(4)}</p>
             <p className="text-[10px] text-slate-600 mt-1">Based on provider pricing</p>
           </div>
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
             <div className="flex items-center gap-2 mb-3">
               <div className="w-7 h-7 rounded-lg bg-blue-500/10 flex items-center justify-center"><Clock className="w-3.5 h-3.5 text-blue-400" /></div>
               <span className="text-[10px] text-slate-500 uppercase tracking-wider">Today</span>
@@ -214,7 +214,7 @@ export default function AIUsagePage() {
         </div>
       )}
 
-      <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+      <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
         <div className="p-4 border-b border-[rgba(255,255,255,0.06)]">
           <h2 className="text-sm font-bold text-white">Recent Requests</h2>
         </div>

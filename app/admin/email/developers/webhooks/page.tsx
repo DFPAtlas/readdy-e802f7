@@ -143,7 +143,7 @@ export default function DeveloperWebhooks() {
     return (
       <div className="space-y-4">
         {[1, 2, 3, 4, 5].map((i) => (
-          <div key={i} className="h-24 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl animate-pulse" />
+          <div key={i} className="h-24 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl animate-pulse" />
         ))}
       </div>
     );
@@ -171,7 +171,7 @@ export default function DeveloperWebhooks() {
           { label: 'Signed', value: webhooks.filter((w) => w.signingSecretStatus === 'active').length, color: 'text-violet-400' },
           { label: 'Total Failures', value: webhooks.reduce((sum, w) => sum + w.failures24h, 0), color: 'text-amber-400' },
         ].map((stat) => (
-          <div key={stat.label} className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl p-4">
+          <div key={stat.label} className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl p-4">
             <p className="text-[11px] text-slate-400 uppercase tracking-wider mb-1">{stat.label}</p>
             <p className={`text-2xl font-bold ${stat.color}`}>{stat.value}</p>
           </div>
@@ -185,7 +185,7 @@ export default function DeveloperWebhooks() {
             className="w-full pl-10 pr-4 py-2.5 bg-white/[0.04] border border-[rgba(255,255,255,0.08)] rounded-xl text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-[#06B6D4]/20 focus:border-[#06B6D4]/30" />
         </div>
         <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="px-4 py-2.5 pr-8 bg-white/[0.04] border border-[rgba(255,255,255,0.08)] rounded-xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#06B6D4]/20 cursor-pointer">
-          {statuses.map((s) => <option key={s} value={s} className="bg-[#1a1a1e] text-white">{s === 'all' ? 'All Statuses' : s.charAt(0).toUpperCase() + s.slice(1)}</option>)}
+          {statuses.map((s) => <option key={s} value={s} className="bg-[#1E293B] text-white">{s === 'all' ? 'All Statuses' : s.charAt(0).toUpperCase() + s.slice(1)}</option>)}
         </select>
       </div>
 
@@ -196,7 +196,7 @@ export default function DeveloperWebhooks() {
             const StatusIcon = meta.icon;
             const hasFailures = w.failures24h > 0;
             return (
-              <div key={w.id} onClick={() => setSelectedWebhook(w)} className={`bg-[#121215] border rounded-2xl p-5 cursor-pointer transition-all ${selectedWebhook?.id === w.id ? 'border-[#06B6D4]/30' : hasFailures ? 'border-red-400/[0.15] hover:border-red-400/[0.3]' : 'border-[rgba(255,255,255,0.06)] hover:border-[rgba(255,255,255,0.12)]'}`}>
+              <div key={w.id} onClick={() => setSelectedWebhook(w)} className={`bg-[#1E293B] border rounded-2xl p-5 cursor-pointer transition-all ${selectedWebhook?.id === w.id ? 'border-[#06B6D4]/30' : hasFailures ? 'border-red-400/[0.15] hover:border-red-400/[0.3]' : 'border-[rgba(255,255,255,0.06)] hover:border-[rgba(255,255,255,0.12)]'}`}>
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center gap-3 min-w-0">
                     <Webhook className={`w-5 h-5 shrink-0 ${hasFailures ? 'text-red-400' : 'text-violet-400'}`} />
@@ -225,7 +225,7 @@ export default function DeveloperWebhooks() {
             );
           })}
           {filtered.length === 0 && (
-            <div className="text-center py-16 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl">
+            <div className="text-center py-16 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl">
               <Webhook className="w-10 h-10 text-slate-600 mx-auto mb-3" />
               <p className="text-sm text-slate-400">{webhooks.length === 0 ? 'No webhook endpoints configured' : 'No webhooks match your filters'}</p>
             </div>
@@ -234,7 +234,7 @@ export default function DeveloperWebhooks() {
 
         <div className="space-y-4">
           {selectedWebhook ? (
-            <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+            <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
               <h3 className="text-sm font-bold text-white mb-4">Delivery Attempts</h3>
               {attemptsLoading ? (
                 <p className="text-xs text-slate-500 py-6 text-center">Loading…</p>
@@ -265,13 +265,13 @@ export default function DeveloperWebhooks() {
               )}
             </div>
           ) : (
-            <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 text-center">
+            <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 text-center">
               <Webhook className="w-10 h-10 text-slate-600 mx-auto mb-3" />
               <p className="text-sm text-slate-400">Select a webhook to view delivery attempts</p>
             </div>
           )}
 
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
             <div className="px-5 py-4 border-b border-[rgba(255,255,255,0.06)]">
               <h3 className="text-sm font-bold text-white">Available Events</h3>
             </div>

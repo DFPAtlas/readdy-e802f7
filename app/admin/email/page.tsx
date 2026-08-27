@@ -92,7 +92,7 @@ export default function EmailDashboardPage() {
         <div className="h-4 bg-white/[0.04] rounded-lg w-96" />
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3">
           {[1, 2, 3, 4, 5, 6].map((i) => (
-            <div key={i} className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl p-4 h-24" />
+            <div key={i} className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl p-4 h-24" />
           ))}
         </div>
       </div>
@@ -131,7 +131,7 @@ export default function EmailDashboardPage() {
           const val = metricValues[card.key];
           const Icon = card.icon;
           return (
-            <div key={card.key} className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl p-4 hover:border-[rgba(255,255,255,0.1)] transition-all">
+            <div key={card.key} className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl p-4 hover:border-[rgba(255,255,255,0.1)] transition-all">
               <div className="flex items-center justify-between mb-3">
                 <span className="text-[11px] font-medium text-slate-400 uppercase tracking-wider">{card.label}</span>
                 <div className={`w-8 h-8 rounded-lg ${card.bg} ${card.border} border flex items-center justify-center`}>
@@ -147,7 +147,7 @@ export default function EmailDashboardPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
             <div className="flex items-center justify-between px-6 py-4 border-b border-[rgba(255,255,255,0.06)]">
               <div>
                 <h2 className="text-base font-bold text-white">Recent Templates</h2>
@@ -200,7 +200,7 @@ export default function EmailDashboardPage() {
             </div>
           </div>
 
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
             <div className="px-6 py-4 border-b border-[rgba(255,255,255,0.06)]">
               <h2 className="text-base font-bold text-white">Templates Requiring Attention</h2>
               <p className="text-xs text-slate-500 mt-0.5">Templates that may need review or action</p>
@@ -242,7 +242,7 @@ export default function EmailDashboardPage() {
         </div>
 
         <div className="space-y-6">
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
             <div className="px-6 py-4 border-b border-[rgba(255,255,255,0.06)]">
               <h2 className="text-base font-bold text-white">Quick Actions</h2>
             </div>
@@ -275,7 +275,7 @@ export default function EmailDashboardPage() {
             </div>
           </div>
 
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
             <div className="px-6 py-4 border-b border-[rgba(255,255,255,0.06)]">
               <h2 className="text-base font-bold text-white">Category Breakdown</h2>
             </div>
@@ -299,7 +299,7 @@ export default function EmailDashboardPage() {
             </div>
           </div>
 
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
             <div className="px-6 py-4 border-b border-[rgba(255,255,255,0.06)]">
               <h2 className="text-base font-bold text-white">Recent Activity</h2>
             </div>

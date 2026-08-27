@@ -74,7 +74,7 @@ export default function DeveloperSandbox() {
 
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3">
         {SANDBOX_CONFIG.map((item) => (
-          <div key={item.label} className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl p-4">
+          <div key={item.label} className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl p-4">
             <p className="text-[10px] text-slate-500 uppercase tracking-wider mb-1.5">{item.label}</p>
             <div className="flex items-center gap-2">
               <span className={`w-2 h-2 rounded-full ${item.status === 'active' ? 'bg-emerald-400' : item.status === 'blocked' ? 'bg-red-400' : 'bg-slate-500'}`} />
@@ -86,7 +86,7 @@ export default function DeveloperSandbox() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="space-y-4">
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
             <div className="px-5 py-4 border-b border-[rgba(255,255,255,0.06)]">
               <h2 className="text-sm font-bold text-white">Sandbox Tools</h2>
             </div>
@@ -109,7 +109,7 @@ export default function DeveloperSandbox() {
             </div>
           </div>
 
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
             <div className="px-5 py-4 border-b border-[rgba(255,255,255,0.06)]">
               <h2 className="text-sm font-bold text-white">Sandbox Credentials</h2>
             </div>
@@ -126,7 +126,7 @@ export default function DeveloperSandbox() {
           </div>
         </div>
 
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
           <div className="flex items-center justify-between px-5 py-4 border-b border-[rgba(255,255,255,0.06)]">
             <h2 className="text-sm font-bold text-white">Code Examples</h2>
             <button onClick={copyCode} className="flex items-center gap-1.5 px-3 py-1.5 bg-white/[0.04] border border-[rgba(255,255,255,0.08)] rounded-lg text-xs text-slate-400 hover:text-white transition-all cursor-pointer whitespace-nowrap">

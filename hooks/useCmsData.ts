@@ -489,6 +489,9 @@ export interface PublicTeamProfile {
   services: string[] | null;
   profile_asset_id: string | null;
   image_alt_text: string | null;
+  gallery_image_1: string | null;
+  gallery_image_2: string | null;
+  gallery_image_3: string | null;
   professional_links: Record<string, string> | null;
   display_order: number;
   featured: boolean;

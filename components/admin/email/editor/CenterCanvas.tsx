@@ -117,7 +117,7 @@ export default function CenterCanvas({
   return (
     <div
       ref={containerRef}
-      className="flex-1 overflow-auto bg-[#1a1a1e]"
+      className="flex-1 overflow-auto bg-[#1E293B]"
       onClick={handleCanvasClick}
     >
       <div
@@ -160,7 +160,7 @@ export default function CenterCanvas({
                             style={{ position: 'relative' }}
                           >
                             {!inlineEditing && (isSelected || isHovered) && (
-                              <div className="absolute -top-2 -right-1 flex items-center gap-0.5 bg-[#1a1a1e] border border-[rgba(255,255,255,0.1)] rounded-lg px-0.5 py-0.5 z-20 shadow-xl">
+                              <div className="absolute -top-2 -right-1 flex items-center gap-0.5 bg-[#1E293B] border border-[rgba(255,255,255,0.1)] rounded-lg px-0.5 py-0.5 z-20 shadow-xl">
                                 <span className="text-[9px] text-slate-400 px-1 uppercase">
                                   {BLOCK_DEFINITIONS[block.type]?.label || block.type}
                                 </span>

@@ -191,7 +191,7 @@ export default function NewRenderTestPage() {
 
       {step === 1 && (
         <div className="space-y-5">
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
             <h2 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
               <FileText className="w-4 h-4 text-violet-400" />
               Select Source Type
@@ -217,7 +217,7 @@ export default function NewRenderTestPage() {
             </div>
           </div>
 
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
             <h2 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
               <Search className="w-4 h-4 text-violet-400" />
               Choose {SOURCE_TYPES.find((s) => s.value === sourceType)?.label}
@@ -239,7 +239,7 @@ export default function NewRenderTestPage() {
                 <ChevronDown className={`w-4 h-4 text-slate-500 transition-transform ${sourceDropdownOpen ? 'rotate-180' : ''}`} />
               </button>
               {sourceDropdownOpen && (
-                <div className="absolute left-0 right-0 top-full mt-2 bg-[#1a1a1e] border border-[rgba(255,255,255,0.1)] rounded-xl shadow-2xl z-50 overflow-hidden">
+                <div className="absolute left-0 right-0 top-full mt-2 bg-[#1E293B] border border-[rgba(255,255,255,0.1)] rounded-xl shadow-2xl z-50 overflow-hidden">
                   <div className="p-3 border-b border-[rgba(255,255,255,0.06)]">
                     <div className="relative">
                       <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
@@ -296,7 +296,7 @@ export default function NewRenderTestPage() {
 
       {step === 2 && (
         <div className="space-y-5">
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
             <h2 className="text-sm font-semibold text-white mb-1 flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-violet-400" />
               Test Name
@@ -311,7 +311,7 @@ export default function NewRenderTestPage() {
             />
           </div>
 
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
             <h2 className="text-sm font-semibold text-white mb-1 flex items-center gap-2">
               <Monitor className="w-4 h-4 text-violet-400" />
               Test Preset
@@ -353,7 +353,7 @@ export default function NewRenderTestPage() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+            <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
               <h2 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
                 <Globe className="w-4 h-4 text-violet-400" />
                 Language
@@ -367,7 +367,7 @@ export default function NewRenderTestPage() {
                   <ChevronDown className={`w-4 h-4 text-slate-500 transition-transform ${languageDropdownOpen ? 'rotate-180' : ''}`} />
                 </button>
                 {languageDropdownOpen && (
-                  <div className="absolute left-0 right-0 top-full mt-2 bg-[#1a1a1e] border border-[rgba(255,255,255,0.1)] rounded-xl shadow-2xl z-50 overflow-hidden">
+                  <div className="absolute left-0 right-0 top-full mt-2 bg-[#1E293B] border border-[rgba(255,255,255,0.1)] rounded-xl shadow-2xl z-50 overflow-hidden">
                     {LANGUAGES.map((lang) => (
                       <button
                         key={lang.value}
@@ -385,7 +385,7 @@ export default function NewRenderTestPage() {
               </div>
             </div>
 
-            <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+            <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
               <h2 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
                 <UserCog className="w-4 h-4 text-violet-400" />
                 Sample Profile
@@ -402,7 +402,7 @@ export default function NewRenderTestPage() {
                   <ChevronDown className={`w-4 h-4 text-slate-500 shrink-0 transition-transform ${profileDropdownOpen ? 'rotate-180' : ''}`} />
                 </button>
                 {profileDropdownOpen && (
-                  <div className="absolute left-0 right-0 top-full mt-2 bg-[#1a1a1e] border border-[rgba(255,255,255,0.1)] rounded-xl shadow-2xl z-50 overflow-hidden">
+                  <div className="absolute left-0 right-0 top-full mt-2 bg-[#1E293B] border border-[rgba(255,255,255,0.1)] rounded-xl shadow-2xl z-50 overflow-hidden">
                     {SAMPLE_PROFILES.map((prof) => (
                       <button
                         key={prof.id}
@@ -442,7 +442,7 @@ export default function NewRenderTestPage() {
 
       {step === 3 && (
         <div className="space-y-5">
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
             <h2 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 text-violet-400" />
               Review Test Configuration
@@ -514,7 +514,7 @@ export default function NewRenderTestPage() {
           </div>
 
           {submitting && (
-            <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 flex items-center gap-4">
+            <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 flex items-center gap-4">
               <div className="w-6 h-6 border-2 border-violet-400/30 border-t-violet-400 rounded-full animate-spin shrink-0" />
               <div>
                 <p className="text-sm font-medium text-white">Creating render test...</p>

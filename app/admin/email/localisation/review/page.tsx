@@ -172,7 +172,7 @@ export default function TranslationReviewPage() {
       </div>
 
       {filtered.length === 0 ? (
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-12 text-center">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-12 text-center">
           <CheckCircle2 className="w-12 h-12 text-emerald-500 mx-auto mb-4" />
           <h2 className="text-lg font-semibold text-white mb-2">Review queue is clear</h2>
           <p className="text-sm text-slate-400">No translations currently need review. Create translations from templates or campaigns to populate the queue.</p>
@@ -183,7 +183,7 @@ export default function TranslationReviewPage() {
             const SrcIcon = SOURCE_ICONS[v.source_type] || FileText;
             const isExpanded = expandedId === v.id;
             return (
-              <div key={v.id} className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+              <div key={v.id} className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
                 <button onClick={() => setExpandedId(isExpanded ? null : v.id)}
                   className="w-full flex items-center gap-4 p-4 hover:bg-white/[0.02] transition-all cursor-pointer text-left"
                 >

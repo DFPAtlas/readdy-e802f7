@@ -107,14 +107,14 @@ export default function VisualRegressionPage() {
             placeholder={tab === 'regressions' ? 'Search regressions...' : 'Search baselines...'}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-4 py-2.5 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+            className="w-full pl-9 pr-4 py-2.5 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
           />
         </div>
         {tab === 'regressions' && (
           <select
             value={severityFilter}
             onChange={(e) => setSeverityFilter(e.target.value)}
-            className="px-4 py-2.5 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-violet-500/20 cursor-pointer pr-8"
+            className="px-4 py-2.5 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-violet-500/20 cursor-pointer pr-8"
           >
             <option value="all">All Severities</option>
             <option value="warning">Warning</option>
@@ -126,7 +126,7 @@ export default function VisualRegressionPage() {
       {tab === 'regressions' && (
         <div className="space-y-4">
           {filteredRegressions.map((r) => (
-            <div key={r.id} className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+            <div key={r.id} className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
               <div className="p-5">
                 <div className="flex items-start justify-between mb-3">
                   <div>
@@ -196,7 +196,7 @@ export default function VisualRegressionPage() {
             </div>
           ))}
           {filteredRegressions.length === 0 && (
-            <div className="text-center py-12 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl">
+            <div className="text-center py-12 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl">
               <CheckCircle2 className="w-10 h-10 text-emerald-400 mx-auto mb-3" />
               <p className="text-sm text-white font-medium">No regressions detected</p>
               <p className="text-xs text-slate-500 mt-1">All current renders match approved baselines</p>
@@ -206,7 +206,7 @@ export default function VisualRegressionPage() {
       )}
 
       {tab === 'baselines' && (
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>

@@ -151,19 +151,19 @@ export default function LocalisationDashboard() {
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
           <p className="text-[10px] text-slate-500 uppercase tracking-wider">Total Languages</p>
           <p className="text-2xl font-bold text-white">{enabledLanguages.length}</p>
         </div>
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
           <p className="text-[10px] text-slate-500 uppercase tracking-wider">Translation Variants</p>
           <p className="text-2xl font-bold text-white">{totalVariants}</p>
         </div>
-        <div className="bg-[#121215] border border-emerald-500/10 rounded-2xl p-4">
+        <div className="bg-[#1E293B] border border-emerald-500/10 rounded-2xl p-4">
           <p className="text-[10px] text-slate-500 uppercase tracking-wider">Approved</p>
           <p className="text-2xl font-bold text-emerald-400">{totalApproved}</p>
         </div>
-        <div className="bg-[#121215] border border-amber-500/10 rounded-2xl p-4">
+        <div className="bg-[#1E293B] border border-amber-500/10 rounded-2xl p-4">
           <p className="text-[10px] text-slate-500 uppercase tracking-wider">Needs Attention</p>
           <p className="text-2xl font-bold text-amber-400">{totalVariants - totalApproved}</p>
         </div>
@@ -184,7 +184,7 @@ export default function LocalisationDashboard() {
       </div>
 
       {filtered.length === 0 ? (
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-12 text-center">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-12 text-center">
           <Globe className="w-12 h-12 text-slate-600 mx-auto mb-4" />
           <h2 className="text-lg font-semibold text-white mb-2">No languages configured</h2>
           <p className="text-sm text-slate-400 mb-4">Enable languages in Language Settings to begin localising content.</p>
@@ -205,7 +205,7 @@ export default function LocalisationDashboard() {
               approvedCount > 0 ? 'partial' : 'none';
 
             return (
-              <div key={loc.code} className="bg-[#121215] border border-[rgba(255,255,255,0.06)] hover:border-[rgba(255,255,255,0.1)] rounded-2xl p-5 transition-all">
+              <div key={loc.code} className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] hover:border-[rgba(255,255,255,0.1)] rounded-2xl p-5 transition-all">
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex items-start gap-4 min-w-0">
                     <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${

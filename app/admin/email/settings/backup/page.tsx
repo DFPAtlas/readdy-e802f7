@@ -35,7 +35,7 @@ export default function BackupSettingsPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
           <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
             <Calendar className="w-4 h-4 text-slate-400" /> Scheduled Backups
           </h3>
@@ -60,7 +60,7 @@ export default function BackupSettingsPage() {
           </div>
         </div>
 
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
           <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
             <Clock className="w-4 h-4 text-slate-400" /> Retention Policy
           </h3>
@@ -94,7 +94,7 @@ export default function BackupSettingsPage() {
           </div>
         </div>
 
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
           <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
             <HardDrive className="w-4 h-4 text-slate-400" /> Storage & Quotas
           </h3>
@@ -117,7 +117,7 @@ export default function BackupSettingsPage() {
           </div>
         </div>
 
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
           <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
             <ShieldCheck className="w-4 h-4 text-slate-400" /> Verification & Alerts
           </h3>

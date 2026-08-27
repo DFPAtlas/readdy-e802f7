@@ -81,7 +81,7 @@ export default function IntegrationsPage() {
         </p>
       </div>
 
-      <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+      <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
         <div className="p-4 border-b border-[rgba(255,255,255,0.06)]">
           <h2 className="text-sm font-semibold text-white">Connected Systems</h2>
         </div>
@@ -126,7 +126,7 @@ export default function IntegrationsPage() {
         </div>
       </div>
 
-      <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+      <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
         <div className="flex items-start gap-3">
           <ShieldCheck className="w-4 h-4 text-slate-500 mt-0.5 shrink-0" />
           <div>

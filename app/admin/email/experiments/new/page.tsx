@@ -459,7 +459,7 @@ export default function NewExperimentPage() {
         {currentStep==='audience'&&(
           <div className="max-w-2xl mx-auto space-y-5">
             <h2 className="text-lg font-bold text-white">Audience & Allocation</h2>
-            <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 space-y-4">
+            <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 space-y-4">
               <h3 className="text-sm font-semibold text-white">Audience Estimate</h3>
               <div className="grid grid-cols-2 gap-3">
                 {[{label:'Total Contacts',value:state.audience_config.estimated_total},{label:'Eligible',value:state.audience_config.estimated_eligible,color:'text-emerald-400'},{label:'Suppressed',value:state.audience_config.suppressed},{label:'Unsubscribed',value:state.audience_config.unsubscribed}].map(s=>(
@@ -469,7 +469,7 @@ export default function NewExperimentPage() {
               <button onClick={estimateAudience} className="text-xs text-[#06B6D4] hover:underline cursor-pointer">Refresh estimate from contacts</button>
             </div>
 
-            <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 space-y-4">
+            <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 space-y-4">
               <h3 className="text-sm font-semibold text-white">Allocation</h3>
               <div className="flex gap-3">
                 {[{value:'equal',label:'Equal Split'},{value:'custom',label:'Custom %'},{value:'holdout',label:'Holdout Group'}].map(o=>(
@@ -501,7 +501,7 @@ export default function NewExperimentPage() {
         {currentStep==='metrics'&&(
           <div className="max-w-2xl mx-auto space-y-5">
             <h2 className="text-lg font-bold text-white">Metrics & Duration</h2>
-            <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 space-y-4">
+            <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 space-y-4">
               <h3 className="text-sm font-semibold text-white">Primary Metric *</h3>
               <select value={state.metrics_config.primary.name} onChange={e=>update({metrics_config:{...state.metrics_config,primary:{name:e.target.value,description:PRIMARY_METRICS.find(m=>m.value===e.target.value)?.label||''}}})} className="w-full px-4 py-2.5 bg-white/[0.04] border border-[rgba(255,255,255,0.08)] rounded-xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#06B6D4]/20 cursor-pointer appearance-none pr-8">
                 {PRIMARY_METRICS.map(m=><option key={m.value} value={m.value}>{m.label}</option>)}
@@ -511,7 +511,7 @@ export default function NewExperimentPage() {
               </div>
             </div>
 
-            <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 space-y-4">
+            <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 space-y-4">
               <h3 className="text-sm font-semibold text-white">Secondary Metrics</h3>
               {state.metrics_config.secondary.map((sec,i)=>(
                 <div key={i} className="flex items-center gap-3">
@@ -523,7 +523,7 @@ export default function NewExperimentPage() {
               ))}
             </div>
 
-            <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 space-y-4">
+            <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 space-y-4">
               <h3 className="text-sm font-semibold text-white">Duration</h3>
               <div className="flex gap-3 flex-wrap">
                 {[{value:'manual',label:'Manual Stop'},{value:'fixed_end',label:'Fixed End Date'},{value:'min_runtime',label:'Min Runtime'},{value:'min_recipients',label:'Min Recipients'}].map(o=>(
@@ -535,7 +535,7 @@ export default function NewExperimentPage() {
               {state.duration_config.type==='min_recipients'&&<div><label className="block text-xs text-slate-400 mb-1">Min Recipients per Variant</label><input type="number" value={state.duration_config.min_recipients||100} onChange={e=>update({duration_config:{...state.duration_config,min_recipients:parseInt(e.target.value)||0}})} className="w-32 px-3 py-2 bg-white/[0.04] border border-[rgba(255,255,255,0.06)] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#06B6D4]/20" /></div>}
             </div>
 
-            <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 space-y-4">
+            <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5 space-y-4">
               <h3 className="text-sm font-semibold text-white">Statistical Method</h3>
               <div className="flex gap-3">
                 <button onClick={()=>update({statistical_method:{...state.statistical_method,method:'bayesian'}})} className={`flex-1 py-2.5 rounded-xl border text-xs font-semibold transition-all cursor-pointer whitespace-nowrap ${state.statistical_method.method==='bayesian'?'bg-[#06B6D4]/10 border-[#06B6D4]/30 text-[#06B6D4]':'bg-white/[0.02] border-[rgba(255,255,255,0.06)] text-slate-400 hover:text-white'}`}>Bayesian</button>

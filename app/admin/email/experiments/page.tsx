@@ -97,8 +97,8 @@ export default function ExperimentsPage() {
     return (
       <div className="space-y-6 animate-pulse">
         <div className="h-8 w-48 bg-white/[0.04] rounded-lg" />
-        <div className="grid grid-cols-4 gap-4">{[1,2,3,4].map(i=><div key={i} className="h-20 bg-[#121215] rounded-2xl" />)}</div>
-        <div className="h-96 bg-[#121215] rounded-2xl" />
+        <div className="grid grid-cols-4 gap-4">{[1,2,3,4].map(i=><div key={i} className="h-20 bg-[#1E293B] rounded-2xl" />)}</div>
+        <div className="h-96 bg-[#1E293B] rounded-2xl" />
       </div>
     );
   }
@@ -122,14 +122,14 @@ export default function ExperimentsPage() {
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[{label:'Total',value:totals.total,color:'text-slate-300'},{label:'Running',value:totals.running,color:'text-cyan-400'},{label:'Completed',value:totals.completed,color:'text-emerald-400'},{label:'Drafts',value:totals.drafts,color:'text-slate-400'}].map(s=>(
-          <div key={s.label} className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
+          <div key={s.label} className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
             <p className={`text-2xl font-bold ${s.color}`}>{s.value}</p>
             <p className="text-[11px] text-slate-500">{s.label}</p>
           </div>
         ))}
       </div>
 
-      <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+      <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
         <div className="p-4 border-b border-[rgba(255,255,255,0.06)] flex items-center gap-3 flex-wrap">
           <div className="relative flex-1 min-w-[200px]">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />

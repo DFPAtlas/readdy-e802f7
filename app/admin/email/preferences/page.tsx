@@ -74,9 +74,9 @@ export default function PreferencesPage() {
       </div>
 
       {loading ? (
-        <div className="space-y-2">{[1,2,3].map(i => <div key={i} className="h-16 bg-[#121215] rounded-xl animate-pulse" />)}</div>
+        <div className="space-y-2">{[1,2,3].map(i => <div key={i} className="h-16 bg-[#1E293B] rounded-xl animate-pulse" />)}</div>
       ) : preferences.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-20 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl">
+        <div className="flex flex-col items-center justify-center py-20 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl">
           <CheckCircle2 className="w-10 h-10 text-slate-600 mb-3" />
           <p className="text-lg font-semibold text-white">No preference records</p>
           <p className="text-sm text-slate-400 text-center max-w-sm mt-1">Preferences are created when contacts interact with your preference centre.</p>
@@ -84,7 +84,7 @@ export default function PreferencesPage() {
       ) : (
         <div className="space-y-2">
           {preferences.map(pref => (
-            <div key={pref.id} className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+            <div key={pref.id} className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
               <div className="flex items-start justify-between">
                 <div>
                   <p className="text-sm font-semibold text-white">{pref.email || 'Unknown'}</p>
@@ -147,7 +147,7 @@ export default function PreferencesPage() {
         </div>
       )}
 
-      <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4 flex items-start gap-3">
+      <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4 flex items-start gap-3">
         <Info className="w-5 h-5 text-[#06B6D4] shrink-0 mt-0.5" />
         <div>
           <p className="text-sm font-medium text-white">Preference Management</p>

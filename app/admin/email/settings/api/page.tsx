@@ -41,7 +41,7 @@ export default function ApiSettingsPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-5">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-5">
           <h2 className="text-sm font-bold text-white flex items-center gap-2">
             <Shield className="w-4 h-4 text-[#06B6D4]" /> Rate Limits
           </h2>
@@ -63,7 +63,7 @@ export default function ApiSettingsPage() {
           ))}
         </div>
 
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-5">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-5">
           <h2 className="text-sm font-bold text-white flex items-center gap-2">
             <Key className="w-4 h-4 text-[#06B6D4]" /> Key Management
           </h2>
@@ -85,7 +85,7 @@ export default function ApiSettingsPage() {
           ))}
         </div>
 
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-5">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-5">
           <h2 className="text-sm font-bold text-white flex items-center gap-2">
             <Webhook className="w-4 h-4 text-[#06B6D4]" /> Webhook Defaults
           </h2>
@@ -107,7 +107,7 @@ export default function ApiSettingsPage() {
           ))}
         </div>
 
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-5">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-5">
           <h2 className="text-sm font-bold text-white flex items-center gap-2">
             <Shield className="w-4 h-4 text-[#06B6D4]" /> Security & Notifications
           </h2>

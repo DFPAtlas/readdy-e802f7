@@ -328,7 +328,7 @@ export default function OperationsPage() {
     return (
       <div className="space-y-6 animate-pulse">
         <div className="h-8 w-64 bg-white/[0.04] rounded-lg" />
-        <div className="h-96 bg-[#121215] rounded-2xl" />
+        <div className="h-96 bg-[#1E293B] rounded-2xl" />
       </div>
     );
   }
@@ -389,7 +389,7 @@ export default function OperationsPage() {
       {/* Ownership & Responsibilities */}
       {activeTab === 'ownership' && (
         <div className="space-y-6">
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-base font-bold text-white">Operational Owners</h2>
               <div className="flex items-center gap-3 text-xs text-slate-500">
@@ -417,7 +417,7 @@ export default function OperationsPage() {
             </div>
           </div>
 
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
             <h2 className="text-base font-bold text-white mb-4">Responsibility Matrix (RACI)</h2>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
@@ -455,25 +455,25 @@ export default function OperationsPage() {
       {activeTab === 'docs' && (
         <div className="space-y-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
+            <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
               <p className="text-[10px] text-slate-500 uppercase tracking-wider">Total Docs</p>
               <p className="text-2xl font-bold text-white">{docStats.total}</p>
             </div>
-            <div className="bg-[#121215] border border-emerald-500/10 rounded-2xl p-4">
+            <div className="bg-[#1E293B] border border-emerald-500/10 rounded-2xl p-4">
               <p className="text-[10px] text-slate-500 uppercase tracking-wider">Verified</p>
               <p className="text-2xl font-bold text-emerald-400">{docStats.verified}</p>
             </div>
-            <div className="bg-[#121215] border border-red-500/10 rounded-2xl p-4">
+            <div className="bg-[#1E293B] border border-red-500/10 rounded-2xl p-4">
               <p className="text-[10px] text-slate-500 uppercase tracking-wider">Needs Review</p>
               <p className="text-2xl font-bold text-red-400">{docStats.needsReview}</p>
             </div>
-            <div className="bg-[#121215] border border-amber-500/10 rounded-2xl p-4">
+            <div className="bg-[#1E293B] border border-amber-500/10 rounded-2xl p-4">
               <p className="text-[10px] text-slate-500 uppercase tracking-wider">Draft</p>
               <p className="text-2xl font-bold text-amber-400">{docStats.draft}</p>
             </div>
           </div>
 
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
             <div className="p-4 border-b border-[rgba(255,255,255,0.06)]">
               <h2 className="text-base font-bold text-white">Documentation Library</h2>
               <p className="text-xs text-slate-500 mt-0.5">15 required documents. Each runbook should include purpose, scope, required role, preconditions, step-by-step procedure, expected result, failure states, escalation, rollback, audit evidence and last verified date.</p>
@@ -526,7 +526,7 @@ export default function OperationsPage() {
       {/* Training & Handover */}
       {activeTab === 'training' && (
         <div className="space-y-6">
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
             <div className="flex items-center gap-4">
               <div className="w-16 h-16 rounded-full border-4 border-[#06B6D4]/20 flex items-center justify-center shrink-0">
                 <span className="text-lg font-bold text-[#06B6D4]">{trainingProgress}%</span>
@@ -546,7 +546,7 @@ export default function OperationsPage() {
               const total = checklist.items.length;
               const pct = Math.round(done / total * 100);
               return (
-                <div key={checklist.id} className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+                <div key={checklist.id} className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
                   <div className="p-4 border-b border-[rgba(255,255,255,0.06)] flex items-center justify-between">
                     <h3 className="text-sm font-bold text-white">{checklist.role}</h3>
                     <span className={`text-xs font-bold ${pct === 100 ? 'text-emerald-400' : pct > 0 ? 'text-amber-400' : 'text-slate-500'}`}>
@@ -592,7 +592,7 @@ export default function OperationsPage() {
           {(['Daily', 'Weekly', 'Monthly', 'Quarterly'] as const).map(freq => {
             const items = maintenance.filter(m => m.frequency === freq);
             return (
-              <div key={freq} className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+              <div key={freq} className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
                 <div className="p-4 border-b border-[rgba(255,255,255,0.06)] flex items-center justify-between">
                   <h2 className={`text-sm font-bold ${FREQ_COLORS[freq]}`}>{freq}</h2>
                   <span className="text-xs text-slate-500">{items.filter(i => i.status === 'completed').length}/{items.length} done</span>
@@ -641,7 +641,7 @@ export default function OperationsPage() {
           </div>
 
           {changes.length === 0 ? (
-            <div className="text-center py-16 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl">
+            <div className="text-center py-16 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl">
               <GitBranch className="w-10 h-10 text-slate-600 mx-auto mb-3" />
               <p className="text-sm text-slate-500">No change records yet</p>
               <p className="text-xs text-slate-600 mt-1">Changes will be tracked here as the Email Studio evolves</p>
@@ -649,7 +649,7 @@ export default function OperationsPage() {
           ) : (
             <div className="space-y-2">
               {changes.map(ch => (
-                <div key={ch.id} className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
+                <div key={ch.id} className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <span className={`px-1.5 py-0.5 rounded-md text-[10px] font-bold border ${RISK_STYLES[ch.riskLevel]}`}>{ch.riskLevel}</span>
@@ -698,7 +698,7 @@ export default function OperationsPage() {
 
           {showNewChange && (
             <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setShowNewChange(false)}>
-              <div className="bg-[#1a1a1e] border border-[rgba(255,255,255,0.1)] rounded-2xl w-full max-w-md p-6 shadow-2xl" onClick={e => e.stopPropagation()}>
+              <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.1)] rounded-2xl w-full max-w-md p-6 shadow-2xl" onClick={e => e.stopPropagation()}>
                 <h3 className="text-base font-bold text-white mb-4">New Change Request</h3>
                 <div className="space-y-3">
                   <div>
@@ -760,7 +760,7 @@ export default function OperationsPage() {
           </div>
 
           {objectives.map(obj => (
-            <div key={obj.key} className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
+            <div key={obj.key} className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
               <div className="flex items-start justify-between gap-4">
                 <div className="min-w-0">
                   <h3 className="text-sm font-semibold text-white">{obj.label}</h3>
@@ -805,7 +805,7 @@ export default function OperationsPage() {
       {/* Recovery Exercises */}
       {activeTab === 'recovery' && (
         <div className="space-y-6">
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
             <h2 className="text-base font-bold text-white mb-1">Recovery Exercises</h2>
             <p className="text-xs text-slate-500 mb-4">Non-destructive exercises to verify operational recovery capabilities. Run periodically to ensure readiness.</p>
 
@@ -839,7 +839,7 @@ export default function OperationsPage() {
             </div>
           </div>
 
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
             <div className="flex items-start gap-3">
               <ShieldCheck className="w-4 h-4 text-slate-500 mt-0.5 shrink-0" />
               <div>

@@ -95,7 +95,7 @@ export default function ProviderSettingsPage() {
     return (
       <div className="space-y-6 animate-pulse">
         <div className="h-8 w-40 bg-white/[0.04] rounded-lg" />
-        <div className="h-64 bg-[#121215] rounded-2xl" />
+        <div className="h-64 bg-[#1E293B] rounded-2xl" />
       </div>
     );
   }
@@ -115,7 +115,7 @@ export default function ProviderSettingsPage() {
       </div>
 
       {!provider || provider.status === 'unconfigured' ? (
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-8 text-center">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-8 text-center">
           <div className="w-14 h-14 rounded-2xl bg-slate-500/10 flex items-center justify-center mx-auto mb-4">
             <Server className="w-6 h-6 text-slate-400" />
           </div>
@@ -139,7 +139,7 @@ export default function ProviderSettingsPage() {
         </div>
       ) : (
         <>
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
             <div className="flex items-start justify-between mb-6">
               <div className="flex items-center gap-3">
                 <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${provider.status === 'active' ? 'bg-emerald-500/10' : 'bg-red-500/10'}`}>
@@ -220,7 +220,7 @@ export default function ProviderSettingsPage() {
             </div>
           </div>
 
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
             <div className="flex items-center gap-2 mb-4">
               <Shield className="w-4 h-4 text-slate-400" />
               <h3 className="text-sm font-semibold text-white">Security Notes</h3>

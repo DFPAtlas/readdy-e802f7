@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { supabase, getSessionSafe } from '@/lib/supabase';
 
 interface UATTesterProfile {
@@ -38,16 +38,23 @@ export function useUATTester(): UATTesterContextValue {
 }
 
 const statusDisplay: Record<string, { label: string; bgClass: string; iconClass: string }> = {
+  applicant: { label: 'Application Submitted', bgClass: 'bg-sky-50', iconClass: 'ri-time-line text-sky-500' },
   applied: { label: 'Application Submitted', bgClass: 'bg-sky-50', iconClass: 'ri-time-line text-sky-500' },
   under_review: { label: 'Under Review', bgClass: 'bg-amber-50', iconClass: 'ri-time-line text-amber-500' },
+  onboarding: { label: 'Onboarding', bgClass: 'bg-amber-50', iconClass: 'ri-time-line text-amber-500' },
   approved: { label: 'Approved', bgClass: 'bg-emerald-50', iconClass: 'ri-check-line text-emerald-500' },
+  active: { label: 'Active', bgClass: 'bg-emerald-50', iconClass: 'ri-check-line text-emerald-500' },
   rejected: { label: 'Not Approved', bgClass: 'bg-red-50', iconClass: 'ri-close-circle-line text-red-500' },
   paused: { label: 'Paused', bgClass: 'bg-amber-50', iconClass: 'ri-pause-circle-line text-amber-500' },
+  restricted: { label: 'Restricted', bgClass: 'bg-red-50', iconClass: 'ri-error-warning-line text-red-500' },
   suspended: { label: 'Suspended', bgClass: 'bg-red-50', iconClass: 'ri-error-warning-line text-red-500' },
+  former_tester: { label: 'Former Tester', bgClass: 'bg-slate-50', iconClass: 'ri-time-line text-slate-500' },
+  archived: { label: 'Archived', bgClass: 'bg-slate-50', iconClass: 'ri-time-line text-slate-500' },
 };
 
 export default function UATTesterProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
+  const pathname = usePathname();
   const [authState, setAuthState] = useState<UATAuthState>('checking_session');
   const [tester, setTester] = useState<UATTesterProfile | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
@@ -84,7 +91,7 @@ export default function UATTesterProvider({ children }: { children: React.ReactN
     const t = data as UATTesterProfile;
     setTester(t);
 
-    if (t.status === 'approved') {
+    if (t.status === 'active' || t.status === 'approved') {
       setAuthState('approved');
     } else {
       setAuthState('awaiting_approval');
@@ -130,7 +137,7 @@ export default function UATTesterProvider({ children }: { children: React.ReactN
       const t = data as UATTesterProfile;
       setTester(t);
 
-      if (t.status === 'approved') {
+      if (t.status === 'active' || t.status === 'approved') {
         setAuthState('approved');
       } else {
         setAuthState('awaiting_approval');
@@ -155,10 +162,10 @@ export default function UATTesterProvider({ children }: { children: React.ReactN
   }, []);
 
   useEffect(() => {
-    if (authState === 'unauthenticated') {
-      router.replace('/login');
+    if (authState === 'unauthenticated' && pathname !== '/uat/login') {
+      router.replace('/uat/login');
     }
-  }, [authState, router]);
+  }, [authState, router, pathname]);
 
   if (authState === 'checking_session') {
     return (
@@ -170,6 +177,9 @@ export default function UATTesterProvider({ children }: { children: React.ReactN
   }
 
   if (authState === 'unauthenticated') {
+    if (pathname === '/uat/login') {
+      return <>{children}</>;
+    }
     return (
       <div className="min-h-screen bg-[#f8fafc] flex flex-col items-center justify-center gap-4">
         <div className="w-10 h-10 border-[3px] border-[#2878d0]/20 border-t-[#2878d0] rounded-full animate-spin" />
@@ -211,17 +221,22 @@ export default function UATTesterProvider({ children }: { children: React.ReactN
 
   if (authState === 'awaiting_approval') {
     const si = statusDisplay[tester?.status || ''] || { label: tester?.status || 'Unknown', bgClass: 'bg-slate-50', iconClass: 'ri-time-line text-slate-500' };
-    const isNegative = tester?.status === 'rejected' || tester?.status === 'suspended';
+    const isNegative = ['rejected', 'suspended', 'restricted', 'former_tester', 'archived'].includes(tester?.status || '');
 
     const statusMessage = (() => {
       switch (tester?.status) {
+        case 'applicant':
         case 'applied':
         case 'under_review':
+        case 'onboarding':
           return 'Your tester application is being reviewed. You will get access to the tester portal once approved.';
         case 'rejected':
           return 'Your application was not approved at this time. If you believe this is an error, please contact support.';
         case 'paused':
         case 'suspended':
+        case 'restricted':
+        case 'former_tester':
+        case 'archived':
           return 'Your tester access is currently restricted. Please contact support for more information.';
         default:
           return 'Your tester account needs approval before you can access the portal.';

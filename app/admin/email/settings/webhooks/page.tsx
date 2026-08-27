@@ -76,7 +76,7 @@ export default function WebhookSettingsPage() {
     return (
       <div className="space-y-6 animate-pulse">
         <div className="h-8 w-48 bg-white/[0.04] rounded-lg" />
-        <div className="h-64 bg-[#121215] rounded-2xl" />
+        <div className="h-64 bg-[#1E293B] rounded-2xl" />
       </div>
     );
   }
@@ -93,7 +93,7 @@ export default function WebhookSettingsPage() {
         </div>
       </div>
 
-      <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
+      <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
         <div className="flex items-center gap-3 mb-6">
           <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center">
             <Webhook className="w-5 h-5 text-blue-400" />
@@ -195,7 +195,7 @@ export default function WebhookSettingsPage() {
         </div>
       </div>
 
-      <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
+      <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
         <div className="flex items-center gap-2 mb-4">
           <Shield className="w-4 h-4 text-slate-400" />
           <h3 className="text-sm font-semibold text-white">Setup Instructions</h3>
@@ -211,7 +211,7 @@ export default function WebhookSettingsPage() {
 
       {showSecretModal && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setShowSecretModal(false)}>
-          <div className="bg-[#1a1a1e] border border-[rgba(255,255,255,0.1)] rounded-2xl p-6 w-full max-w-md" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.1)] rounded-2xl p-6 w-full max-w-md" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center gap-2 mb-4">
               <Key className="w-5 h-5 text-amber-400" />
               <h2 className="text-lg font-bold text-white">Rotate Webhook Secret</h2>

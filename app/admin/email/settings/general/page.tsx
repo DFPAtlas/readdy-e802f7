@@ -138,7 +138,7 @@ export default function GeneralSettingsPage() {
     return (
       <div className="space-y-6 animate-pulse">
         <div className="h-8 w-48 bg-white/[0.04] rounded-lg" />
-        <div className="h-96 bg-[#121215] rounded-2xl" />
+        <div className="h-96 bg-[#1E293B] rounded-2xl" />
       </div>
     );
   }
@@ -158,7 +158,7 @@ export default function GeneralSettingsPage() {
         </p>
       </div>
 
-      <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-6">
+      <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-6">
         <div>
           <h2 className="text-sm font-semibold text-white mb-4">Workspace Identity</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

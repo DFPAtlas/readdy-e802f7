@@ -167,13 +167,13 @@ export default function ReviewActivityClient({ id }: { id: string }) {
         </button>
       </div>
 
-      <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+      <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
         <div className="relative">
           <div className="absolute left-6 top-0 bottom-0 w-px bg-[rgba(255,255,255,0.06)]" />
           <div className="divide-y divide-[rgba(255,255,255,0.03)]">
             {filtered.map((event) => (
               <div key={event.id} className="relative flex items-start gap-4 px-6 py-4 hover:bg-white/[0.02] transition-colors">
-                <div className={`relative z-10 w-2.5 h-2.5 rounded-full mt-1.5 shrink-0 ${CATEGORY_COLORS[event.category]} ring-4 ring-[#121215]`} />
+                <div className={`relative z-10 w-2.5 h-2.5 rounded-full mt-1.5 shrink-0 ${CATEGORY_COLORS[event.category]} ring-4 ring-[#1E293B]`} />
                 <div className="min-w-0 flex-1">
                   <p className="text-sm font-medium text-white">{event.action}</p>
                   <p className="text-xs text-slate-400 mt-0.5">{event.detail}</p>
@@ -195,7 +195,7 @@ export default function ReviewActivityClient({ id }: { id: string }) {
         </div>
       </div>
 
-      <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
+      <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-5">
         <h3 className="text-sm font-semibold text-white mb-3">Audit Summary</h3>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           <div className="p-3 bg-white/[0.02] rounded-xl text-center">

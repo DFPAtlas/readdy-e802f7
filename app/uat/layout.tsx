@@ -4,7 +4,7 @@ import UATPortalShell from '@/components/uat/portal/UATPortalShell';
 
 export default function UATLayout({ children }: { children: React.ReactNode }) {
   return (
-    <AreaGate loginPath="/login">
+    <AreaGate loginPath="/uat/login" publicPaths={['/uat/login']}>
       <UATTesterProvider>
         <UATPortalShell>
           {children}

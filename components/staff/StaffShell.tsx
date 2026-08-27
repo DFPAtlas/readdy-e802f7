@@ -169,7 +169,7 @@ export default function StaffShell({ children }: { children: React.ReactNode }) 
 
   return (
     <div className="min-h-screen bg-[#0F172A] text-white flex">
-      <aside className="hidden lg:flex flex-col w-[248px] h-screen fixed left-0 top-0 z-40 bg-[#1E293B] border-r border-[rgba(255,255,255,0.08)]">
+      <aside className="hidden lg:flex flex-col w-[248px] h-screen fixed left-0 top-0 z-40 bg-[#0F172A] border-r border-[rgba(255,255,255,0.08)]">
         <div className="p-5 border-b border-[rgba(255,255,255,0.08)]">
           <Link href="/staff/dashboard" className="flex items-center gap-3 cursor-pointer">
             <img
@@ -212,7 +212,7 @@ export default function StaffShell({ children }: { children: React.ReactNode }) 
             <motion.aside
               initial={{ x: '-100%' }} animate={{ x: 0 }} exit={{ x: '-100%' }}
               transition={{ type: 'tween', duration: 0.2 }}
-              className="fixed left-0 top-0 bottom-0 w-64 bg-[#1E293B] border-r border-[rgba(255,255,255,0.08)] z-50 flex flex-col lg:hidden shadow-xl"
+              className="fixed left-0 top-0 bottom-0 w-64 bg-[#0F172A] border-r border-[rgba(255,255,255,0.08)] z-50 flex flex-col lg:hidden shadow-xl"
             >
               <div className="p-5 border-b border-[rgba(255,255,255,0.08)] flex items-center justify-between">
                 <Link href="/staff/dashboard" className="flex items-center gap-3 cursor-pointer" onClick={() => setSidebarOpen(false)}>

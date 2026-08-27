@@ -28,7 +28,7 @@ export default function ReputationSettings() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-5">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-5">
           <div className="flex items-center gap-2">
             <BarChart3 className="w-4 h-4 text-[#06B6D4]" />
             <h2 className="text-sm font-bold text-white">Deliverability Thresholds</h2>
@@ -95,7 +95,7 @@ export default function ReputationSettings() {
         </div>
 
         <div className="space-y-6">
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-5">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-5">
             <div className="flex items-center gap-2">
               <Thermometer className="w-4 h-4 text-[#06B6D4]" />
               <h2 className="text-sm font-bold text-white">Warm-up Defaults</h2>
@@ -144,7 +144,7 @@ export default function ReputationSettings() {
             </div>
           </div>
 
-          <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-5">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-5">
             <div className="flex items-center gap-2">
               <AlertTriangle className="w-4 h-4 text-[#06B6D4]" />
               <h2 className="text-sm font-bold text-white">Incident Auto-Creation</h2>
@@ -193,7 +193,7 @@ export default function ReputationSettings() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-5">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-5">
           <div className="flex items-center gap-2">
             <Globe className="w-4 h-4 text-[#06B6D4]" />
             <h2 className="text-sm font-bold text-white">Blocklist Services</h2>
@@ -214,7 +214,7 @@ export default function ReputationSettings() {
           </div>
         </div>
 
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-5">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6 space-y-5">
           <div className="flex items-center gap-2">
             <Lock className="w-4 h-4 text-[#06B6D4]" />
             <h2 className="text-sm font-bold text-white">Usage & Cost Controls</h2>
@@ -251,7 +251,7 @@ export default function ReputationSettings() {
         </div>
       </div>
 
-      <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
+      <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-6">
         <h2 className="text-sm font-bold text-white mb-4">Anomaly Detection</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {[

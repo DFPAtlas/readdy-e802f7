@@ -212,7 +212,7 @@ export default function ContactsPage() {
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {statsCards.map((stat) => (
-          <div key={stat.label} className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
+          <div key={stat.label} className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-white/[0.03] border border-[rgba(255,255,255,0.04)] flex items-center justify-center">
                 <stat.icon className={`w-5 h-5 ${stat.color}`} />
@@ -261,10 +261,10 @@ export default function ContactsPage() {
 
       {loading ? (
         <div className="space-y-2">
-          {[1, 2, 3, 4, 5].map(i => <div key={i} className="h-14 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-xl animate-pulse" />)}
+          {[1, 2, 3, 4, 5].map(i => <div key={i} className="h-14 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-xl animate-pulse" />)}
         </div>
       ) : filtered.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-20 bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl">
+        <div className="flex flex-col items-center justify-center py-20 bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl">
           <div className="w-16 h-16 rounded-2xl bg-white/[0.02] border border-[rgba(255,255,255,0.04)] flex items-center justify-center mb-4">
             <Users className="w-7 h-7 text-slate-600" />
           </div>
@@ -273,7 +273,7 @@ export default function ContactsPage() {
           <button onClick={() => setShowAddModal(true)} className="px-4 py-2.5 bg-[#06B6D4] text-white rounded-xl font-semibold text-sm hover:bg-[#0891B2] transition-all cursor-pointer">Add Your First Contact</button>
         </div>
       ) : (
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
@@ -338,7 +338,7 @@ export default function ContactsPage() {
                       <AnimatePresence>
                         {menuOpenId === c.id && (
                           <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }}
-                            className="absolute right-0 top-full mt-1 w-44 bg-[#1a1a1e] border border-[rgba(255,255,255,0.1)] rounded-xl shadow-xl z-30 overflow-hidden">
+                            className="absolute right-0 top-full mt-1 w-44 bg-[#1E293B] border border-[rgba(255,255,255,0.1)] rounded-xl shadow-xl z-30 overflow-hidden">
                             <div className="p-1">
                               <Link href={`/admin/email/contacts/${c.id}`}
                                 className="flex items-center gap-2 px-3 py-2 text-sm text-slate-300 hover:bg-white/[0.06] rounded-lg cursor-pointer">View Details</Link>
@@ -361,7 +361,7 @@ export default function ContactsPage() {
         </div>
       )}
 
-      <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4 flex items-start gap-3">
+      <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4 flex items-start gap-3">
         <div className="w-8 h-8 rounded-lg bg-[#06B6D4]/10 flex items-center justify-center shrink-0 mt-0.5">
           <Info className="w-4 h-4 text-[#06B6D4]" />
         </div>
@@ -380,7 +380,7 @@ export default function ContactsPage() {
             className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4"
             onClick={() => setShowAddModal(false)}>
             <motion.div initial={{ scale: 0.95 }} animate={{ scale: 1 }} exit={{ scale: 0.95 }}
-              className="bg-[#1a1a1e] border border-[rgba(255,255,255,0.1)] rounded-2xl shadow-2xl max-w-md w-full p-6"
+              className="bg-[#1E293B] border border-[rgba(255,255,255,0.1)] rounded-2xl shadow-2xl max-w-md w-full p-6"
               onClick={(e: React.MouseEvent<HTMLElement>) => e.stopPropagation()}>
               <div className="flex items-center justify-between mb-5">
                 <h3 className="text-lg font-bold text-white">Add Contact</h3>

@@ -84,15 +84,15 @@ export default function LinkPerformancePage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
           <p className="text-[10px] text-slate-500 uppercase tracking-wider mb-1">Total Clicks</p>
           <p className="text-2xl font-bold text-white">{loading ? '—' : clicks.length.toLocaleString()}</p>
         </div>
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
           <p className="text-[10px] text-slate-500 uppercase tracking-wider mb-1">Unique Links</p>
           <p className="text-2xl font-bold text-white">{loading ? '—' : aggregated.length.toLocaleString()}</p>
         </div>
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl p-4">
           <p className="text-[10px] text-slate-500 uppercase tracking-wider mb-1">Unique Domains</p>
           <p className="text-2xl font-bold text-white">{loading ? '—' : [...new Set(clicks.map(c => c.destination_domain))].length.toLocaleString()}</p>
         </div>
@@ -107,7 +107,7 @@ export default function LinkPerformancePage() {
           <p className="text-xs text-slate-500 mt-1">Clicks appear here when Resend tracks link engagement from sent campaigns</p>
         </div>
       ) : (
-        <div className="bg-[#121215] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
+        <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>

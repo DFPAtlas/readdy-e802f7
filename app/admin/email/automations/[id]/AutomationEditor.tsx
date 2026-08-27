@@ -937,7 +937,7 @@ export default function AutomationEditor({ automationId }: { automationId: strin
             </div>
 
             {simulationLog.length > 0 && (
-              <div className="bg-[#0a0a0c] border border-[rgba(255,255,255,0.08)] rounded-xl p-4 font-mono text-xs text-slate-300 space-y-0.5 max-h-64 overflow-y-auto">
+              <div className="bg-[#0F172A] border border-[rgba(255,255,255,0.08)] rounded-xl p-4 font-mono text-xs text-slate-300 space-y-0.5 max-h-64 overflow-y-auto">
                 {simulationLog.map((line, i) => (
                   <p key={i} className={line.startsWith('  ') ? 'pl-4' : ''}>{line}</p>
                 ))}
@@ -1064,7 +1064,7 @@ export default function AutomationEditor({ automationId }: { automationId: strin
 
       {confirmActivate && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center">
-          <div className="bg-[#1a1a1e] border border-[rgba(255,255,255,0.1)] rounded-2xl p-6 w-full max-w-md shadow-2xl">
+          <div className="bg-[#1E293B] border border-[rgba(255,255,255,0.1)] rounded-2xl p-6 w-full max-w-md shadow-2xl">
             <div className="flex items-start gap-3 mb-4">
               <div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center shrink-0">
                 <Play className="w-5 h-5 text-emerald-400" />
