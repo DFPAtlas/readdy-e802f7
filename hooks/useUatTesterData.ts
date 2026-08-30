@@ -39,8 +39,8 @@ export function useWorkforceMetrics(): WorkforceMetrics {
       supabase.from('uat_testers').select('*', { count: 'exact', head: true }).eq('onboarding_status', 'under_review'),
       supabase.from('uat_assignments').select('*', { count: 'exact', head: true }).eq('status', 'active'),
       supabase.from('uat_testers').select('*', { count: 'exact', head: true }).in('status', ['restricted', 'suspended']),
-      supabase.from('uat_payments').select('*', { count: 'exact', head: true }).in('eligibility_state', ['draft', 'awaiting_review', 'changes_required', 'approved']),
-      supabase.from('uat_payments').select('*', { count: 'exact', head: true }).eq('eligibility_state', 'failed'),
+      supabase.from('uat_payments').select('*', { count: 'exact', head: true }).in('status', ['pending_review']),
+      supabase.from('uat_payments').select('*', { count: 'exact', head: true }).in('status', ['rejected', 'failed']),
       supabase.from('uat_payment_disputes').select('*', { count: 'exact', head: true }).in('status', ['open', 'under_review']),
       supabase.from('uat_testers').select('id, max_concurrent_assignments, current_active_assignments').in('status', ['active']),
     ]);
@@ -165,7 +165,7 @@ export function usePaymentApprovals(filters?: { status?: string }) {
     const assignIds = [...new Set(payData.map((p: any) => p.assignment_id))];
 
     const [{ data: testers }, { data: jobs }, { data: assigns }] = await Promise.all([
-      supabase.from('uat_testers').select('id, full_name, email, reference').in('id', testerIds),
+      supabase.from('uat_testers').select('id, full_name, email, reference, stripe_payment_setup_status, stripe_transfers_enabled').in('id', testerIds),
       supabase.from('uat_jobs').select('id, title, project_id').in('id', jobIds),
       supabase.from('uat_assignments').select('id, status').in('id', assignIds),
     ]);
@@ -182,11 +182,13 @@ export function usePaymentApprovals(filters?: { status?: string }) {
       tester_name: testerMap[p.tester_id]?.full_name || 'Unknown',
       tester_email: testerMap[p.tester_id]?.email || '',
       tester_reference: testerMap[p.tester_id]?.reference || '',
+      tester_stripe_status: testerMap[p.tester_id]?.stripe_payment_setup_status || '',
+      tester_stripe_transfers_enabled: testerMap[p.tester_id]?.stripe_transfers_enabled === true,
       job_title: jobMap[p.job_id]?.title || 'Unknown',
       assignment_status: assignMap[p.assignment_id] || '',
     }));
 
-    if (filters?.status) merged = merged.filter((p: any) => p.eligibility_state === filters.status);
+    if (filters?.status) merged = merged.filter((p: any) => p.status === filters.status);
 
     setPayments(merged);
     setLoading(false);

@@ -1,14 +1,12 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { supabase, getSessionSafe } from '@/lib/supabase';
+import { supabase } from '@/lib/supabase';
 import { motion } from '@/components/motion';
 import { Mail, ArrowLeft, CheckCircle2, Loader2, FlaskConical, ShieldCheck, Smartphone, Clock3, Lock, Eye, EyeOff } from 'lucide-react';
 import Link from 'next/link';
-import { useSafeNavigation } from '@/hooks/useSafeNavigation';
 
 export default function UATTesterLoginPage() {
-  const { replace } = useSafeNavigation();
   const mountedRef = useRef(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -17,43 +15,10 @@ export default function UATTesterLoginPage() {
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [checkingAuth, setCheckingAuth] = useState(true);
-
-  const safeReplace = (href: string) => {
-    if (mountedRef.current) replace(href);
-  };
 
   useEffect(() => {
     mountedRef.current = true;
     return () => { mountedRef.current = false; };
-  }, []);
-
-  useEffect(() => {
-    let cancelled = false;
-
-    (async () => {
-      try {
-        const session = await getSessionSafe();
-        if (cancelled || !mountedRef.current) return;
-        if (session) {
-          safeReplace('/uat/dashboard');
-          return;
-        }
-      } catch {}
-      if (!cancelled && mountedRef.current) setCheckingAuth(false);
-    })();
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (cancelled || !mountedRef.current) return;
-      if (event === 'SIGNED_IN' && session) {
-        safeReplace('/uat/dashboard');
-      }
-    });
-
-    return () => {
-      cancelled = true;
-      subscription.unsubscribe();
-    };
   }, []);
 
   const handleSendLink = async (e: React.FormEvent) => {
@@ -93,8 +58,6 @@ export default function UATTesterLoginPage() {
       if (!mountedRef.current) return;
       if (authError) {
         setError(authError.message);
-      } else {
-        safeReplace('/uat/dashboard');
       }
     } catch (err: any) {
       if (mountedRef.current) {
@@ -104,14 +67,6 @@ export default function UATTesterLoginPage() {
       if (mountedRef.current) setLoading(false);
     }
   };
-
-  if (checkingAuth) {
-    return (
-      <div className="min-h-screen bg-[#f8fafc] flex items-center justify-center">
-        <div className="w-10 h-10 border-[3px] border-[#2878d0]/20 border-t-[#2878d0] rounded-full animate-spin" />
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#f8fafc] via-[#eef4e9] to-[#edf5ff] flex flex-col">

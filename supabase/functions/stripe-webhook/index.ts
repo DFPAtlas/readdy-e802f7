@@ -272,6 +272,120 @@ async function recordRefunds(
   }
 }
 
+async function syncConnectedAccount(
+  admin: AdminClient,
+  stripe: Stripe,
+  accountId: string,
+): Promise<void> {
+  if (!accountId || !accountId.startsWith("acct_")) return;
+
+  const account = await stripe.accounts.retrieve(accountId);
+  const details = account.details_submitted === true;
+  const transfers = account.capabilities?.transfers === "active";
+  const payouts = account.payouts_enabled === true;
+  const currentlyDue = account.requirements?.currently_due ?? [];
+  const eventuallyDue = account.requirements?.eventually_due ?? [];
+  const disabledReason = account.requirements?.disabled_reason ?? null;
+
+  let status: string;
+  if (disabledReason) status = "restricted";
+  else if (transfers && payouts && details) status = "ready";
+  else if (details) status = "verification_required";
+  else status = "onboarding";
+
+  const dueCount = currentlyDue.length;
+  const requirementsDue = dueCount > 0
+    ? { count: dueCount, eventually_due_count: eventuallyDue.length }
+    : null;
+
+  const { data: tester, error: testerError } = await admin
+    .from("uat_testers")
+    .select("id")
+    .eq("stripe_account_id", accountId)
+    .limit(1)
+    .maybeSingle();
+  if (testerError || !tester) return;
+
+  const { error: updateError } = await admin
+    .from("uat_testers")
+    .update({
+      stripe_onboarding_complete: status === "ready",
+      stripe_details_submitted: details,
+      stripe_transfers_enabled: transfers,
+      stripe_payouts_enabled: payouts,
+      stripe_payment_setup_status: status,
+      stripe_requirements_due: requirementsDue,
+      stripe_connect_updated_at: new Date().toISOString(),
+    })
+    .eq("id", tester.id);
+  if (updateError) throw updateError;
+}
+
+async function reconcileUatTransfer(
+  admin: AdminClient,
+  transfer: Stripe.Transfer,
+): Promise<void> {
+  const paymentId = transfer.metadata?.uat_payment_id ?? null;
+  const transferId = transfer.id;
+  if (!transferId) return;
+
+  let query = admin
+    .from("uat_payments")
+    .select("id, status, stripe_transfer_id")
+    .limit(1);
+  if (paymentId) {
+    query = query.eq("id", paymentId);
+  } else {
+    query = query.eq("stripe_transfer_id", transferId);
+  }
+  const { data: payment, error } = await query.maybeSingle();
+  if (error || !payment) return;
+
+  if (transfer.reversed === true) {
+    await admin
+      .from("uat_payments")
+      .update({
+        stripe_transfer_status: "reversed",
+        stripe_transfer_failure_code: "reversed",
+        stripe_transfer_failure_message: "Transfer was reversed",
+        stripe_last_reconciled_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", payment.id);
+
+    await admin.from("uat_audit_log").insert({
+      action: "reward_transfer_reversed",
+      entity_type: "uat_payment",
+      entity_id: payment.id,
+      new_value: { stripe_transfer_id: transferId, stripe_transfer_status: "reversed" },
+    });
+    return;
+  }
+
+  await admin
+    .from("uat_payments")
+    .update({
+      stripe_transfer_id: transferId,
+      stripe_transfer_status: "paid",
+      stripe_connected_account_id: transfer.destination,
+      stripe_transfer_created_at: new Date(transfer.created * 1000).toISOString(),
+      stripe_last_reconciled_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", payment.id);
+
+  if (payment.status === "approved") {
+    await admin
+      .from("uat_payments")
+      .update({
+        status: "paid",
+        paid_at: new Date(transfer.created * 1000).toISOString(),
+      })
+      .eq("id", payment.id)
+      .eq("status", "approved");
+  }
+}
+
 Deno.serve(async (req: Request) => {
   if (req.method !== "POST") {
     return Response.json({ error: "Method not allowed" }, { status: 405 });
@@ -386,6 +500,23 @@ Deno.serve(async (req: Request) => {
       }
       case "charge.refunded": {
         await recordRefunds(admin, event.data.object as Stripe.Charge, event);
+        break;
+      }
+      case "account.updated": {
+        const account = event.data.object as Stripe.Account;
+        await syncConnectedAccount(admin, stripe, account.id);
+        break;
+      }
+      case "capability.updated": {
+        const capability = event.data.object as Stripe.Capability;
+        const accountId = typeof capability.account === "string" ? capability.account : null;
+        if (accountId) await syncConnectedAccount(admin, stripe, accountId);
+        break;
+      }
+      case "transfer.created":
+      case "transfer.updated":
+      case "transfer.reversed": {
+        await reconcileUatTransfer(admin, event.data.object as Stripe.Transfer);
         break;
       }
       default:

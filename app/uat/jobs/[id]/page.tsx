@@ -1,4 +1,4 @@
-import TesterJobDetail from './TesterJobDetail';
+import JobClaimClient from './JobClaimClient';
 
 export async function generateStaticParams() {
   return [
@@ -8,7 +8,7 @@ export async function generateStaticParams() {
   ];
 }
 
-export default async function TesterJobPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function JobDetailsPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  return <TesterJobDetail jobId={id} />;
+  return <JobClaimClient jobId={id} />;
 }

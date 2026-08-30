@@ -53,7 +53,7 @@ export default function PBXComingSoonBanner({ onRequestAccess, compact = false }
               <span className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-[#F59E0B]/15 text-[#F59E0B] border border-[#F59E0B]/20 whitespace-nowrap">In Testing</span>
             </div>
             <p className="text-sm text-slate-400 max-w-2xl">
-              We are currently testing AI call routing, Twilio voice/SMS, n8n automations, voicemail, call logs, and usage billing. Some features shown here are in testing and may use demo data.
+              We are currently testing AI call routing, Twilio voice/SMS, n8n automations, voicemail, call logs, and usage billing. This is a demo — the design and layout are a work in progress and will change as development continues.
             </p>
           </div>
         </div>

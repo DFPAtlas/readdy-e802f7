@@ -1,6 +1,12 @@
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
+const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
+const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY") ?? "";
+const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
+
+const ALLOWED_ADMIN_ROLES = ["owner", "super_admin", "admin"];
+
 function getCorsHeaders(request: Request): { headers: Record<string, string>; originAllowed: boolean } {
   const origin = request.headers.get("origin");
   const appOrigin = Deno.env.get("DFP_APP_ORIGIN") || "https://digital-footprint.uk";
@@ -55,6 +61,25 @@ function renderTemplate(html: string, vars: Record<string, string>): string {
   return result;
 }
 
+async function auditLog(
+  supabaseAdmin: any,
+  callerId: string,
+  action: string,
+  details: Record<string, unknown>,
+  success: boolean,
+) {
+  await supabaseAdmin.from("admin_security_audit_log").insert({
+    actor_id: callerId,
+    action,
+    target_user_id: callerId,
+    success,
+    details,
+    created_at: new Date().toISOString(),
+    module: "admin-repair-2",
+    source: "edge_function",
+  }).catch(() => {});
+}
+
 serve(async (req: Request) => {
   const { headers: corsH, originAllowed } = getCorsHeaders(req);
 
@@ -77,16 +102,66 @@ serve(async (req: Request) => {
   }
 
   const authHeader = req.headers.get("Authorization") || "";
-  const supabaseClient = createClient(
-    Deno.env.get("SUPABASE_URL") ?? "",
-    Deno.env.get("SUPABASE_ANON_KEY") ?? "",
-    { global: { headers: { Authorization: authHeader } } }
-  );
+  if (!authHeader.startsWith("Bearer ")) {
+    return new Response(JSON.stringify({ error: "authentication_required" }), { status: 401, headers: corsH });
+  }
+  const token = authHeader.replace("Bearer ", "");
+
+  const supabaseAdmin = createClient(SUPABASE_URL, SERVICE_ROLE_KEY, {
+    auth: { autoRefreshToken: false, persistSession: false },
+  });
+
+  const supabaseUser = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+    global: { headers: { Authorization: authHeader } },
+  });
 
   try {
-    const { data: authUser } = await supabaseClient.auth.getUser();
-    if (!authUser?.user) {
+    const { data: authData, error: authError } = await supabaseAdmin.auth.getUser(token);
+    if (authError || !authData?.user) {
       return new Response(JSON.stringify({ error: "authentication_required" }), { status: 401, headers: corsH });
+    }
+
+    const callerId = authData.user.id;
+
+    const { data: profile } = await supabaseAdmin
+      .from("admin_profiles")
+      .select("role, active, suspended_at, archived_at")
+      .eq("id", callerId)
+      .maybeSingle();
+
+    if (
+      !profile ||
+      profile.active !== true ||
+      profile.suspended_at != null ||
+      profile.archived_at != null ||
+      !ALLOWED_ADMIN_ROLES.includes(profile.role)
+    ) {
+      await auditLog(supabaseAdmin, callerId, "template_email_rejected", {
+        reason: "insufficient_privileges",
+        endpoint: "send-template-email",
+      }, false);
+      return new Response(JSON.stringify({ error: "admin_permission_required" }), { status: 403, headers: corsH });
+    }
+
+    const { data: aalData, error: aalError } =
+      await supabaseAdmin.auth.mfa.getAuthenticatorAssuranceLevel(token);
+
+    if (aalError || !aalData) {
+      await auditLog(supabaseAdmin, callerId, "admin_mfa_required", {
+        reason: "aal2_required",
+        endpoint: "send-template-email",
+        outcome: "mfa_lookup_failed",
+      }, false);
+      return new Response(JSON.stringify({ error: "multi_factor_authentication_required" }), { status: 403, headers: corsH });
+    }
+
+    if (aalData.currentLevel !== "aal2") {
+      await auditLog(supabaseAdmin, callerId, "admin_mfa_required", {
+        reason: "aal2_required",
+        endpoint: "send-template-email",
+        outcome: "aal1_rejected",
+      }, false);
+      return new Response(JSON.stringify({ error: "multi_factor_authentication_required" }), { status: 403, headers: corsH });
     }
 
     const body: TemplateRequest = await req.json();
@@ -95,7 +170,7 @@ serve(async (req: Request) => {
       return new Response(JSON.stringify({ error: "invalid_request" }), { status: 400, headers: corsH });
     }
 
-    const { data: template, error: templateError } = await supabaseClient
+    const { data: template, error: templateError } = await supabaseUser
       .from("email_templates").select("*").eq("id", body.template_id).maybeSingle();
 
     if (templateError || !template) {

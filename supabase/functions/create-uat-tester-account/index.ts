@@ -51,6 +51,54 @@ Deno.serve(async (req: Request) => {
     }
 
     const callerId = authUser.user.id;
+
+    const { data: aalData, error: aalError } = await supabaseAdmin.auth.mfa.getAuthenticatorAssuranceLevel(token);
+
+    if (aalError || !aalData) {
+      await supabaseAdmin.from("admin_security_audit_log").insert({
+        actor_id: callerId,
+        action: "admin_mfa_required",
+        target_user_id: callerId,
+        success: false,
+        details: {
+          reason: "aal2_required",
+          endpoint: "create-uat-tester-account",
+          outcome: "mfa_lookup_failed",
+        },
+        created_at: new Date().toISOString(),
+        module: "admin-repair-2",
+        source: "edge_function",
+      }).catch(() => {});
+
+      return new Response(JSON.stringify({ error: "Multi-factor authentication status could not be verified" }), {
+        status: 403,
+        headers: corsHeaders(origin),
+      });
+    }
+
+    if (aalData.currentLevel !== "aal2") {
+      await supabaseAdmin.from("admin_security_audit_log").insert({
+        actor_id: callerId,
+        action: "admin_mfa_required",
+        target_user_id: callerId,
+        success: false,
+        details: {
+          reason: "aal2_required",
+          endpoint: "create-uat-tester-account",
+          current_level: aalData.currentLevel,
+          next_level: aalData.nextLevel,
+        },
+        created_at: new Date().toISOString(),
+        module: "admin-repair-2",
+        source: "edge_function",
+      }).catch(() => {});
+
+      return new Response(JSON.stringify({ error: "Multi-factor authentication required" }), {
+        status: 403,
+        headers: corsHeaders(origin),
+      });
+    }
+
     const { data: callerProfile } = await supabaseAdmin
       .from("admin_profiles")
       .select("role, active")

@@ -246,6 +246,21 @@ serve(async (req: Request) => {
   }
   const callerId = authUser.user.id;
 
+  const { data: aalData, error: aalError } = await supabaseAdmin.auth.mfa.getAuthenticatorAssuranceLevel(token);
+  if (aalError || !aalData || aalData.currentLevel !== "aal2") {
+    await audit(supabaseAdmin, {
+      eventType: "portal.mfa_required",
+      entityType: "admin_profiles",
+      entityId: callerId,
+      actorId: callerId,
+      metadata: {
+        result: "forbidden",
+        reason: aalError || !aalData ? "mfa_lookup_failed" : "aal2_required",
+      },
+    });
+    return Response.json({ code: "MFA_REQUIRED" }, { status: 403, headers });
+  }
+
   const { data: callerProfile } = await supabaseAdmin
     .from("admin_profiles")
     .select("role, active, suspended_at, archived_at")

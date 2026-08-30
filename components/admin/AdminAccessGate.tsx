@@ -1,14 +1,15 @@
 'use client';
 
-import { useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { useGateState, type GateVerifyResult } from '@/hooks/useGateState';
 import { verifyAdminAccess, getAccessDeniedMessage, type AdminAccessDeniedReason } from '@/lib/admin-access';
+import { getAdminMfaDestination } from '@/lib/admin-mfa';
 import type { Session } from '@supabase/supabase-js';
 
-const PUBLIC_PATHS = ['/admin/login', '/admin/reset-password', '/admin/recovery'];
+const PUBLIC_PATHS = ['/admin/login', '/admin/reset-password', '/admin/recovery', '/admin/mfa', '/admin/mfa/setup'];
 
 function normalisePath(value: string) {
   if (!value) return '/';
@@ -31,18 +32,45 @@ function ProtectedAdminAccessGate({ children }: { children: React.ReactNode }) {
   const navigationInProgressRef = useRef(false);
 
   const verifyAccess = useCallback(async (session: Session): Promise<GateVerifyResult> => {
+    const { data: userData, error: userError } = await supabase.auth.getUser();
+    if (userError || !userData?.user) {
+      await supabase.auth.signOut();
+      return { allowed: false, redirectTo: '/admin/login' };
+    }
+    if (userData.user.id !== session.user.id) {
+      await supabase.auth.signOut();
+      return { allowed: false, redirectTo: '/admin/login' };
+    }
+
     const result = await verifyAdminAccess(session);
-    return {
-      allowed: result.allowed,
-      reason: result.reason,
-    };
+    if (!result.allowed) {
+      return { allowed: false, reason: result.reason };
+    }
+
+    const mfa = await getAdminMfaDestination();
+    if (!mfa.destination) {
+      return { allowed: false, reason: 'query_failed' };
+    }
+
+    if (mfa.destination === '/admin') {
+      return { allowed: true };
+    }
+
+    return { allowed: false, redirectTo: mfa.destination };
   }, []);
 
-  const { gateState, deniedReason } = useGateState({
+  const { gateState, deniedReason, redirectTo } = useGateState({
     publicPaths: PUBLIC_PATHS,
     loginPath: '/admin/login',
     verifyAccess,
   });
+
+  useEffect(() => {
+    if (gateState === 'redirecting' && redirectTo && !navigationInProgressRef.current) {
+      navigationInProgressRef.current = true;
+      router.replace(redirectTo);
+    }
+  }, [gateState, redirectTo, router]);
 
   const handleSignOut = async () => {
     if (navigationInProgressRef.current) return;
@@ -56,6 +84,15 @@ function ProtectedAdminAccessGate({ children }: { children: React.ReactNode }) {
       <div className="min-h-screen bg-[#0F172A] flex flex-col items-center justify-center gap-4">
         <div className="w-10 h-10 border-[3px] border-[#7C3AED]/30 border-t-[#7C3AED] rounded-full animate-spin" />
         <p className="text-sm text-slate-500">Checking administrator access...</p>
+      </div>
+    );
+  }
+
+  if (gateState === 'redirecting') {
+    return (
+      <div className="min-h-screen bg-[#0F172A] flex flex-col items-center justify-center gap-4">
+        <div className="w-10 h-10 border-[3px] border-[#06B6D4]/30 border-t-[#06B6D4] rounded-full animate-spin" />
+        <p className="text-sm text-slate-500">Securing administrator session…</p>
       </div>
     );
   }

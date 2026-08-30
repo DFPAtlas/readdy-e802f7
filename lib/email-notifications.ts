@@ -2,20 +2,31 @@
 
 import { supabase } from '@/lib/supabase';
 
-const EDGE_FUNCTION_URL = 'https://zjqftnkrmqhmbrtkvafy.supabase.co/functions/v1/send-portal-notification-email';
+const EDGE_FUNCTION_URL = 'https://zjqftnkrmqhmbrtkvafy.supabase.co/functions/v1/dispatch-portal-notification';
 
 interface SendEmailParams {
   to_user_id?: string;
   to_email?: string;
   to_name?: string;
-  subject: string;
-  html: string;
+  subject?: string;
+  html?: string;
   event_type: string;
   related_entity_id?: string;
 }
 
-export async function sendNotificationEmail(params: SendEmailParams): Promise<void> {
-  const idempotency_key = `email:${params.event_type}:${params.related_entity_id || Date.now()}:${params.to_user_id || params.to_email || 'unknown'}`;
+export interface NotificationResult {
+  success: boolean;
+  delivered?: number;
+  failed?: number;
+  deduped?: number;
+  skipped?: boolean;
+  skipReason?: string;
+  error?: string;
+}
+
+export async function sendNotificationEmail(params: SendEmailParams): Promise<NotificationResult> {
+  const body: Record<string, unknown> = { event_type: params.event_type };
+  if (params.related_entity_id) body.related_entity_id = params.related_entity_id;
 
   try {
     const { data: { session } } = await supabase.auth.getSession();
@@ -29,21 +40,52 @@ export async function sendNotificationEmail(params: SendEmailParams): Promise<vo
     const response = await fetch(EDGE_FUNCTION_URL, {
       method: 'POST',
       headers,
-      body: JSON.stringify({
-        to_user_id: params.to_user_id,
-        to_email: params.to_email,
-        to_name: params.to_name,
-        subject: params.subject,
-        html: params.html,
-        idempotency_key,
-        event_type: params.event_type,
-        related_entity_id: params.related_entity_id,
-      }),
+      body: JSON.stringify(body),
     });
 
-    const result = await response.json();
-  } catch {
-    // silently ignore email failures
+    const responseText = await response.text();
+    let parsed: Record<string, unknown> | null = null;
+    try {
+      parsed = JSON.parse(responseText);
+    } catch {
+      parsed = null;
+    }
+
+    if (!response.ok) {
+      const error = (parsed?.error as string) || `dispatch_http_${response.status}`;
+      if (process.env.NODE_ENV === 'development') {
+        console.warn('[portal-notification] dispatch rejected:', error);
+      }
+      return { success: false, error };
+    }
+
+    const delivered = (parsed?.delivered as number) ?? 0;
+    const failed = (parsed?.failed as number) ?? 0;
+    const skipped = (parsed?.skipped as boolean) ?? false;
+
+    if (failed > 0 || (delivered === 0 && !skipped)) {
+      if (process.env.NODE_ENV === 'development') {
+        console.warn(
+          '[portal-notification] not delivered:',
+          params.event_type,
+          (parsed?.skip_reason as string) || 'no recipients',
+        );
+      }
+    }
+
+    return {
+      success: true,
+      delivered,
+      failed,
+      deduped: (parsed?.deduped as number) ?? 0,
+      skipped,
+      skipReason: (parsed?.skip_reason as string) || undefined,
+    };
+  } catch (err) {
+    if (process.env.NODE_ENV === 'development') {
+      console.warn('[portal-notification] dispatch error:', err instanceof Error ? err.message : 'network_error');
+    }
+    return { success: false, error: 'network_error' };
   }
 }
 

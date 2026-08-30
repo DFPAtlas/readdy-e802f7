@@ -6,6 +6,7 @@ import type { Session } from '@supabase/supabase-js';
 export interface GateVerifyResult {
   allowed: boolean;
   reason?: string;
+  redirectTo?: string;
 }
 
 export interface GateStateOptions {
@@ -14,7 +15,7 @@ export interface GateStateOptions {
   verifyAccess: (session: Session) => Promise<GateVerifyResult>;
 }
 
-export type GateState = 'idle' | 'checking' | 'allowed' | 'denied';
+export type GateState = 'idle' | 'checking' | 'allowed' | 'denied' | 'redirecting';
 
 function readPersistedDebug(): unknown[] {
   if (typeof window === 'undefined') return [];
@@ -39,10 +40,12 @@ function clearPersistedDebug() {
 export function useGateState({ publicPaths, loginPath, verifyAccess }: GateStateOptions) {
   const [gateState, setGateState] = useState<GateState>('checking');
   const [deniedReason, setDeniedReason] = useState<string | null>(null);
+  const [redirectTo, setRedirectTo] = useState<string | null>(null);
 
   const mountedRef = useRef(true);
   const pathname = usePathname();
   const retryCountRef = useRef(0);
+  const gateStateRef = useRef<GateState>('checking');
 
   const configRef = useRef({ publicPaths, loginPath, verifyAccess });
   configRef.current = { publicPaths, loginPath, verifyAccess };
@@ -51,6 +54,10 @@ export function useGateState({ publicPaths, loginPath, verifyAccess }: GateState
     mountedRef.current = true;
     return () => { mountedRef.current = false; };
   }, []);
+
+  useEffect(() => {
+    gateStateRef.current = gateState;
+  }, [gateState]);
 
   useEffect(() => {
     const { publicPaths: pub, verifyAccess: verify } = configRef.current;
@@ -74,6 +81,7 @@ export function useGateState({ publicPaths, loginPath, verifyAccess }: GateState
     if (isPublic) {
       setGateState('allowed');
       setDeniedReason(null);
+      setRedirectTo(null);
       return;
     }
 
@@ -85,7 +93,9 @@ export function useGateState({ publicPaths, loginPath, verifyAccess }: GateState
 
       if (!checking) {
         checking = true;
-        setGateState('checking');
+        if (gateStateRef.current !== 'allowed') {
+          setGateState('checking');
+        }
       }
 
       try {
@@ -96,6 +106,7 @@ export function useGateState({ publicPaths, loginPath, verifyAccess }: GateState
           if (isRetry || retryCountRef.current >= 2) {
             setGateState('denied');
             setDeniedReason('unauthenticated');
+            setRedirectTo(null);
           } else {
             retryCountRef.current += 1;
             if (typeof window !== 'undefined') {
@@ -113,6 +124,11 @@ export function useGateState({ publicPaths, loginPath, verifyAccess }: GateState
         if (result.allowed) {
           setGateState('allowed');
           setDeniedReason(null);
+          setRedirectTo(null);
+        } else if (result.redirectTo) {
+          setRedirectTo(result.redirectTo);
+          setDeniedReason(null);
+          setGateState('redirecting');
         } else {
           setGateState('denied');
           setDeniedReason(result.reason || 'Access denied.');
@@ -127,6 +143,7 @@ export function useGateState({ publicPaths, loginPath, verifyAccess }: GateState
     if (!isSupabaseConfigured()) {
       setGateState('denied');
       setDeniedReason('Authentication service is unavailable.');
+      setRedirectTo(null);
       return;
     }
 
@@ -146,10 +163,16 @@ export function useGateState({ publicPaths, loginPath, verifyAccess }: GateState
       if (event === 'SIGNED_OUT') {
         setGateState('denied');
         setDeniedReason('unauthenticated');
+        setRedirectTo(null);
         return;
       }
 
-      if (event === 'SIGNED_IN' || event === 'USER_UPDATED' || event === 'INITIAL_SESSION') {
+      if (
+        event === 'SIGNED_IN' ||
+        event === 'USER_UPDATED' ||
+        event === 'INITIAL_SESSION' ||
+        event === 'TOKEN_REFRESHED'
+      ) {
         runCheck();
       }
     });
@@ -161,5 +184,5 @@ export function useGateState({ publicPaths, loginPath, verifyAccess }: GateState
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
-  return { gateState, deniedReason };
+  return { gateState, deniedReason, redirectTo };
 }

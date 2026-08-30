@@ -4,14 +4,19 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion } from '@/components/motion';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
-import { AlertCircle, Ban, ArrowLeft, Flag, X, Mail, MessageSquare, Webhook, ArrowLeftRight } from 'lucide-react';
+import Link from 'next/link';
+import { AlertCircle, Ban, ArrowLeft, Flag, X, Mail, MessageSquare, Webhook, ArrowLeftRight, Play } from 'lucide-react';
 import { useUATTester } from '@/components/uat/UATTesterProvider';
+import { formatReward, formatDuration } from '@/lib/uat-marketplace';
+import { assignmentLabel, assignmentBadge, rewardStatusLabel, resolveReviewStatus, type RewardStatus } from '@/lib/uat-assignment';
 import UATPortalBreadcrumbs from '@/components/uat/portal/UATPortalBreadcrumbs';
+import UATAssignmentSummary from '@/components/uat/portal/UATAssignmentSummary';
 import TestCasePanel from '@/components/uat/portal/TestCasePanel';
 import TestCaseDetailPanel from '@/components/uat/portal/TestCaseDetailPanel';
 import SessionPanel from '@/components/uat/portal/SessionPanel';
 import MonitoringCard from '@/components/uat/portal/UATMonitoringCard';
 import UATSandboxCard from '@/components/uat/portal/UATSandboxCard';
+import SubmissionStatusPanel from '@/components/uat/portal/SubmissionStatusPanel';
 import { useUATMonitorStatus } from '@/hooks/useUATMonitorStatus';
 import { useMailbox } from '@/hooks/useMailbox';
 import { checkWorkerHealth } from '@/lib/uat-sandbox/worker/sandbox-service';
@@ -57,6 +62,20 @@ export default function TestDetail({ assignmentId }: { assignmentId: string }) {
   const [monitoringEnabled, setMonitoringEnabled] = useState(false);
   const [projectId, setProjectId] = useState<string | null>(null);
   const [environmentUrl, setEnvironmentUrl] = useState<string | null>(null);
+  const [agreedRewardLabel, setAgreedRewardLabel] = useState('');
+  const [requiredDevices, setRequiredDevices] = useState<string[]>([]);
+  const [requiredBrowsers, setRequiredBrowsers] = useState<string[]>([]);
+  const [evidenceRequirements, setEvidenceRequirements] = useState<string | null>(null);
+  const [estimatedDuration, setEstimatedDuration] = useState<string | null>(null);
+  const [testerLoginUrl, setTesterLoginUrl] = useState<string | null>(null);
+  const [environmentName, setEnvironmentName] = useState<string | null>(null);
+  const [rewardStatus, setRewardStatus] = useState<RewardStatus | null>(null);
+  const [reviewStatus, setReviewStatus] = useState<string | null>(null);
+  const [reviewFeedback, setReviewFeedback] = useState<string | null>(null);
+  const [reviewedAt, setReviewedAt] = useState<string | null>(null);
+  const [requestedCaseIds, setRequestedCaseIds] = useState<string[]>([]);
+  const [submittedAt, setSubmittedAt] = useState<string | null>(null);
+  const [completedAt, setCompletedAt] = useState<string | null>(null);
   const [sandboxStatus, setSandboxStatus] = useState<string | null>(null);
   const [sandboxMode, setSandboxMode] = useState<string | null>(null);
   const [sandboxHealth, setSandboxHealth] = useState<string | null>(null);
@@ -83,19 +102,19 @@ export default function TestDetail({ assignmentId }: { assignmentId: string }) {
   const loadData = async () => {
     setLoading(true);
     const { data: assign } = await supabase.from('uat_assignments')
-      .select('id, status, access_expires_at, job_id')
+      .select('id, status, access_expires_at, job_id, agreed_reward_amount_minor, currency, deadline, submitted_at, completed_at, review_status, review_feedback, reviewed_at, review_requested_case_ids')
       .eq('id', assignmentId).eq('tester_id', testerId).maybeSingle();
 
     if (!assign) { setNotFound(true); setLoading(false); return; }
 
     const aData = assign as any;
 
-    if (aData.status === 'cancelled' || aData.status === 'expired') {
-      setBlocked(true); setBlockedMessage('This test assignment has been cancelled or has expired.');
+    if (['cancelled', 'expired', 'rejected', 'declined', 'no_show'].includes(aData.status)) {
+      setBlocked(true); setBlockedMessage('This test assignment is no longer active.');
       setLoading(false); return;
     }
 
-    if (aData.access_expires_at && new Date(aData.access_expires_at) < new Date() && aData.status !== 'submitted') {
+    if (aData.access_expires_at && new Date(aData.access_expires_at) < new Date() && !['submitted', 'review_required', 'retest_required', 'completed', 'complete', 'approved'].includes(aData.status)) {
       setBlocked(true); setBlockedMessage('This test access has expired.');
       setLoading(false); return;
     }
@@ -105,16 +124,35 @@ export default function TestDetail({ assignmentId }: { assignmentId: string }) {
     let deadline: string | null = null;
 
     if (aData.job_id) {
-      const { data: job } = await supabase.from('uat_jobs').select('title, project_id, deadline').eq('id', aData.job_id).maybeSingle();
+      const { data: job } = await supabase.from('uat_jobs').select('title, project_id, deadline, required_devices, required_browsers, evidence_requirements, estimated_minutes_min, estimated_minutes_max').eq('id', aData.job_id).maybeSingle();
       if (job) {
         jobTitle = (job as any).title || '';
-        deadline = (job as any).deadline || null;
+        deadline = (aData as any).deadline || (job as any).deadline || null;
+        setRequiredDevices((job as any).required_devices || []);
+        setRequiredBrowsers((job as any).required_browsers || []);
+        setEvidenceRequirements((job as any).evidence_requirements || null);
+        setEstimatedDuration(formatDuration((job as any).estimated_minutes_min, (job as any).estimated_minutes_max));
         if ((job as any).project_id) {
           const { data: proj } = await supabase.from('uat_projects').select('name').eq('id', (job as any).project_id).maybeSingle();
           if (proj) projectName = (proj as any).name || null;
         }
       }
     }
+
+    setAgreedRewardLabel(formatReward((aData as any).agreed_reward_amount_minor, (aData as any).currency || 'GBP'));
+    setReviewStatus((aData as any).review_status || null);
+    setReviewFeedback((aData as any).review_feedback || null);
+    setReviewedAt((aData as any).reviewed_at || null);
+    setRequestedCaseIds(Array.isArray((aData as any).review_requested_case_ids) ? (aData as any).review_requested_case_ids : []);
+    setSubmittedAt((aData as any).submitted_at || null);
+    setCompletedAt((aData as any).completed_at || null);
+
+    const { data: pay } = await supabase.from('uat_payments')
+      .select('status, eligibility_state')
+      .eq('assignment_id', aData.id)
+      .eq('tester_id', testerId)
+      .maybeSingle();
+    if (pay) setRewardStatus(rewardStatusLabel(pay as any));
 
     setAssignment({
       id: aData.id,
@@ -198,8 +236,12 @@ export default function TestDetail({ assignmentId }: { assignmentId: string }) {
       pid = (job as any)?.project_id || null;
       if (pid) setProjectId(pid);
       if ((job as any)?.environment_id) {
-        const { data: env } = await supabase.from('uat_environments').select('base_url').eq('id', (job as any).environment_id).maybeSingle();
-        if (env) setEnvironmentUrl((env as any).base_url || null);
+        const { data: env } = await supabase.from('uat_environments').select('base_url, tester_login_url, login_url, environment_name').eq('id', (job as any).environment_id).maybeSingle();
+        if (env) {
+          setEnvironmentUrl((env as any).base_url || null);
+          setTesterLoginUrl((env as any).tester_login_url || null);
+          setEnvironmentName((env as any).environment_name || null);
+        }
       }
     }
     if (!pid) return;
@@ -222,7 +264,8 @@ export default function TestDetail({ assignmentId }: { assignmentId: string }) {
   };
 
   const handleOpenTestWebsite = () => {
-    if (environmentUrl) window.open(environmentUrl, '_blank', 'noopener');
+    const url = testerLoginUrl || environmentUrl;
+    if (url) window.open(url, '_blank', 'noopener');
   };
 
   const handleReconnectMonitoring = async () => {
@@ -306,24 +349,36 @@ export default function TestDetail({ assignmentId }: { assignmentId: string }) {
     );
   }
 
-  if (assignment?.status === 'submitted' || assignment?.status === 'completed' || assignment?.status === 'approved') {
+  if (['submitted', 'review_required', 'retest_required', 'completed', 'complete', 'approved'].includes(assignment?.status || '')) {
+    const reviewInfo = resolveReviewStatus(assignment?.status || '', reviewStatus);
+    const requestedCases = testCases
+      .filter((c) => requestedCaseIds.includes(c.id))
+      .map((c) => ({ id: c.id, reference: c.reference, title: c.title }));
     return (
       <>
         <UATPortalBreadcrumbs items={[{ label: 'My Tests', href: '/uat/my-tests' }, { label: assignment?.job_title || 'Test' }]} />
         <div className="mt-6">
-          <div className="bg-white border border-slate-100 rounded-2xl shadow-sm p-8 text-center max-w-xl mx-auto">
-            <div className="w-16 h-16 rounded-2xl bg-emerald-50 flex items-center justify-center mx-auto mb-6">
-              <i className="ri-check-double-line text-2xl text-emerald-500 w-8 h-8 flex items-center justify-center" />
-            </div>
-            <h3 className="text-xl font-bold text-[#17325c] mb-2">Test Submitted</h3>
-            <p className="text-slate-500 mb-6">This assignment has been submitted for review.</p>
-            <div className="flex justify-center gap-3">
-              <button onClick={() => router.push('/uat/my-tests')}
-                className="px-6 py-2.5 bg-slate-100 hover:bg-slate-200 rounded-xl text-sm font-semibold text-slate-600 cursor-pointer whitespace-nowrap transition-colors">Back to My Tests</button>
-              <button onClick={() => router.push(`/uat/feedback/${assignmentId}`)}
-                className="px-6 py-2.5 bg-[#2878d0] hover:bg-[#1e68b9] rounded-xl text-sm font-semibold text-white cursor-pointer whitespace-nowrap transition-colors">View Feedback</button>
-            </div>
-          </div>
+          <SubmissionStatusPanel
+            jobTitle={assignment?.job_title || 'Test'}
+            projectName={assignment?.project_name || null}
+            statusLabel={reviewInfo.label}
+            statusBadge={reviewInfo.badge}
+            reviewCategory={reviewInfo.category}
+            submittedAt={submittedAt}
+            completedAt={completedAt}
+            reviewedAt={reviewedAt}
+            totalCases={testCases.length}
+            passedCount={passedCount}
+            failedCount={failedCount}
+            blockedCount={blockedCount}
+            agreedRewardLabel={agreedRewardLabel}
+            rewardStatus={rewardStatus}
+            reviewFeedback={reviewFeedback}
+            responseDeadline={null}
+            requestedCases={requestedCases}
+            onUpdateRequestedItems={() => router.push(`/uat/my-tests/${assignmentId}/run`)}
+            onViewMyTests={() => router.push('/uat/my-tests')}
+          />
         </div>
       </>
     );
@@ -347,6 +402,38 @@ export default function TestDetail({ assignmentId }: { assignmentId: string }) {
         }`}>
           {sessionStatus || 'No Session'}
         </span>
+      </div>
+
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[#2878d0]/20 bg-[#edf5ff] px-5 py-4">
+        <div className="min-w-0">
+          <p className="text-sm font-bold text-[#17325c]">Structured test runner</p>
+          <p className="text-xs text-slate-500 mt-0.5">Work through cases one by one, attach evidence and submit for review.</p>
+        </div>
+        <Link
+          href={`/uat/my-tests/${assignmentId}/run`}
+          className="inline-flex items-center gap-1.5 rounded-xl bg-[#2878d0] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#1e68b9] transition-colors whitespace-nowrap"
+        >
+          <Play className="h-4 w-4" /> Run Test
+        </Link>
+      </div>
+
+      <div className="mt-5">
+        <UATAssignmentSummary
+          statusLabel={assignmentLabel(assignment.status)}
+          statusBadge={assignmentBadge(assignment.status)}
+          agreedRewardLabel={agreedRewardLabel}
+          deadline={assignment.deadline}
+          estimatedDuration={estimatedDuration}
+          requiredDevices={requiredDevices}
+          requiredBrowsers={requiredBrowsers}
+          evidenceRequirements={evidenceRequirements}
+          progressCompleted={completedCases.length}
+          progressTotal={testCases.length}
+          environmentUrl={environmentUrl}
+          testerLoginUrl={testerLoginUrl}
+          environmentName={environmentName}
+          onOpenTestWebsite={handleOpenTestWebsite}
+        />
       </div>
 
       {monitoringEnabled && (

@@ -27,6 +27,7 @@ Deno.serve(async (req: Request) => {
   }
 
   try {
+    // Step 1: Require Authorization header with Bearer token
     const authHeader = req.headers.get("authorization");
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
       return new Response(JSON.stringify({ error: "Authentication required" }), {
@@ -36,6 +37,8 @@ Deno.serve(async (req: Request) => {
     }
 
     const token = authHeader.replace("Bearer ", "");
+
+    // Step 2: Cryptographically verify the token via auth.getUser()
     const { data: authUser, error: authError } = await supabaseAdmin.auth.getUser(token);
 
     if (authError || !authUser?.user) {
@@ -47,6 +50,59 @@ Deno.serve(async (req: Request) => {
 
     const callerId = authUser.user.id;
 
+    // Step 3: Check MFA assurance level BEFORE any privileged action.
+    // Pass the token explicitly so the server-side client can determine AAL
+    // via a network request rather than relying on a browser session.
+    const { data: aalData, error: aalError } = await supabaseAdmin.auth.mfa.getAuthenticatorAssuranceLevel(token);
+
+    if (aalError || !aalData) {
+      // Fail closed — cannot determine MFA state
+      await supabaseAdmin.from("admin_security_audit_log").insert({
+        actor_id: callerId,
+        action: "admin_mfa_required",
+        target_user_id: callerId,
+        success: false,
+        details: {
+          reason: "aal2_required",
+          endpoint: "create-admin-user",
+          outcome: "mfa_lookup_failed",
+        },
+        created_at: new Date().toISOString(),
+        module: "admin-repair-2",
+        source: "edge_function",
+      }).catch(() => {});
+
+      return new Response(JSON.stringify({ error: "Multi-factor authentication status could not be verified" }), {
+        status: 403,
+        headers: corsHeaders(origin),
+      });
+    }
+
+    if (aalData.currentLevel !== "aal2") {
+      // Caller has not completed TOTP MFA — reject
+      await supabaseAdmin.from("admin_security_audit_log").insert({
+        actor_id: callerId,
+        action: "admin_mfa_required",
+        target_user_id: callerId,
+        success: false,
+        details: {
+          reason: "aal2_required",
+          endpoint: "create-admin-user",
+          current_level: aalData.currentLevel,
+          next_level: aalData.nextLevel,
+        },
+        created_at: new Date().toISOString(),
+        module: "admin-repair-2",
+        source: "edge_function",
+      }).catch(() => {});
+
+      return new Response(JSON.stringify({ error: "Multi-factor authentication required" }), {
+        status: 403,
+        headers: corsHeaders(origin),
+      });
+    }
+
+    // Step 4: Verify caller has an active owner/super_admin admin profile
     const { data: callerProfile } = await supabaseAdmin
       .from("admin_profiles")
       .select("role, active")
@@ -64,7 +120,7 @@ Deno.serve(async (req: Request) => {
         created_at: new Date().toISOString(),
         module: "admin-repair-2",
         source: "edge_function",
-      });
+      }).catch(() => {});
 
       return new Response(JSON.stringify({ error: "Only owners and super administrators can create admin accounts" }), {
         status: 403,
@@ -72,6 +128,7 @@ Deno.serve(async (req: Request) => {
       });
     }
 
+    // Step 5: Parse and validate request body
     const body = await req.json();
     const { email, password, role, full_name } = body;
 
@@ -99,6 +156,7 @@ Deno.serve(async (req: Request) => {
     const VALID_ROLES = ["owner", "super_admin", "admin", "department_head", "team_lead", "manager", "staff", "contractor", "auditor"];
     const assignedRole = (typeof role === "string" && VALID_ROLES.includes(role)) ? role : "admin";
 
+    // Step 6: Execute admin creation logic using the service-role client
     const { data: existingUsers, error: listError } = await supabaseAdmin.auth.admin.listUsers();
     if (listError) {
       return new Response(JSON.stringify({ error: "Failed to check existing users" }), {
@@ -136,7 +194,7 @@ Deno.serve(async (req: Request) => {
         created_at: new Date().toISOString(),
         module: "admin-repair-2",
         source: "edge_function",
-      });
+      }).catch(() => {});
 
       return new Response(JSON.stringify({
         message: "User already exists. Profile ensured.",
@@ -176,7 +234,7 @@ Deno.serve(async (req: Request) => {
       created_at: new Date().toISOString(),
       module: "admin-repair-2",
       source: "edge_function",
-    });
+    }).catch(() => {});
 
     return new Response(JSON.stringify({
       message: "Admin user created",

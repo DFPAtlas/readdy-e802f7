@@ -10,6 +10,7 @@ import {
   Download, Zap, StopCircle, RotateCcw, Eye,
 } from 'lucide-react';
 import AdminShell from '../../../../../components/admin/AdminShell';
+import DefectReviewSection from '../../../../../components/admin/uat/DefectReviewSection';
 
 const REPRODUCTION_ACTION_LABELS: Record<string, string> = {
   navigate: 'Navigate', click: 'Click', fill: 'Fill', select: 'Select',
@@ -610,6 +611,9 @@ export default function AdminFeedbackDetail({ feedbackId }: { feedbackId: string
             )}
           </div>
         </div>
+
+        {/* UAT Defect Review */}
+        <DefectReviewSection feedback={feedback} onRefresh={fetchData} />
 
         {/* Automated Reproduction Section */}
         <div className="mt-6 bg-[#1E293B] border border-[rgba(255,255,255,0.08)] rounded-2xl overflow-hidden">

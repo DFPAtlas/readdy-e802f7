@@ -286,6 +286,11 @@ export default function MessagesPage() {
     const { error: msgErr } = await supabase.from('project_messages').insert(msg);
     if (msgErr) { setCreating(false); return; }
 
+    sendNotificationEmail({
+      event_type: 'client_thread_created',
+      related_entity_id: threadData.id,
+    }).catch(() => {});
+
     setShowNewModal(false);
     setNewSubject('');
     setNewBody('');

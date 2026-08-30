@@ -8,14 +8,14 @@ interface UATJobCardProps {
   title: string;
   projectName?: string | null;
   devices?: string[] | null;
-  estimatedHours?: number | null;
-  payAmount?: number | null;
+  durationLabel?: string;
+  rewardLabel?: string;
   icon?: React.ReactNode;
 }
 
-export default function UATJobCard({ id, title, projectName, devices, estimatedHours, payAmount, icon }: UATJobCardProps) {
+export default function UATJobCard({ id, title, projectName, devices, durationLabel, rewardLabel, icon }: UATJobCardProps) {
   return (
-    <div className="grid gap-4 px-5 py-4 md:grid-cols-[minmax(200px,1.5fr)_0.8fr_0.6fr_0.5fr_auto] md:items-center">
+    <div className="grid gap-4 px-5 py-4 md:grid-cols-[minmax(200px,1.5fr)_0.8fr_0.6fr_0.6fr_auto] md:items-center">
       <div className="flex items-center gap-3">
         {icon || (
           <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-sky-100">
@@ -29,10 +29,10 @@ export default function UATJobCard({ id, title, projectName, devices, estimatedH
       </div>
       <p className="text-sm text-slate-500">{devices?.join(', ') || 'Any device'}</p>
       <p className="flex items-center gap-1 text-sm text-slate-500">
-        <Clock className="h-4 w-4" />{estimatedHours ? `${estimatedHours}h` : '-'}
+        <Clock className="h-4 w-4" />{durationLabel || '-'}
       </p>
       <span className="w-fit rounded-lg bg-[#edf4e8] px-3 py-1 text-sm font-bold text-[#617a50] whitespace-nowrap">
-        {payAmount != null ? `£${payAmount}` : '-'}
+        {rewardLabel || '-'}
       </span>
       <Link
         href={`/uat/jobs/${id}`}

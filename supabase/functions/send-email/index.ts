@@ -1,6 +1,8 @@
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
+const ALLOWED_ADMIN_ROLES = ["owner", "super_admin", "admin"];
+
 function getCorsHeaders(request: Request): { headers: Record<string, string>; originAllowed: boolean } {
   const origin = request.headers.get("origin");
   const appOrigin = Deno.env.get("DFP_APP_ORIGIN") || "https://digital-footprint.uk";
@@ -44,6 +46,24 @@ interface EmailRequest {
   reply_to?: string;
 }
 
+async function auditLog(
+  supabaseAdmin: any,
+  callerId: string,
+  action: string,
+  details: Record<string, unknown>,
+) {
+  await supabaseAdmin.from("admin_security_audit_log").insert({
+    actor_id: callerId,
+    action,
+    target_user_id: callerId,
+    success: false,
+    details,
+    created_at: new Date().toISOString(),
+    module: "send-email",
+    source: "edge_function",
+  }).catch(() => {});
+}
+
 serve(async (req: Request) => {
   const { headers: corsH, originAllowed } = getCorsHeaders(req);
 
@@ -65,35 +85,78 @@ serve(async (req: Request) => {
     return new Response(JSON.stringify({ error: "service_unavailable" }), { status: 500, headers: corsH });
   }
 
+  const authHeader = req.headers.get("authorization") || "";
+  if (!authHeader.startsWith("Bearer ")) {
+    return new Response(JSON.stringify({ error: "authentication_required" }), { status: 401, headers: corsH });
+  }
+  const token = authHeader.replace("Bearer ", "");
+
+  const supabaseUrl = Deno.env.get("SUPABASE_URL") || "";
+  const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || "";
+  const supabaseAdmin = createClient(supabaseUrl, supabaseKey, {
+    auth: { autoRefreshToken: false, persistSession: false },
+  });
+
   try {
-    const authHeader = req.headers.get("authorization");
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return new Response(JSON.stringify({ error: "authentication_required" }), { status: 401, headers: corsH });
-    }
-
-    const supabaseUrl = Deno.env.get("SUPABASE_URL") || "";
-    const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || "";
-    const supabase = createClient(supabaseUrl, supabaseKey);
-
-    const token = authHeader.replace("Bearer ", "");
-    const { data: authUser, error: authError } = await supabase.auth.getUser(token);
+    const { data: authUser, error: authError } = await supabaseAdmin.auth.getUser(token);
     if (authError || !authUser?.user) {
       return new Response(JSON.stringify({ error: "authentication_required" }), { status: 401, headers: corsH });
     }
 
-    const { data: adminProfile } = await supabase
-      .from("admin_profiles").select("role, active").eq("id", authUser.user.id).eq("active", true).maybeSingle();
+    const callerId = authUser.user.id;
 
-    let isAuthorised = adminProfile && ["owner", "super_admin", "admin"].includes(adminProfile.role);
+    const { data: adminProfile } = await supabaseAdmin
+      .from("admin_profiles")
+      .select("role, active, suspended_at, archived_at")
+      .eq("id", callerId)
+      .maybeSingle();
 
-    if (!isAuthorised) {
-      const { data: staffProfile } = await supabase
-        .from("staff_profiles").select("role, active").eq("id", authUser.user.id).eq("active", true).maybeSingle();
-      isAuthorised = !!staffProfile;
-    }
+    const isFullAdmin = adminProfile && ALLOWED_ADMIN_ROLES.includes(adminProfile.role);
 
-    if (!isAuthorised) {
-      return new Response(JSON.stringify({ error: "permission_required" }), { status: 403, headers: corsH });
+    if (isFullAdmin) {
+      if (
+        adminProfile.active !== true ||
+        adminProfile.suspended_at != null ||
+        adminProfile.archived_at != null
+      ) {
+        await auditLog(supabaseAdmin, callerId, "send_email_access_rejected", {
+          endpoint: "send-email",
+          reason: adminProfile.active !== true ? "inactive" : adminProfile.suspended_at != null ? "suspended" : "archived",
+        });
+        return new Response(JSON.stringify({ error: "permission_required" }), { status: 403, headers: corsH });
+      }
+
+      const { data: aalData, error: aalError } =
+        await supabaseAdmin.auth.mfa.getAuthenticatorAssuranceLevel(token);
+
+      if (aalError || !aalData) {
+        await auditLog(supabaseAdmin, callerId, "admin_mfa_required", {
+          endpoint: "send-email",
+          reason: "aal2_required",
+          outcome: "mfa_lookup_failed",
+        });
+        return new Response(JSON.stringify({ error: "multi_factor_authentication_required" }), { status: 403, headers: corsH });
+      }
+
+      if (aalData.currentLevel !== "aal2") {
+        await auditLog(supabaseAdmin, callerId, "admin_mfa_required", {
+          endpoint: "send-email",
+          reason: "aal2_required",
+          outcome: "aal1_rejected",
+        });
+        return new Response(JSON.stringify({ error: "multi_factor_authentication_required" }), { status: 403, headers: corsH });
+      }
+    } else {
+      const { data: staffProfile } = await supabaseAdmin
+        .from("staff_profiles")
+        .select("id, active")
+        .eq("id", callerId)
+        .eq("active", true)
+        .maybeSingle();
+
+      if (!staffProfile) {
+        return new Response(JSON.stringify({ error: "permission_required" }), { status: 403, headers: corsH });
+      }
     }
 
     const body: EmailRequest = await req.json();

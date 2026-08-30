@@ -6,6 +6,8 @@ import PBXStatCard from '@/components/pbx/PBXStatCard';
 import PBXStatusBadge from '@/components/pbx/PBXStatusBadge';
 import PBXComingSoonBanner from '@/components/pbx/PBXComingSoonBanner';
 import PBXEarlyAccessModal from '@/components/pbx/PBXEarlyAccessModal';
+import PBXWaitlistSection from '@/components/pbx/PBXWaitlistSection';
+import PBXRoadmapSection from '@/components/pbx/PBXRoadmapSection';
 import { usePBXMetrics, usePBXCallLogs } from '@/hooks/usePBXData';
 import Link from 'next/link';
 import { Phone, PhoneCall, PhoneMissed, Voicemail, MessageSquare, Layers, Wifi, AlertTriangle, ArrowUpRight, Activity } from 'lucide-react';
@@ -38,6 +40,10 @@ export default function PBXDashboardPage() {
     <PBXShell hideComingSoonBar>
       <div className="space-y-6">
         <PBXComingSoonBanner onRequestAccess={() => setEarlyAccessOpen(true)} />
+
+        <PBXWaitlistSection />
+
+        <PBXRoadmapSection />
 
         <div>
           <h1 className="text-xl font-bold text-white">Dashboard</h1>

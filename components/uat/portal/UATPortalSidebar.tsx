@@ -19,7 +19,7 @@ const navigation = [
   { label: 'My Applications', href: '/uat/applications', icon: FileText },
   { label: 'My Tests', href: '/uat/my-tests', icon: ClipboardCheck },
   { label: 'My Feedback', href: '/uat/my-feedback', icon: Bug },
-  { label: 'Payments', href: '/uat/payments', icon: WalletCards },
+  { label: 'Earnings', href: '/uat/payments', icon: WalletCards },
   { label: 'Profile', href: '/uat/profile', icon: UserRound },
   { label: 'Help', href: '/account/help', icon: HelpCircle },
 ];

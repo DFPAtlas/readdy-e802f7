@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
+import { motion } from '@/components/motion';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
@@ -35,6 +36,17 @@ const DEPARTMENTS = [
   'Operations',
 ];
 
+const ACCENTS = ['#06B6D4', '#8B5CF6', '#F59E0B', '#10B981', '#EC4899'];
+
+function initialsOf(name: string) {
+  return name
+    .split(' ')
+    .map((n) => n[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2);
+}
+
 export default function TeamPageClient({ initialProfiles }: { initialProfiles: TeamProfile[] }) {
   const [profiles, setProfiles] = useState<TeamProfile[]>(initialProfiles);
   const [deptFilter, setDeptFilter] = useState('all');
@@ -54,154 +66,184 @@ export default function TeamPageClient({ initialProfiles }: { initialProfiles: T
     return () => { cancelled = true; };
   }, []);
 
-  const activeDepts = [...new Set(profiles.map(p => p.department).filter(Boolean))] as string[];
+  const activeDepts = [...new Set(profiles.map((p) => p.department).filter(Boolean))] as string[];
   const filteredProfiles = deptFilter === 'all'
     ? profiles
-    : profiles.filter(p => p.department === deptFilter);
+    : profiles.filter((p) => p.department === deptFilter);
 
-  const featured = filteredProfiles.filter(p => p.featured);
-  const rest = filteredProfiles.filter(p => !p.featured);
-  const sortedProfiles = [...featured, ...rest];
+  const featured = filteredProfiles.filter((p) => p.featured);
+  const rest = filteredProfiles.filter((p) => !p.featured);
 
   return (
     <>
       <style>{`
-        @keyframes fadeInUp {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
+        @keyframes spinSlow {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
         }
-        .animate-fade-in-up {
-          animation: fadeInUp 0.4s ease-out both;
-        }
-        .animate-fade-in-up-delay-1 {
-          animation: fadeInUp 0.4s ease-out 0.1s both;
-        }
+        .spin-slow { animation: spinSlow 28s linear infinite; }
         @media (prefers-reduced-motion: reduce) {
-          .animate-fade-in-up,
-          .animate-fade-in-up-delay-1 {
-            animation: none;
-            opacity: 1;
-            transform: none;
-          }
+          .spin-slow { animation: none; }
         }
       `}</style>
+
       <Header />
-      <main id="main-content" className="min-h-screen bg-[#fafbfc]">
-        <section className="pt-32 pb-12 px-6">
-          <div className="max-w-6xl mx-auto text-center">
-            <div className="animate-fade-in-up">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#06B6D4]/8 border border-[#06B6D4]/20 text-[#06B6D4] text-sm font-medium mb-4">
-                <i className="ri-team-line w-4 h-4 flex items-center justify-center" />
-                Meet the Team
+
+      <main id="main-content" className="min-h-screen bg-[#FAFAF7]">
+        {/* Hero */}
+        <section className="pt-28 lg:pt-36 pb-16 px-6 bg-[#FAFAF7]">
+          <div className="max-w-[1200px] mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-6 items-end"
+            >
+              <div className="lg:col-span-8">
+                <div className="flex items-center gap-3 mb-7">
+                  <span className="text-[10px] font-semibold tracking-[0.25em] uppercase text-[#1C2333]/40">
+                    Meet the team
+                  </span>
+                  <div className="h-px w-10 bg-[#1C2333]/20" />
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="text-[#06B6D4]">
+                    <path d="M6 0L7.5 4.5L12 6L7.5 8.5L6 12L4.5 7.5L0 6L4.5 4.5L6 0Z" fill="currentColor" />
+                  </svg>
+                </div>
+                <h1 className="font-serif text-[#1C2333] text-[2.6rem] sm:text-[3.4rem] lg:text-[4.4rem] leading-[1.02] tracking-tight">
+                  The people behind
+                  <br />
+                  <em className="not-italic text-[#06B6D4]">Digital Footprint</em>
+                </h1>
+                <p className="mt-6 text-[15px] text-[#1C2333]/55 max-w-xl leading-relaxed">
+                  A small, senior team of specialists — not a sprawling agency where you get lost in the crowd. Everyone you meet here works directly on your project.
+                </p>
               </div>
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-3">
-                The People Behind Digital Footprint
-              </h1>
-              <p className="text-slate-500 max-w-2xl mx-auto text-base leading-relaxed">
-                A small, senior team of specialists — not a sprawling agency where you get lost in the crowd.
-              </p>
-            </div>
+
+              <div className="lg:col-span-4 lg:pl-8">
+                <div className="flex items-end gap-8 lg:gap-10 border-l-2 border-[#06B6D4]/30 pl-6">
+                  <div>
+                    <div className="font-serif text-4xl lg:text-5xl text-[#1C2333]">{profiles.length}</div>
+                    <div className="mt-1 text-[11px] uppercase tracking-[0.15em] text-[#1C2333]/40">Specialists</div>
+                  </div>
+                  <div>
+                    <div className="font-serif text-4xl lg:text-5xl text-[#1C2333]">{activeDepts.length}</div>
+                    <div className="mt-1 text-[11px] uppercase tracking-[0.15em] text-[#1C2333]/40">Disciplines</div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
           </div>
         </section>
 
-        <section className="pb-24 px-6">
-          <div className="max-w-6xl mx-auto">
-            {profiles.length === 0 ? (
-              <div className="text-center py-16">
-                <div className="w-20 h-20 rounded-2xl bg-slate-100 flex items-center justify-center mx-auto mb-4">
-                  <i className="ri-team-line text-3xl text-slate-300 w-8 h-8 flex items-center justify-center" />
+        {/* Empty state */}
+        {profiles.length === 0 && (
+          <section className="pb-24 px-6">
+            <div className="max-w-[1200px] mx-auto">
+              <div className="text-center py-20 bg-white rounded-[24px] border border-[#1C2333]/8">
+                <div className="w-20 h-20 rounded-full bg-[#1C2333]/5 flex items-center justify-center mx-auto mb-5">
+                  <i className="ri-team-line text-3xl text-[#1C2333]/25 w-8 h-8 flex items-center justify-center" />
                 </div>
-                <h2 className="text-xl font-bold text-slate-800 mb-2">Team profiles coming soon</h2>
-                <p className="text-slate-500 mb-6">We&apos;re preparing our team profiles. Check back shortly.</p>
-                <Link href="/contact" className="inline-flex px-5 py-2.5 rounded-xl bg-[#06B6D4] text-white font-semibold text-sm hover:bg-[#0891B2] transition-colors whitespace-nowrap cursor-pointer">
+                <h2 className="font-serif text-2xl text-[#1C2333] mb-2">Team profiles coming soon</h2>
+                <p className="text-[#1C2333]/50 mb-7">We&apos;re preparing our team profiles. Check back shortly.</p>
+                <Link href="/contact" className="inline-flex px-6 py-3 rounded-xl bg-[#1C2333] text-white font-semibold text-sm hover:bg-[#1C2333]/85 transition-colors whitespace-nowrap cursor-pointer">
                   Get in touch
                 </Link>
               </div>
-            ) : (
-              <>
-                {activeDepts.length > 1 && (
-                  <div className="flex flex-wrap justify-center gap-2 mb-10">
+            </div>
+          </section>
+        )}
+
+        {/* Leadership / Featured */}
+        {featured.length > 0 && (
+          <section className="pb-16 px-6">
+            <div className="max-w-[1200px] mx-auto">
+              <div className="flex items-center gap-3 mb-9">
+                <i className="ri-star-fill text-[#06B6D4] w-4 h-4 flex items-center justify-center" />
+                <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#1C2333]/40">Leadership</span>
+                <div className="h-px flex-1 bg-[#1C2333]/10" />
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {featured.map((p, i) => (
+                  <FeaturedCard key={p.id} profile={p} index={i} />
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Team members */}
+        {rest.length > 0 && (
+          <section className="pb-20 px-6">
+            <div className="max-w-[1200px] mx-auto">
+              {activeDepts.length > 1 && (
+                <div className="flex flex-wrap items-center gap-2 mb-9">
+                  <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#1C2333]/40 mr-1">
+                    Filter
+                  </span>
+                  <button
+                    onClick={() => setDeptFilter('all')}
+                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all cursor-pointer whitespace-nowrap ${
+                      deptFilter === 'all'
+                        ? 'bg-[#1C2333] text-white'
+                        : 'bg-white text-[#1C2333]/60 border border-[#1C2333]/12 hover:border-[#1C2333]/30'
+                    }`}
+                  >
+                    All
+                  </button>
+                  {DEPARTMENTS.filter((d) => activeDepts.includes(d)).map((dept) => (
                     <button
-                      onClick={() => setDeptFilter('all')}
+                      key={dept}
+                      onClick={() => setDeptFilter(dept)}
                       className={`px-4 py-2 rounded-full text-sm font-medium transition-all cursor-pointer whitespace-nowrap ${
-                        deptFilter === 'all'
-                          ? 'bg-[#06B6D4] text-white'
-                          : 'bg-white text-slate-600 border border-slate-200 hover:border-[#06B6D4]/30'
+                        deptFilter === dept
+                          ? 'bg-[#1C2333] text-white'
+                          : 'bg-white text-[#1C2333]/60 border border-[#1C2333]/12 hover:border-[#1C2333]/30'
                       }`}
                     >
-                      All
+                      {dept}
                     </button>
-                    {DEPARTMENTS.filter(d => activeDepts.includes(d)).map(dept => (
-                      <button
-                        key={dept}
-                        onClick={() => setDeptFilter(dept)}
-                        className={`px-4 py-2 rounded-full text-sm font-medium transition-all cursor-pointer whitespace-nowrap ${
-                          deptFilter === dept
-                            ? 'bg-[#06B6D4] text-white'
-                            : 'bg-white text-slate-600 border border-slate-200 hover:border-[#06B6D4]/30'
-                        }`}
-                      >
-                        {dept}
-                      </button>
-                    ))}
-                  </div>
-                )}
+                  ))}
+                </div>
+              )}
 
-                {featured.length > 0 && (
-                  <div className="animate-fade-in-up mb-10">
-                    <div className="flex items-center gap-2 mb-5">
-                      <i className="ri-star-fill text-[#06B6D4] w-4 h-4 flex items-center justify-center" />
-                      <span className="text-sm font-semibold text-slate-400 uppercase tracking-wider">Leadership</span>
-                    </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                      {featured.map(p => (
-                        <TeamCard key={p.id} profile={p} featured />
-                      ))}
-                    </div>
-                  </div>
-                )}
+              {rest.length === 0 ? (
+                <div className="text-center py-16">
+                  <p className="text-[#1C2333]/50">No team members found in this department.</p>
+                  <button
+                    onClick={() => setDeptFilter('all')}
+                    className="mt-3 text-[#06B6D4] text-sm font-medium hover:underline cursor-pointer"
+                  >
+                    Clear filter
+                  </button>
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-10">
+                  {rest.map((p) => (
+                    <MemberCard key={p.id} profile={p} />
+                  ))}
+                </div>
+              )}
+            </div>
+          </section>
+        )}
 
-                {rest.length > 0 && (
-                  <div className="animate-fade-in-up-delay-1">
-                    {featured.length > 0 && (
-                      <div className="flex items-center gap-2 mb-5">
-                        <i className="ri-user-star-line text-slate-400 w-4 h-4 flex items-center justify-center" />
-                        <span className="text-sm font-semibold text-slate-400 uppercase tracking-wider">Team Members</span>
-                      </div>
-                    )}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                      {rest.map(p => (
-                        <TeamCard key={p.id} profile={p} />
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {filteredProfiles.length === 0 && deptFilter !== 'all' && (
-                  <div className="text-center py-12">
-                    <p className="text-slate-500">No team members found in this department.</p>
-                    <button
-                      onClick={() => setDeptFilter('all')}
-                      className="mt-3 text-[#06B6D4] text-sm font-medium hover:underline cursor-pointer"
-                    >
-                      Clear filter
-                    </button>
-                  </div>
-                )}
-              </>
-            )}
-          </div>
-        </section>
-
-        <section className="py-16 px-6 bg-white border-t border-slate-100">
-          <div className="max-w-3xl mx-auto text-center">
-            <h3 className="text-xl font-bold text-slate-900 mb-3">Want to join the team?</h3>
-            <p className="text-slate-500 mb-6">
+        {/* CTA */}
+        <section className="py-20 px-6 bg-[#1C2333] relative overflow-hidden">
+          <div className="absolute -right-20 -top-20 w-72 h-72 rounded-full bg-[#06B6D4]/10 blur-3xl pointer-events-none" />
+          <div className="absolute -left-16 -bottom-24 w-72 h-72 rounded-full bg-[#8B5CF6]/10 blur-3xl pointer-events-none" />
+          <div className="max-w-3xl mx-auto text-center relative z-10">
+            <svg width="20" height="20" viewBox="0 0 12 12" fill="none" className="text-[#06B6D4] mx-auto mb-5">
+              <path d="M6 0L7.5 4.5L12 6L7.5 8.5L6 12L4.5 7.5L0 6L4.5 4.5L6 0Z" fill="currentColor" />
+            </svg>
+            <h2 className="font-serif text-3xl lg:text-4xl text-white tracking-tight mb-4">
+              Want to join the team?
+            </h2>
+            <p className="text-white/55 max-w-xl mx-auto mb-8 leading-relaxed">
               We&apos;re always looking for talented people who care about building great digital products. If you think you&apos;d be a good fit, we&apos;d love to hear from you.
             </p>
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#06B6D4] text-white font-semibold text-sm hover:bg-[#0891B2] transition-colors whitespace-nowrap cursor-pointer"
+              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-[#06B6D4] text-[#1C2333] font-semibold text-sm hover:bg-[#22c7e4] transition-colors whitespace-nowrap cursor-pointer"
             >
               <i className="ri-mail-send-line w-4 h-4 flex items-center justify-center" />
               Get in touch
@@ -209,72 +251,100 @@ export default function TeamPageClient({ initialProfiles }: { initialProfiles: T
           </div>
         </section>
       </main>
+
       <Footer />
     </>
   );
 }
 
-function TeamCard({ profile, featured }: { profile: TeamProfile; featured?: boolean }) {
-  const initials = profile.public_name
-    .split(' ')
-    .map(n => n[0])
-    .join('')
-    .toUpperCase()
-    .slice(0, 2);
-
+function FeaturedCard({ profile, index }: { profile: TeamProfile; index: number }) {
+  const initials = initialsOf(profile.public_name);
+  const accent = ACCENTS[index % ACCENTS.length];
   const areas = (profile.specialist_areas || []).slice(0, 3);
 
   return (
-    <Link href={`/team/${profile.slug}`}>
-      <div
-        className={`bg-white rounded-2xl border p-6 text-center transition-all duration-300 cursor-pointer h-full hover:-translate-y-1 ${
-          featured
-            ? 'border-[#06B6D4]/20 hover:border-[#06B6D4]/40 shadow-[0_0_30px_rgba(6,182,212,0.06)]'
-            : 'border-slate-200 hover:border-[#06B6D4]/20 hover:shadow-sm'
-        }`}
-      >
-        {featured && (
-          <div className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-[#06B6D4]/8 border border-[#06B6D4]/15 text-[#06B6D4] text-xs font-medium mb-4">
-            <i className="ri-star-fill w-3 h-3 flex items-center justify-center" />
-            Leadership
-          </div>
-        )}
-        {profile.profile_asset_id ? (
-          <div className={`w-20 h-20 rounded-2xl overflow-hidden mx-auto mb-4 border-2 ${featured ? 'border-[#06B6D4]/20' : 'border-slate-200'}`}>
+    <motion.div
+      initial={{ opacity: 0, y: 28 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, delay: 0.1 + index * 0.08, ease: [0.22, 1, 0.36, 1] }}
+    >
+      <Link href={`/team/${profile.slug}`} className="group block">
+        <div className="rounded-t-[120px] rounded-b-[20px] overflow-hidden bg-[#E8E0D6] aspect-[4/5] relative">
+          {profile.profile_asset_id ? (
             <img
               src={profile.profile_asset_id}
               alt={profile.image_alt_text || profile.public_name}
-              className="w-full h-full object-cover object-top"
+              className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.03]"
               loading="lazy"
             />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#1C2333]/5 to-[#1C2333]/10">
+              <span className="font-serif text-6xl text-[#1C2333]/15">{initials}</span>
+            </div>
+          )}
+          <div className="absolute top-5 left-5 px-3 py-1 rounded-full text-[10px] font-semibold tracking-wide uppercase text-white bg-[#1C2333]/80 backdrop-blur-sm">
+            {profile.leadership_level || 'Leadership'}
           </div>
+        </div>
+
+        <div className="px-1 pt-5 text-center">
+          <h3 className="font-serif text-2xl text-[#1C2333] group-hover:text-[#06B6D4] transition-colors">
+            {profile.public_name}
+          </h3>
+          {profile.public_job_title && (
+            <p className="mt-1 text-sm font-medium" style={{ color: accent }}>
+              {profile.public_job_title}
+            </p>
+          )}
+          {profile.short_bio && (
+            <p className="mt-3 text-[13px] text-[#1C2333]/50 leading-relaxed line-clamp-2">
+              {profile.short_bio}
+            </p>
+          )}
+          {areas.length > 0 && (
+            <div className="mt-4 flex flex-wrap justify-center gap-1.5">
+              {areas.map((area, i) => (
+                <span key={i} className="px-2.5 py-1 rounded-full text-[10px] font-medium bg-[#1C2333]/5 text-[#1C2333]/55">
+                  {area}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+      </Link>
+    </motion.div>
+  );
+}
+
+function MemberCard({ profile }: { profile: TeamProfile }) {
+  const initials = initialsOf(profile.public_name);
+
+  return (
+    <Link href={`/team/${profile.slug}`} className="group block">
+      <div className="rounded-[20px] overflow-hidden bg-[#E8E0D6] aspect-[3/4] relative">
+        {profile.profile_asset_id ? (
+          <img
+            src={profile.profile_asset_id}
+            alt={profile.image_alt_text || profile.public_name}
+            className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.04]"
+            loading="lazy"
+          />
         ) : (
-          <div className={`w-20 h-20 rounded-2xl mx-auto mb-4 flex items-center justify-center border-2 ${
-            featured
-              ? 'border-[#06B6D4]/20 bg-gradient-to-br from-[#06B6D4]/8 to-[#8B5CF6]/8'
-              : 'border-slate-200 bg-slate-50'
-          }`}>
-            <span className={`text-xl font-bold ${featured ? 'text-[#06B6D4]/60' : 'text-slate-400'}`}>{initials}</span>
+          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#1C2333]/5 to-[#1C2333]/10">
+            <span className="font-serif text-4xl text-[#1C2333]/15">{initials}</span>
           </div>
         )}
-        <h3 className="font-bold text-slate-900 text-lg mb-0.5">{profile.public_name}</h3>
+        <div className="absolute inset-0 bg-gradient-to-t from-[#1C2333]/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      </div>
+      <div className="pt-3">
+        <h3 className="font-serif text-lg text-[#1C2333] group-hover:text-[#06B6D4] transition-colors leading-tight">
+          {profile.public_name}
+        </h3>
         {profile.public_job_title && (
-          <p className="text-[#06B6D4] text-sm font-medium mb-2">{profile.public_job_title}</p>
+          <p className="mt-0.5 text-[12px] font-medium text-[#1C2333]/50 truncate">{profile.public_job_title}</p>
         )}
         {profile.department && (
-          <p className="text-xs text-slate-400 mb-3">{profile.department}</p>
-        )}
-        {profile.short_bio && (
-          <p className="text-sm text-slate-500 leading-relaxed line-clamp-2">{profile.short_bio}</p>
-        )}
-        {areas.length > 0 && (
-          <div className="flex flex-wrap justify-center gap-1.5 mt-4">
-            {areas.map((area, i) => (
-              <span key={i} className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-slate-100 text-slate-500">
-                {area}
-              </span>
-            ))}
-          </div>
+          <p className="mt-0.5 text-[11px] text-[#1C2333]/35">{profile.department}</p>
         )}
       </div>
     </Link>

@@ -1,86 +1,38 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { motion } from '@/components/motion';
-import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
 import {
-  Clock, DollarSign, Calendar, AlertCircle,
-  FileText, ExternalLink, Bug,
+  ClipboardCheck, Hourglass, CheckCircle2, XCircle, Calendar,
 } from 'lucide-react';
 import { useUATTester } from '@/components/uat/UATTesterProvider';
+import { useMyTests } from '@/hooks/useMyTests';
+import { rewardStatusBadge } from '@/lib/uat-assignment';
 import UATPortalBreadcrumbs from '@/components/uat/portal/UATPortalBreadcrumbs';
-import UATStatusBadge from '@/components/uat/portal/UATStatusBadge';
 import UATEmptyState from '@/components/uat/portal/UATEmptyState';
 import UATErrorState from '@/components/uat/portal/UATErrorState';
+import UATSectionHeader from '@/components/uat/portal/UATSectionHeader';
+import UATMyTestCard from '@/components/uat/portal/UATMyTestCard';
 
-interface Assignment {
-  id: string; job_id: string; tester_id: string;
-  status: string; agreed_pay: number | null;
-  access_starts_at: string | null; access_expires_at: string | null;
-  started_at: string | null; submitted_at: string | null;
-  completed_at: string | null;
-  created_at: string;
-  job_title?: string; project_name?: string;
-  deadline?: string; environment_name?: string;
+function formatDate(value: string | null): string {
+  if (!value) return '—';
+  return new Date(value).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 }
-
-const statusColors: Record<string, string> = {
-  assigned: 'bg-sky-100 text-sky-700',
-  testing: 'bg-emerald-100 text-emerald-700',
-  submitted: 'bg-amber-100 text-amber-700',
-  approved: 'bg-violet-100 text-violet-700',
-  completed: 'bg-emerald-100 text-emerald-700',
-  cancelled: 'bg-rose-100 text-rose-700',
-  expired: 'bg-slate-100 text-slate-600',
-};
 
 export default function MyTestsPage() {
   const router = useRouter();
   const { tester } = useUATTester();
-  const testerId = tester.id;
-  const [assignments, setAssignments] = useState<Assignment[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const { items, pendingApplications, loading, error, refetch } = useMyTests(tester.id);
 
-  useEffect(() => {
-    loadData();
-  }, [testerId]);
-
-  const loadData = async () => {
-    const { data: assignData, error: assignErr } = await supabase.from('uat_assignments').select('*').eq('tester_id', testerId).order('created_at', { ascending: false });
-    if (assignErr) { setError('Failed to load assignments.'); setLoading(false); return; }
-
-    if (assignData && assignData.length > 0) {
-      const jobIds = [...new Set(assignData.map((a: any) => a.job_id))];
-      const { data: jobs } = await supabase.from('uat_jobs').select('id, title, project_id, deadline').in('id', jobIds);
-      const jobMap: Record<string, any> = {};
-      jobs?.forEach((j: any) => { jobMap[j.id] = j; });
-
-      const projectIds = [...new Set(jobs?.map((j: any) => j.project_id).filter(Boolean) || [])];
-      const projectMap: Record<string, string> = {};
-      if (projectIds.length > 0) {
-        const { data: projects } = await supabase.from('uat_projects').select('id, name').in('id', projectIds);
-        projects?.forEach((p: any) => { projectMap[p.id] = p.name; });
-      }
-
-      const merged = assignData.map((a: any) => ({
-        ...a,
-        job_title: jobMap[a.job_id]?.title || 'Unknown',
-        project_name: projectMap[jobMap[a.job_id]?.project_id] || null,
-        deadline: jobMap[a.job_id]?.deadline || null,
-      }));
-      setAssignments(merged);
-    }
-
-    setLoading(false);
-  };
+  const active = items.filter((i) => i.section === 'active');
+  const review = items.filter((i) => i.section === 'review');
+  const completed = items.filter((i) => i.section === 'completed');
+  const cancelled = items.filter((i) => i.section === 'cancelled');
 
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center py-24 gap-3">
         <div className="w-8 h-8 border-[3px] border-[#2878d0]/20 border-t-[#2878d0] rounded-full animate-spin" />
-        <p className="text-sm text-slate-500">Loading assignments...</p>
+        <p className="text-sm text-slate-500">Loading your tests...</p>
       </div>
     );
   }
@@ -89,13 +41,12 @@ export default function MyTestsPage() {
     return (
       <>
         <UATPortalBreadcrumbs items={[{ label: 'My Tests' }]} />
-        <UATErrorState message={error} onRetry={loadData} />
+        <UATErrorState message={error} onRetry={refetch} />
       </>
     );
   }
 
-  const activeAssignments = assignments.filter((a) => !['cancelled', 'expired', 'completed'].includes(a.status));
-  const pastAssignments = assignments.filter((a) => ['cancelled', 'expired', 'completed'].includes(a.status));
+  const isEmpty = items.length === 0 && pendingApplications.length === 0;
 
   return (
     <>
@@ -103,97 +54,143 @@ export default function MyTestsPage() {
       <div className="mt-4">
         <p className="text-sm font-bold uppercase tracking-[0.2em] text-[#789265]">Assignments</p>
         <h1 className="mt-2 font-serif text-4xl font-semibold tracking-tight sm:text-5xl text-[#17325c]">My Tests</h1>
-        <p className="mt-2 text-slate-500">Your assigned UAT test assignments</p>
+        <p className="mt-2 text-slate-500">Your assigned UAT test work, progress and rewards.</p>
       </div>
 
-      <div className="mt-8" data-testid="uat-assignment-list">
-        {assignments.length === 0 ? (
-          <div className="rounded-2xl border border-slate-100 bg-white shadow-sm">
-            <UATEmptyState icon={FileText} title="No Test Assignments" description="You haven't been assigned to any tests yet. Browse available jobs and apply to get started." actionLabel="Browse Jobs" actionHref="/uat/jobs" />
-          </div>
-        ) : (
-          <>
-            {activeAssignments.length > 0 && (
-              <div className="mb-8">
-                <h2 className="text-sm font-semibold text-[#17325c] mb-4 uppercase tracking-wide">Active Tests</h2>
-                <div className="space-y-3">
-                  {activeAssignments.map((a, i) => (
-                    <motion.button
-                      key={a.id}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: i * 0.05 }}
-                      onClick={() => router.push(`/uat/my-tests/${a.id}`)}
-                      className="w-full bg-white border border-slate-100 rounded-2xl p-5 text-left hover:border-[#2878d0]/20 hover:shadow-md transition-all cursor-pointer group"
-                    >
-                      <div className="flex items-start justify-between mb-3">
-                        <div>
-                          <div className="flex items-center gap-2 mb-1">
-                            {a.project_name && (
-                              <span className="text-xs font-medium text-[#2878d0] bg-[#edf5ff] px-2 py-0.5 rounded-lg">{a.project_name}</span>
-                            )}
-                            <UATStatusBadge status={a.status} colorMap={statusColors} />
-                          </div>
-                          <h3 className="text-base font-bold text-[#17325c]">{a.job_title}</h3>
+      {isEmpty ? (
+        <div className="mt-8 rounded-2xl border border-slate-100 bg-white shadow-sm">
+          <UATEmptyState
+            icon={ClipboardCheck}
+            title="No tests yet"
+            description="You do not currently have any UAT assignments. Browse available jobs and claim one to get started."
+            actionLabel="Browse Jobs"
+            actionHref="/uat/jobs"
+          />
+        </div>
+      ) : (
+        <div className="mt-8 space-y-8">
+          {pendingApplications.length > 0 && (
+            <section>
+              <UATSectionHeader title="Pending Approval" description="Applications awaiting DFP review" />
+              <div className="mt-4 overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm">
+                <div className="divide-y divide-slate-100">
+                  {pendingApplications.map((app) => (
+                    <div key={app.id} className="flex items-center justify-between px-5 py-4">
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-2">
+                          <Hourglass className="h-4 w-4 text-amber-500" />
+                          <p className="font-semibold text-[#17325c] truncate">{app.job_title}</p>
                         </div>
-                        <ExternalLink className="w-4 h-4 text-slate-300 group-hover:text-[#2878d0] transition-colors shrink-0" />
+                        {app.project_name && <p className="mt-0.5 text-xs text-slate-500">{app.project_name}</p>}
                       </div>
-                      <div className="flex flex-wrap gap-4 text-xs text-slate-400">
-                        {a.agreed_pay && (
-                          <span className="flex items-center gap-1.5"><DollarSign className="w-3.5 h-3.5 text-slate-400" />£{a.agreed_pay}</span>
-                        )}
-                        {a.deadline && (
-                          <span className="flex items-center gap-1.5"><Calendar className="w-3.5 h-3.5 text-slate-400" />
-                            {new Date(a.deadline).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
-                          </span>
-                        )}
-                        {a.access_expires_at && (
-                          <span className={`flex items-center gap-1.5 ${new Date(a.access_expires_at) < new Date() ? 'text-red-500' : 'text-emerald-600'}`}>
-                            <Clock className="w-3.5 h-3.5" />
-                            {new Date(a.access_expires_at) < new Date() ? 'Expired' : 'Active until ' + new Date(a.access_expires_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}
-                          </span>
-                        )}
+                      <div className="flex shrink-0 items-center gap-4">
+                        <span className="text-xs text-slate-500">Applied {formatDate(app.created_at)}</span>
+                        <span className="inline-flex shrink-0 rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-semibold text-amber-700">
+                          Awaiting DFP Approval
+                        </span>
                       </div>
-                      <div className="mt-3 pt-3 border-t border-slate-50">
-                        <button onClick={(e) => { e.stopPropagation(); router.push(`/uat/feedback/${a.id}`); }}
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#edf5ff] text-[#2878d0] hover:bg-[#d6e8fa] rounded-lg text-xs font-medium cursor-pointer transition-colors whitespace-nowrap">
-                          <Bug className="w-3 h-3" /> Submit Feedback
-                        </button>
-                      </div>
-                    </motion.button>
+                    </div>
                   ))}
                 </div>
               </div>
-            )}
+            </section>
+          )}
 
-            {pastAssignments.length > 0 && (
-              <div>
-                <h2 className="text-sm font-semibold text-slate-400 mb-4 uppercase tracking-wide">Past Tests</h2>
-                <div className="space-y-2">
-                  {pastAssignments.map((a) => (
-                    <button
-                      key={a.id}
-                      onClick={() => router.push(`/uat/my-tests/${a.id}`)}
-                      className="w-full bg-white border border-slate-100 rounded-xl p-4 text-left hover:border-[#2878d0]/20 transition-all cursor-pointer opacity-60 hover:opacity-80"
-                    >
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <div className="flex items-center gap-2 mb-0.5">
-                            <h3 className="text-sm font-medium text-[#17325c]">{a.job_title}</h3>
-                            <UATStatusBadge status={a.status} colorMap={statusColors} />
-                          </div>
-                          {a.project_name && <p className="text-xs text-slate-400">{a.project_name}</p>}
-                        </div>
-                        {a.agreed_pay && <span className="text-xs text-slate-400">£{a.agreed_pay}</span>}
-                      </div>
-                    </button>
+          {active.length > 0 && (
+            <section>
+              <UATSectionHeader title="Active" description="Tests you can work on now" />
+              <div className="mt-4 overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm">
+                <div className="divide-y divide-slate-100">
+                  {active.map((item) => (
+                    <UATMyTestCard key={item.id} item={item} />
                   ))}
                 </div>
               </div>
-            )}
-          </>
-        )}
-      </div>
+            </section>
+          )}
+
+          {review.length > 0 && (
+            <section>
+              <UATSectionHeader title="Awaiting Review" description="Work submitted and waiting for DFP" />
+              <div className="mt-4 overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm">
+                <div className="divide-y divide-slate-100">
+                  {review.map((item) => (
+                    <div key={item.id} className="flex items-center justify-between px-5 py-4">
+                      <button onClick={() => router.push(`/uat/my-tests/${item.id}`)} className="min-w-0 text-left cursor-pointer">
+                        <p className="font-semibold text-[#17325c] truncate hover:text-[#2878d0]">{item.job_title}</p>
+                        {item.project_name && <p className="mt-0.5 text-xs text-slate-500">{item.project_name}</p>}
+                      </button>
+                      <div className="flex shrink-0 items-center gap-4 text-xs text-slate-500">
+                        <span>Submitted {formatDate(item.submitted_at)}</span>
+                        <span className="font-bold text-[#617a50]">{item.agreed_reward_label}</span>
+                        <span className={`inline-flex shrink-0 rounded-full px-2.5 py-0.5 font-semibold ${item.status_badge}`}>
+                          {item.status_label}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </section>
+          )}
+
+          {completed.length > 0 && (
+            <section>
+              <UATSectionHeader title="Completed" description="Your historical UAT work" />
+              <div className="mt-4 overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm">
+                <div className="divide-y divide-slate-100">
+                  {completed.map((item) => (
+                    <div key={item.id} className="flex items-center justify-between px-5 py-4">
+                      <button onClick={() => router.push(`/uat/my-tests/${item.id}`)} className="min-w-0 text-left cursor-pointer">
+                        <p className="font-semibold text-[#17325c] truncate hover:text-[#2878d0]">{item.job_title}</p>
+                        {item.project_name && <p className="mt-0.5 text-xs text-slate-500">{item.project_name}</p>}
+                      </button>
+                      <div className="flex shrink-0 items-center gap-4 text-xs text-slate-500">
+                        <span className="flex items-center gap-1.5">
+                          <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
+                          Completed {formatDate(item.completed_at)}
+                        </span>
+                        <span className="font-bold text-[#617a50]">{item.agreed_reward_label}</span>
+                        <span className={`inline-flex shrink-0 rounded-full px-2.5 py-0.5 font-semibold ${rewardStatusBadge(item.reward_status)}`}>
+                          {item.reward_status}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </section>
+          )}
+
+          {cancelled.length > 0 && (
+            <section>
+              <UATSectionHeader title="Cancelled / Expired" description="Tests that were withdrawn or lapsed" />
+              <div className="mt-4 overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm">
+                <div className="divide-y divide-slate-100">
+                  {cancelled.map((item) => (
+                    <div key={item.id} className="flex items-center justify-between px-5 py-4 opacity-70">
+                      <div className="min-w-0">
+                        <p className="font-semibold text-[#17325c] truncate">{item.job_title}</p>
+                        {item.project_name && <p className="mt-0.5 text-xs text-slate-500">{item.project_name}</p>}
+                      </div>
+                      <div className="flex shrink-0 items-center gap-4 text-xs text-slate-500">
+                        <span className="flex items-center gap-1.5">
+                          <XCircle className="h-3.5 w-3.5 text-slate-400" />
+                          <Calendar className="h-3.5 w-3.5 text-slate-400" />
+                          {formatDate(item.last_activity)}
+                        </span>
+                        <span className={`inline-flex shrink-0 rounded-full px-2.5 py-0.5 font-semibold ${item.status_badge}`}>
+                          {item.status_label}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </section>
+          )}
+        </div>
+      )}
     </>
   );
 }

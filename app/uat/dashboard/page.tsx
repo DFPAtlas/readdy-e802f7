@@ -6,12 +6,16 @@ import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import {
-  Briefcase, FileText, ClipboardCheck, Bug, Clock,
+  Briefcase, FileText, ClipboardCheck, Bug, Clock, CheckCircle2,
   Play, WalletCards, MonitorSmartphone,
   ChevronRight, Gauge,
 } from 'lucide-react';
 import { useRealtimeNotifications } from '@/hooks/useRealtimeNotifications';
 import { useUATTester } from '@/components/uat/UATTesterProvider';
+import { useAvailableUatJobs } from '@/hooks/useAvailableUatJobs';
+import { useEarnings } from '@/hooks/useEarnings';
+import { formatReward, type MarketplaceJob } from '@/lib/uat-marketplace';
+import { ASSIGNMENT_STATUS_CONFIG, assignmentSection } from '@/lib/uat-assignment';
 import UATStatCard from '@/components/uat/portal/UATStatCard';
 import UATStatusBadge from '@/components/uat/portal/UATStatusBadge';
 import UATEmptyState from '@/components/uat/portal/UATEmptyState';
@@ -19,27 +23,14 @@ import UATSectionHeader from '@/components/uat/portal/UATSectionHeader';
 import UATJobCard from '@/components/uat/portal/UATJobCard';
 import UATAssignmentCard from '@/components/uat/portal/UATAssignmentCard';
 
-interface UatJob {
-  id: string; title: string; public_summary: string | null;
-  required_devices: string[] | null; required_experience_level: string | null;
-  estimated_hours: number | null; pay_amount: number | null; pay_type: string;
-  deadline: string | null; project_name?: string;
-}
-
 interface Assignment {
-  id: string; job_id: string; status: string; agreed_pay: number | null;
-  submitted_at: string | null; job_title?: string; project_name?: string;
+  id: string; job_id: string; status: string; submitted_at: string | null;
+  job_title?: string; project_name?: string; reward_label?: string;
 }
 
-const assignmentStatusColors: Record<string, string> = {
-  assigned: 'bg-sky-100 text-sky-700',
-  testing: 'bg-emerald-100 text-emerald-700',
-  submitted: 'bg-amber-100 text-amber-700',
-  approved: 'bg-violet-100 text-violet-700',
-  completed: 'bg-emerald-100 text-emerald-700',
-  cancelled: 'bg-rose-100 text-rose-700',
-  expired: 'bg-slate-100 text-slate-600',
-};
+const assignmentStatusColors: Record<string, string> = Object.fromEntries(
+  Object.entries(ASSIGNMENT_STATUS_CONFIG).map(([k, v]) => [k, v.badge]),
+);
 
 const feedbackStatusColors: Record<string, string> = {
   new: 'bg-cyan-100 text-cyan-700',
@@ -56,53 +47,49 @@ export default function TesterDashboard() {
   const router = useRouter();
   const { tester, userId } = useUATTester();
   const testerId = tester.id;
+  const { jobs: availableJobs } = useAvailableUatJobs();
+  const { totals } = useEarnings(testerId);
   const [loading, setLoading] = useState(true);
-  const [openJobs, setOpenJobs] = useState<UatJob[]>([]);
+  const [openJobs, setOpenJobs] = useState<MarketplaceJob[]>([]);
   const [activeAssignments, setActiveAssignments] = useState<Assignment[]>([]);
   const [recentFeedback, setRecentFeedback] = useState<any[]>([]);
   const [stats, setStats] = useState({
     availableJobs: 0, myApplications: 0, activeTests: 0,
-    feedbackCount: 0, totalEarned: 0, pendingPayments: 0,
+    awaitingReview: 0, completed: 0, feedbackCount: 0,
   });
 
   useEffect(() => {
     loadData();
   }, [testerId]);
 
+  useEffect(() => {
+    setOpenJobs(availableJobs.slice(0, 3));
+    setStats((prev) => ({ ...prev, availableJobs: availableJobs.length }));
+  }, [availableJobs]);
+
   const loadData = async () => {
     const [
-      { data: jobs }, { data: apps }, { data: assignments },
-      { data: feedback }, { data: payments },
+      { data: apps }, { data: assignments },
+      { data: feedback },
     ] = await Promise.all([
-      supabase.from('uat_jobs').select('id, title, public_summary, required_devices, required_experience_level, estimated_hours, pay_amount, pay_type, deadline, project_id').eq('status', 'open').order('created_at', { ascending: false }).limit(5),
       supabase.from('uat_job_applications').select('id, job_id').eq('tester_id', testerId),
-      supabase.from('uat_assignments').select('id, job_id, status, agreed_pay, submitted_at').eq('tester_id', testerId).order('created_at', { ascending: false }),
+      supabase.from('uat_assignments').select('id, job_id, status, agreed_reward_amount_minor, currency, submitted_at').eq('tester_id', testerId).order('created_at', { ascending: false }),
       supabase.from('uat_feedback').select('id, title, job_id, severity, status, created_at').eq('tester_id', testerId).order('created_at', { ascending: false }).limit(5),
-      supabase.from('uat_payments').select('id, total_amount, status').eq('tester_id', testerId),
     ]);
 
     const appSet = new Set((apps || []).map((a: any) => a.job_id));
-    const activeTests = (assignments || []).filter((a: any) => ['assigned', 'testing', 'submitted', 'approved'].includes(a.status));
-    const totalEarned = (payments || []).filter((p: any) => p.status === 'paid').reduce((sum: number, p: any) => sum + (p.total_amount || 0), 0);
-    const pendingAmt = (payments || []).filter((p: any) => ['unpaid', 'pending', 'approved'].includes(p.status)).reduce((sum: number, p: any) => sum + (p.total_amount || 0), 0);
+    const activeTests = (assignments || []).filter((a: any) => assignmentSection(a.status) === 'active');
+    const awaitingReview = (assignments || []).filter((a: any) => assignmentSection(a.status) === 'review');
+    const completed = (assignments || []).filter((a: any) => assignmentSection(a.status) === 'completed');
 
-    setStats({
-      availableJobs: (jobs || []).length,
+    setStats((prev) => ({
+      ...prev,
       myApplications: (apps || []).length,
       activeTests: activeTests.length,
+      awaitingReview: awaitingReview.length,
+      completed: completed.length,
       feedbackCount: (feedback || []).length,
-      totalEarned,
-      pendingPayments: pendingAmt,
-    });
-
-    const jobIds = [...new Set([...(jobs || []).map((j: any) => j.project_id).filter(Boolean)])];
-    const projMap: Record<string, string> = {};
-    if (jobIds.length > 0) {
-      const { data: projData } = await supabase.from('uat_projects').select('id, name').in('id', jobIds);
-      projData?.forEach((p: any) => { projMap[p.id] = p.name; });
-    }
-
-    setOpenJobs((jobs || []).slice(0, 3).map((j: any) => ({ ...j, project_name: projMap[j.project_id] || null })));
+    }));
 
     const assignJobIds = [...new Set(activeTests.map((a: any) => a.job_id))];
     const assignJobMap: Record<string, any> = {};
@@ -121,6 +108,7 @@ export default function TesterDashboard() {
       ...a,
       job_title: assignJobMap[a.job_id]?.title || 'Unknown',
       project_name: assignProjMap[assignJobMap[a.job_id]?.project_id] || null,
+      reward_label: formatReward(a.agreed_reward_amount_minor, a.currency || 'GBP'),
     })));
 
     const fbJobIds = [...new Set((feedback || []).map((f: any) => f.job_id))];
@@ -150,7 +138,9 @@ export default function TesterDashboard() {
   const firstName = tester?.full_name?.split(' ')[0] || 'Tester';
   const summaryParts: string[] = [];
   if (stats.activeTests > 0) summaryParts.push(`${stats.activeTests} active assignment${stats.activeTests !== 1 ? 's' : ''}`);
-  if (stats.pendingPayments > 0) summaryParts.push('payments awaiting');
+  if (stats.awaitingReview > 0) summaryParts.push(`${stats.awaitingReview} awaiting review`);
+  if (stats.completed > 0) summaryParts.push(`${stats.completed} completed`);
+  if (totals.totalEarned > 0) summaryParts.push('earnings to track');
   if (stats.availableJobs > 0) summaryParts.push(`${stats.availableJobs} new job${stats.availableJobs !== 1 ? 's' : ''} available`);
 
   return (
@@ -172,30 +162,32 @@ export default function TesterDashboard() {
           <WalletCards className="h-5 w-5 text-[#10B981]" />
           <div>
             <p className="text-xs text-slate-400">Total earned</p>
-            <p className="text-lg font-bold text-[#17325c]">£{stats.totalEarned.toFixed(2)}</p>
+            <p className="text-lg font-bold text-[#17325c]">{formatReward(totals.totalEarned, 'GBP')}</p>
           </div>
         </div>
       </div>
 
-      <div className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
         <UATStatCard label="Available Jobs" value={stats.availableJobs} icon={Briefcase} color="#2878d0" bg="bg-sky-100" href="/uat/jobs" />
         <UATStatCard label="My Applications" value={stats.myApplications} icon={FileText} color="#7C3AED" bg="bg-violet-100" href="/uat/applications" />
         <UATStatCard label="Active Tests" value={stats.activeTests} icon={ClipboardCheck} color="#10B981" bg="bg-emerald-100" href="/uat/my-tests" />
+        <UATStatCard label="Awaiting Review" value={stats.awaitingReview} icon={Clock} color="#F59E0B" bg="bg-amber-100" href="/uat/my-tests" />
+        <UATStatCard label="Completed" value={stats.completed} icon={CheckCircle2} color="#7C3AED" bg="bg-violet-100" href="/uat/my-tests" />
         <UATStatCard label="Feedback" value={stats.feedbackCount} icon={Bug} color="#F59E0B" bg="bg-amber-100" href="/uat/my-feedback" />
       </div>
 
-      {stats.pendingPayments > 0 && (
+      {(totals.pendingReview + totals.approved) > 0 && (
         <div className="mt-6 rounded-2xl border border-emerald-100 bg-emerald-50/50 p-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100">
               <Clock className="h-5 w-5 text-emerald-600" />
             </div>
             <div>
-              <p className="text-sm font-semibold text-emerald-800">Payments pending</p>
-              <p className="text-xs text-emerald-600">You have £{stats.pendingPayments.toFixed(2)} awaiting payout</p>
+              <p className="text-sm font-semibold text-emerald-800">Earnings pending</p>
+              <p className="text-xs text-emerald-600">You have {formatReward(totals.pendingReview + totals.approved, 'GBP')} awaiting payout</p>
             </div>
           </div>
-          <Link href="/uat/payments" className="text-sm font-semibold text-emerald-700 hover:text-emerald-900 whitespace-nowrap">View payments <ChevronRight className="inline h-4 w-4" /></Link>
+          <Link href="/uat/payments" className="text-sm font-semibold text-emerald-700 hover:text-emerald-900 whitespace-nowrap">View earnings <ChevronRight className="inline h-4 w-4" /></Link>
         </div>
       )}
 
@@ -217,8 +209,8 @@ export default function TesterDashboard() {
                     title={job.title}
                     projectName={job.project_name}
                     devices={job.required_devices}
-                    estimatedHours={job.estimated_hours}
-                    payAmount={job.pay_amount}
+                    durationLabel={job.duration_label}
+                    rewardLabel={job.reward_label}
                   />
                 ))}
               </div>
@@ -239,7 +231,7 @@ export default function TesterDashboard() {
                     jobTitle={a.job_title || 'Unknown'}
                     projectName={a.project_name}
                     status={a.status}
-                    agreedPay={a.agreed_pay}
+                    rewardLabel={a.reward_label}
                     statusColors={assignmentStatusColors}
                   />
                 ))}
@@ -316,21 +308,29 @@ export default function TesterDashboard() {
 
           <section className="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm">
             <div className="flex items-center justify-between">
-              <h2 className="font-serif text-2xl font-semibold text-[#17325c]">Payments</h2>
+              <h2 className="font-serif text-2xl font-semibold text-[#17325c]">Earnings</h2>
               <WalletCards className="h-5 w-5 text-[#10B981]" />
             </div>
             <div className="mt-5 grid grid-cols-2 gap-3">
-              <div className="rounded-xl bg-emerald-50 p-4">
-                <p className="text-xs text-slate-500">Total Earned</p>
-                <p className="mt-1 text-xl font-bold text-[#17325c]">£{stats.totalEarned.toFixed(2)}</p>
+              <div className="rounded-xl bg-slate-50 p-4">
+                <p className="text-xs text-slate-500">Pending Review</p>
+                <p className="mt-1 text-lg font-bold text-[#17325c]">{formatReward(totals.pendingReview, 'GBP')}</p>
               </div>
-              <div className="rounded-xl bg-amber-50 p-4">
-                <p className="text-xs text-slate-500">Pending</p>
-                <p className="mt-1 text-xl font-bold text-[#17325c]">£{stats.pendingPayments.toFixed(2)}</p>
+              <div className="rounded-xl bg-violet-50 p-4">
+                <p className="text-xs text-slate-500">Approved</p>
+                <p className="mt-1 text-lg font-bold text-[#17325c]">{formatReward(totals.approved, 'GBP')}</p>
+              </div>
+              <div className="rounded-xl bg-emerald-50 p-4">
+                <p className="text-xs text-slate-500">Paid</p>
+                <p className="mt-1 text-lg font-bold text-[#17325c]">{formatReward(totals.paid, 'GBP')}</p>
+              </div>
+              <div className="rounded-xl bg-sky-50 p-4">
+                <p className="text-xs text-slate-500">Total Earned</p>
+                <p className="mt-1 text-lg font-bold text-[#17325c]">{formatReward(totals.totalEarned, 'GBP')}</p>
               </div>
             </div>
             <Link href="/uat/payments" className="mt-4 flex w-full items-center justify-center gap-1 rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-600 hover:border-[#2878d0] hover:text-[#2878d0] transition-colors whitespace-nowrap">
-              View Payment History <ChevronRight className="h-4 w-4" />
+              View Earnings History <ChevronRight className="h-4 w-4" />
             </Link>
           </section>
         </aside>

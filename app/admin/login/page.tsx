@@ -1,14 +1,53 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { supabase, isSupabaseConfigured } from '@/lib/supabase';
-import { verifyAdminAccess, getAccessDeniedMessage } from '@/lib/admin-access';
+import { supabase, isSupabaseConfigured, getSessionSafe } from '@/lib/supabase';
+import { verifyAdminAccess, getAccessDeniedMessage, type AdminAccessDeniedReason } from '@/lib/admin-access';
+import { getAdminMfaDestination, type AdminMfaDestination } from '@/lib/admin-mfa';
 import { Shield, Eye, EyeOff, ArrowLeft, Loader2, Mail, Check } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import type { AuthDebugEntry } from '@/components/admin/AuthDebugBanner';
 
 const DEBUG_STORAGE_KEY = '__dfp_admin_login_debug__';
+
+type AdminHandoffResult =
+  | { kind: 'ok'; destination: AdminMfaDestination; role: string; currentLevel: string; nextLevel: string }
+  | { kind: 'denied'; reason: AdminAccessDeniedReason; message: string }
+  | { kind: 'mfa_error' }
+  | { kind: 'unverified' };
+
+async function resolveAdminHandoff(): Promise<AdminHandoffResult> {
+  const { data: userData, error: userError } = await supabase.auth.getUser();
+  if (userError || !userData?.user) {
+    await supabase.auth.signOut();
+    return { kind: 'unverified' };
+  }
+
+  const session = await getSessionSafe();
+  if (!session) {
+    await supabase.auth.signOut();
+    return { kind: 'unverified' };
+  }
+
+  const access = await verifyAdminAccess(session);
+  if (!access.allowed) {
+    return { kind: 'denied', reason: access.reason, message: getAccessDeniedMessage(access.reason) };
+  }
+
+  const mfa = await getAdminMfaDestination();
+  if (!mfa.destination) {
+    return { kind: 'mfa_error' };
+  }
+
+  return {
+    kind: 'ok',
+    destination: mfa.destination,
+    role: access.role,
+    currentLevel: mfa.currentLevel ?? 'unknown',
+    nextLevel: mfa.nextLevel ?? 'unknown',
+  };
+}
 
 function saveDebugToStorage(entries: AuthDebugEntry[]) {
   if (typeof window === 'undefined') return;
@@ -122,17 +161,25 @@ export default function AdminLoginPage() {
         }
 
         pushDebug('check-existing', `existing session user=${session.user.id}`, 'info');
-        const result = await verifyAdminAccess(session);
+        const handoff = await resolveAdminHandoff();
         if (!mountedRef.current || cancelled) return;
 
-        if (result.allowed) {
-          pushDebug('check-existing', 'verified admin → redirecting to /admin', 'ok');
+        if (handoff.kind === 'ok') {
+          pushDebug('check-existing', `verified admin → routing to ${handoff.destination}`, 'ok');
+          pushDebug('check-existing', `MFA current=${handoff.currentLevel} next=${handoff.nextLevel}`, 'info');
           saveDebugToStorage(debugEntries);
           setTimeout(() => {
-            router.push('/admin');
+            router.push(handoff.destination);
           }, 100);
+        } else if (handoff.kind === 'mfa_error') {
+          pushDebug('check-existing', 'MFA state could not be determined → fail closed', 'err');
+          setError('We could not verify your multi-factor authentication status. Please try signing in again.');
+          setDeniedSession(true);
+        } else if (handoff.kind === 'unverified') {
+          pushDebug('check-existing', 'getUser() failed → fail closed', 'err');
+          setDeniedSession(true);
         } else {
-          pushDebug('check-existing', `session exists but NOT admin (${result.reason}) → show denied UI`, 'warn');
+          pushDebug('check-existing', `session exists but NOT admin (${handoff.reason}) → show denied UI`, 'warn');
           setDeniedSession(true);
         }
       } catch (e) {
@@ -193,29 +240,48 @@ export default function AdminLoginPage() {
         return;
       }
 
-      pushDebug('login', `sign-in ok user=${signInData.session.user.id}`, 'ok');
-      const result = await verifyAdminAccess(signInData.session);
+      pushDebug('login', 'password authentication successful', 'ok');
+
+      const handoff = await resolveAdminHandoff();
 
       if (!mountedRef.current) { loginInProgressRef.current = false; return; }
 
-      if (result.allowed) {
-        pushDebug('login', 'verified admin → redirecting to /admin (hard nav)', 'ok');
+      if (handoff.kind === 'unverified') {
+        pushDebug('login', 'getUser() failed → signed out, fail closed', 'err');
+        setError('Sign-in could not be verified. Please try again.');
         setLoading(false);
         loginInProgressRef.current = false;
-        // Static exports: hard navigation is more reliable than router.push for auth handoffs
-        saveDebugToStorage([...debugEntries, { time: new Date().toISOString().slice(11, 19), label: 'redirect', detail: 'window.location.href=/admin', level: 'ok' }]);
-        setTimeout(() => {
-          router.push('/admin');
-        }, 150);
         return;
       }
 
-      pushDebug('login', `verified → NOT admin (${result.reason})`, 'warn');
-      const message = getAccessDeniedMessage(result.reason);
-      setError(message);
-      setDeniedSession(true);
+      if (handoff.kind === 'mfa_error') {
+        pushDebug('login', 'MFA state could not be determined → fail closed', 'err');
+        setError('We could not verify your multi-factor authentication status. Please try signing in again.');
+        setLoading(false);
+        loginInProgressRef.current = false;
+        return;
+      }
+
+      if (handoff.kind === 'denied') {
+        pushDebug('login', `verified → NOT admin (${handoff.reason})`, 'warn');
+        setError(handoff.message);
+        setDeniedSession(true);
+        setLoading(false);
+        loginInProgressRef.current = false;
+        return;
+      }
+
+      pushDebug('login', 'verified administrator profile', 'ok');
+      pushDebug('login', `MFA current=${handoff.currentLevel} next=${handoff.nextLevel}`, 'info');
+      pushDebug('login', `routing to ${handoff.destination}`, 'ok');
+
       setLoading(false);
       loginInProgressRef.current = false;
+      saveDebugToStorage([...debugEntries, { time: new Date().toISOString().slice(11, 19), label: 'redirect', detail: `routing to ${handoff.destination}`, level: 'ok' }]);
+      setTimeout(() => {
+        router.push(handoff.destination);
+      }, 150);
+      return;
     } catch (_err) {
       if (mountedRef.current) {
         setError('Something went wrong. Please try again.');

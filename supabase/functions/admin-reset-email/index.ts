@@ -90,6 +90,30 @@ serve(async (req: Request) => {
 
     const callerId = authUser.user.id;
 
+    const { data: aalData, error: aalError } =
+      await supabaseAdmin.auth.mfa.getAuthenticatorAssuranceLevel(token);
+
+    if (aalError || !aalData || aalData.currentLevel !== "aal2") {
+      await supabaseAdmin.from("admin_security_audit_log").insert({
+        actor_id: callerId,
+        action: "admin_mfa_required",
+        success: false,
+        details: {
+          endpoint: "admin-reset-email",
+          reason: "aal2_required",
+          outcome: aalError ? "mfa_lookup_failed" : "aal1_rejected",
+        },
+        created_at: new Date().toISOString(),
+        module: "admin-repair-7",
+        source: "edge_function",
+      });
+
+      return new Response(
+        JSON.stringify({ error: "multi_factor_authentication_required" }),
+        { status: 403, headers: corsH }
+      );
+    }
+
     const { data: callerProfile } = await supabaseAdmin
       .from("admin_profiles")
       .select("role, active")

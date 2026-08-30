@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import { supabase, getSessionSafe } from '@/lib/supabase';
+import { supabase, getSessionSafe, waitForAuthReady } from '@/lib/supabase';
 
 interface UATTesterProfile {
   id: string;
@@ -60,7 +60,7 @@ export default function UATTesterProvider({ children }: { children: React.ReactN
   const [userId, setUserId] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState('');
   const [sessionEmail, setSessionEmail] = useState('');
-  const mountedRef = useRef(true);
+  const mountedRef = useRef(false);
 
   useEffect(() => {
     mountedRef.current = true;
@@ -102,6 +102,7 @@ export default function UATTesterProvider({ children }: { children: React.ReactN
     let cancelled = false;
 
     const init = async () => {
+      await waitForAuthReady();
       const session = await getSessionSafe();
 
       if (cancelled || !mountedRef.current) return;
@@ -147,11 +148,19 @@ export default function UATTesterProvider({ children }: { children: React.ReactN
     init();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
-      if (event === 'SIGNED_OUT' && mountedRef.current) {
+      if (cancelled || !mountedRef.current) return;
+
+      if (event === 'SIGNED_OUT') {
         setAuthState('unauthenticated');
         setTester(null);
         setUserId(null);
         setSessionEmail('');
+        return;
+      }
+
+      if (event === 'SIGNED_IN') {
+        setAuthState('checking_session');
+        init();
       }
     });
 
@@ -162,10 +171,28 @@ export default function UATTesterProvider({ children }: { children: React.ReactN
   }, []);
 
   useEffect(() => {
+    if (!mountedRef.current) return;
     if (authState === 'unauthenticated' && pathname !== '/uat/login') {
-      router.replace('/uat/login');
+      const timer = setTimeout(() => {
+        if (mountedRef.current) router.replace('/uat/login');
+      }, 0);
+      return () => clearTimeout(timer);
     }
   }, [authState, router, pathname]);
+
+  useEffect(() => {
+    if (!mountedRef.current) return;
+    if (authState === 'approved' && pathname === '/uat/login') {
+      const timer = setTimeout(() => {
+        if (mountedRef.current) router.replace('/uat/dashboard');
+      }, 0);
+      return () => clearTimeout(timer);
+    }
+  }, [authState, router, pathname]);
+
+  if (pathname === '/uat/login' && authState !== 'approved') {
+    return <>{children}</>;
+  }
 
   if (authState === 'checking_session') {
     return (

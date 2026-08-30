@@ -70,6 +70,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning={true} className={inter.variable}>
+      <head>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZC4Y8SMRR7" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-ZC4Y8SMRR7');
+            `,
+          }}
+        />
+      </head>
       <body className="antialiased bg-white" suppressHydrationWarning={true}>
         <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />

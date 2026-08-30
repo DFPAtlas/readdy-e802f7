@@ -316,16 +316,23 @@ export default function PBXShell({ children, hideComingSoonBar }: { children: Re
 
         <div className="p-4 lg:p-6">
           {!hideComingSoonBar && (
-            <div className="mb-4 lg:mb-5 px-4 py-2.5 bg-[#06B6D4]/[0.04] border border-[#06B6D4]/10 rounded-lg flex items-center justify-between gap-3">
-              <div className="flex items-center gap-2.5 min-w-0">
-                <Megaphone className="w-4 h-4 text-[#06B6D4] shrink-0" />
-                <p className="text-xs text-slate-400 truncate">
-                  <span className="text-[#06B6D4] font-medium">Live Infrastructure</span> — Database tables are active. Provider connection (Twilio) requires API key configuration in Supabase Edge Function secrets.
-                </p>
+            <div className="mb-4 lg:mb-5 px-4 py-3 bg-gradient-to-r from-[#F59E0B]/[0.08] to-[#F59E0B]/[0.02] border border-[#F59E0B]/20 rounded-xl flex items-center justify-between gap-3">
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="w-8 h-8 rounded-lg bg-[#F59E0B]/15 flex items-center justify-center shrink-0">
+                  <Megaphone className="w-4 h-4 text-[#F59E0B]" />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-xs sm:text-sm font-semibold text-[#F59E0B]">
+                    Demo Preview — Cloud PBX is launching soon
+                  </p>
+                  <p className="text-xs text-slate-400 truncate">
+                    You are viewing a demo of the PBX system. The design and layout shown here are a work in progress and will change as development continues.
+                  </p>
+                </div>
               </div>
               <button
                 onClick={() => setEarlyAccessOpen(true)}
-                className="text-xs font-medium text-[#06B6D4] hover:underline cursor-pointer whitespace-nowrap shrink-0"
+                className="flex items-center gap-1.5 text-xs font-medium text-[#F59E0B] border border-[#F59E0B]/30 hover:bg-[#F59E0B]/10 px-3 py-1.5 rounded-lg transition-colors cursor-pointer whitespace-nowrap shrink-0"
               >
                 Request Access
               </button>
