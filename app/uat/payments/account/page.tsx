@@ -1,9 +1,19 @@
 'use client';
 
+import { useEffect } from 'react';
 import StripeConnectPanel from '@/components/uat/StripeConnectPanel';
 import UATPortalBreadcrumbs from '@/components/uat/portal/UATPortalBreadcrumbs';
 
 export default function PaymentAccountPage() {
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const params = new URLSearchParams(window.location.search);
+    const ret = params.get('stripe_return');
+    if (ret === 'complete' || ret === 'refresh') {
+      window.history.replaceState({}, '', window.location.pathname);
+    }
+  }, []);
+
   return (
     <>
       <UATPortalBreadcrumbs items={[{ label: 'Earnings', href: '/uat/payments' }, { label: 'Payment Account' }]} />

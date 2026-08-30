@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import {
-  Clock, PoundSterling, Users, Calendar, Monitor, Compass, ArrowRight, CheckCircle2,
+  Clock, PoundSterling, Users, Calendar, Monitor, Compass, ArrowRight, CircleCheck,
 } from 'lucide-react';
 import { capitalize, type MarketplaceJob, type TesterMatch } from '@/lib/uat-marketplace';
 
@@ -14,7 +14,7 @@ interface UATMarketplaceCardProps {
 export default function UATMarketplaceCard({ job, match }: UATMarketplaceCardProps) {
   return (
     <Link
-      href={`/uat/jobs/${job.id}`}
+      href={`/uat/jobs/view?id=${job.id}`}
       className="group block rounded-2xl border border-slate-100 bg-white p-6 shadow-sm transition hover:border-[#2878d0]/30 hover:shadow-md cursor-pointer"
     >
       <div className="flex flex-wrap items-center gap-2">
@@ -85,7 +85,7 @@ export default function UATMarketplaceCard({ job, match }: UATMarketplaceCardPro
         <div className="mt-3 flex flex-wrap items-center gap-2">
           {match.matched ? (
             <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
-              <CheckCircle2 className="h-3.5 w-3.5" /> Matches your setup
+              <CircleCheck className="h-3.5 w-3.5" /> Matches your setup
             </span>
           ) : (
             <>

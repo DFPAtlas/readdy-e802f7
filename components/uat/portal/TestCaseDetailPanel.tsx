@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { supabase } from '@/lib/supabase';
-import { AlertCircle, Loader2, CheckCircle, XCircle, SkipForward, AlertTriangle, Bug, Camera, Paperclip, Image as ImageIcon } from 'lucide-react';
+import { CircleAlert, LoaderCircle, CircleCheckBig, CircleX, SkipForward, TriangleAlert, Bug, Camera, Paperclip, Image as ImageIcon } from 'lucide-react';
 import UATEvidenceList from '@/components/uat/evidence/UATEvidenceList';
 import UATScreenshotCapture from '@/components/uat/evidence/UATScreenshotCapture';
 import UATEvidenceUploader from '@/components/uat/evidence/UATEvidenceUploader';
@@ -246,7 +246,7 @@ export default function TestCaseDetailPanel({
     return (
       <div className="h-full flex items-center justify-center">
         <div className="text-center p-8">
-          <AlertCircle className="w-8 h-8 text-red-400 mx-auto mb-3" />
+          <CircleAlert className="w-8 h-8 text-red-400 mx-auto mb-3" />
           <p className="text-slate-500 text-sm">Failed to load test case details.</p>
         </div>
       </div>
@@ -351,16 +351,16 @@ export default function TestCaseDetailPanel({
             )}
 
             <div className="flex items-center gap-1.5 text-xs">
-              {saveState === 'saving' && <span className="text-slate-400 flex items-center gap-1"><Loader2 className="w-3 h-3 animate-spin" /> Saving...</span>}
-              {saveState === 'saved' && <span className="text-emerald-500 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Saved</span>}
-              {saveState === 'error' && <span className="text-red-500 flex items-center gap-1"><AlertCircle className="w-3 h-3" /> Save failed</span>}
+              {saveState === 'saving' && <span className="text-slate-400 flex items-center gap-1"><LoaderCircle className="w-3 h-3 animate-spin" /> Saving...</span>}
+              {saveState === 'saved' && <span className="text-emerald-500 flex items-center gap-1"><CircleCheckBig className="w-3 h-3" /> Saved</span>}
+              {saveState === 'error' && <span className="text-red-500 flex items-center gap-1"><CircleAlert className="w-3 h-3" /> Save failed</span>}
             </div>
           </>
         )}
 
         {updateError && (
           <div className="p-3 bg-red-50 border border-red-100 rounded-xl flex items-center gap-2">
-            <AlertCircle className="w-4 h-4 text-red-500 shrink-0" />
+            <CircleAlert className="w-4 h-4 text-red-500 shrink-0" />
             <p className="text-sm text-red-600">{updateError}</p>
           </div>
         )}
@@ -409,7 +409,7 @@ export default function TestCaseDetailPanel({
 
           {(detail.status === 'failed' || detail.status === 'blocked') && evidence.length === 0 && canModify && (
             <div className="mt-3 p-3 bg-amber-50 border border-amber-100 rounded-xl flex items-start gap-2">
-              <AlertTriangle className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
+              <TriangleAlert className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
               <p className="text-xs text-amber-700">We strongly recommend attaching evidence (screenshots) for failed or blocked test cases.</p>
             </div>
           )}
@@ -421,21 +421,21 @@ export default function TestCaseDetailPanel({
           <div className="grid grid-cols-3 gap-2">
             <button onClick={() => handleUpdateStatus('passed')} disabled={updating}
               className="flex items-center justify-center gap-1.5 py-2.5 bg-emerald-500 hover:bg-emerald-600 disabled:opacity-50 rounded-xl text-xs font-semibold text-white transition-colors cursor-pointer whitespace-nowrap">
-              {updating ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <CheckCircle className="w-3.5 h-3.5" />} Pass
+              {updating ? <LoaderCircle className="w-3.5 h-3.5 animate-spin" /> : <CircleCheckBig className="w-3.5 h-3.5" />} Pass
             </button>
             <button onClick={() => handleUpdateStatus('failed')} disabled={updating}
               className="flex items-center justify-center gap-1.5 py-2.5 bg-red-500 hover:bg-red-600 disabled:opacity-50 rounded-xl text-xs font-semibold text-white transition-colors cursor-pointer whitespace-nowrap">
-              {updating ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <XCircle className="w-3.5 h-3.5" />} Fail
+              {updating ? <LoaderCircle className="w-3.5 h-3.5 animate-spin" /> : <CircleX className="w-3.5 h-3.5" />} Fail
             </button>
             <button onClick={() => handleUpdateStatus('blocked')} disabled={updating}
               className="flex items-center justify-center gap-1.5 py-2.5 bg-amber-500 hover:bg-amber-600 disabled:opacity-50 rounded-xl text-xs font-semibold text-white transition-colors cursor-pointer whitespace-nowrap">
-              {updating ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <AlertTriangle className="w-3.5 h-3.5" />} Block
+              {updating ? <LoaderCircle className="w-3.5 h-3.5 animate-spin" /> : <TriangleAlert className="w-3.5 h-3.5" />} Block
             </button>
           </div>
           <div className="grid grid-cols-2 gap-2 mt-2">
             <button onClick={() => handleUpdateStatus('skipped')} disabled={updating}
               className="flex items-center justify-center gap-1.5 py-2.5 bg-slate-400 hover:bg-slate-500 disabled:opacity-50 rounded-xl text-xs font-semibold text-white transition-colors cursor-pointer whitespace-nowrap">
-              {updating ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <SkipForward className="w-3.5 h-3.5" />} Skip
+              {updating ? <LoaderCircle className="w-3.5 h-3.5 animate-spin" /> : <SkipForward className="w-3.5 h-3.5" />} Skip
             </button>
             <button onClick={() => onReportBug(detail.id)} disabled={updating}
               className="flex items-center justify-center gap-1.5 py-2.5 bg-[#2878d0] hover:bg-[#1e68b9] disabled:opacity-50 rounded-xl text-xs font-semibold text-white transition-colors cursor-pointer whitespace-nowrap">

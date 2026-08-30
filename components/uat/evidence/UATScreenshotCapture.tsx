@@ -2,7 +2,7 @@
 
 import { useState, useRef, useCallback } from 'react';
 import { supabase } from '@/lib/supabase';
-import { Camera, Upload, X, Loader2, CheckCircle, AlertCircle, Image } from 'lucide-react';
+import { Camera, Upload, X, LoaderCircle, CircleCheckBig, CircleAlert, Image } from 'lucide-react';
 import { formatFileSize } from './evidence-types';
 
 const ALLOWED_IMAGE_TYPES = ['image/png', 'image/jpeg', 'image/webp'];
@@ -199,7 +199,7 @@ export default function UATScreenshotCapture({
 
         {error && (
           <div className="mx-4 mt-4 p-3 bg-red-50 border border-red-100 rounded-xl flex items-center gap-2">
-            <AlertCircle className="w-4 h-4 text-red-500 shrink-0" />
+            <CircleAlert className="w-4 h-4 text-red-500 shrink-0" />
             <p className="text-xs text-red-600">{error}</p>
           </div>
         )}
@@ -207,7 +207,7 @@ export default function UATScreenshotCapture({
         {uploaded ? (
           <div className="p-8 text-center">
             <div className="w-16 h-16 rounded-2xl bg-emerald-50 flex items-center justify-center mx-auto mb-4">
-              <CheckCircle className="w-8 h-8 text-emerald-500" />
+              <CircleCheckBig className="w-8 h-8 text-emerald-500" />
             </div>
             <h4 className="text-lg font-bold text-[#17325c] mb-2">Evidence Uploaded</h4>
             <p className="text-sm text-slate-500 mb-6">Your screenshot has been securely saved.</p>
@@ -233,7 +233,7 @@ export default function UATScreenshotCapture({
             </div>
 
             <div className="bg-amber-50 border border-amber-100 rounded-xl p-3 flex items-start gap-2">
-              <AlertCircle className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
+              <CircleAlert className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
               <div>
                 <p className="text-xs text-amber-800 font-medium">Privacy Reminder</p>
                 <p className="text-[11px] text-amber-600 mt-0.5">Select only the assigned test website. Do not capture personal tabs, messages or unrelated information.</p>
@@ -250,7 +250,7 @@ export default function UATScreenshotCapture({
               <button onClick={retake} className="flex-1 py-2.5 bg-slate-100 hover:bg-slate-200 rounded-xl text-sm font-semibold text-slate-600 cursor-pointer whitespace-nowrap transition-colors">Retake</button>
               <button onClick={handleUpload} disabled={!confirmed || uploading}
                 className="flex-1 py-2.5 bg-[#2878d0] hover:bg-[#1e68b9] disabled:opacity-40 rounded-xl text-sm font-semibold text-white cursor-pointer whitespace-nowrap transition-colors flex items-center justify-center gap-2">
-                {uploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />} Upload Evidence
+                {uploading ? <LoaderCircle className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />} Upload Evidence
               </button>
             </div>
           </div>

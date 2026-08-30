@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Loader2, AlertCircle, Clock, Ban, Filter, ChevronDown } from 'lucide-react';
+import { ArrowLeft, LoaderCircle, CircleAlert, Clock, Ban, Filter, ChevronDown } from 'lucide-react';
 import { useUATTester } from '@/components/uat/UATTesterProvider';
 import UATPortalBreadcrumbs from '@/components/uat/portal/UATPortalBreadcrumbs';
 import { UAT_MONITORING_EVENT_CONFIG } from '@/lib/uat-definitions';
@@ -288,7 +288,7 @@ export default function TesterEvents({ assignmentId }: { assignmentId: string })
             <div className="p-4 text-center border-t border-slate-100">
               <button onClick={handleLoadMore} disabled={loadingMore}
                 className="px-4 py-2 bg-slate-50 hover:bg-slate-100 rounded-xl text-xs font-semibold text-slate-500 cursor-pointer whitespace-nowrap transition-colors">
-                {loadingMore ? <Loader2 className="w-3.5 h-3.5 animate-spin inline mr-1" /> : null}
+                {loadingMore ? <LoaderCircle className="w-3.5 h-3.5 animate-spin inline mr-1" /> : null}
                 Load More
               </button>
             </div>

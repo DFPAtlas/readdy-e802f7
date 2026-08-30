@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/lib/supabase';
-import { Camera, Paperclip, AlertTriangle } from 'lucide-react';
+import { Camera, Paperclip, TriangleAlert } from 'lucide-react';
 import UATEvidenceList from '@/components/uat/evidence/UATEvidenceList';
 import UATEvidenceUploader from '@/components/uat/evidence/UATEvidenceUploader';
 import UATScreenshotCapture from '@/components/uat/evidence/UATScreenshotCapture';
@@ -113,7 +113,7 @@ export default function CaseEvidence({
 
       {requiredOnFail && evidence.length === 0 && canModify && (
         <div className="mt-3 p-3 bg-amber-50 border border-amber-100 rounded-xl flex items-start gap-2">
-          <AlertTriangle className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
+          <TriangleAlert className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
           <p className="text-xs text-amber-700">Evidence is required for failed or blocked cases before you can submit.</p>
         </div>
       )}

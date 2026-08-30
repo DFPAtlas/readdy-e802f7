@@ -7,6 +7,8 @@ const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 
 type AdminClient = ReturnType<typeof createClient>;
+type PayloadStyle = "snapshot" | "thin_v2";
+type VerifiedEnv = "generic" | "uat_test" | "uat_live" | "uat_test_v2" | "uat_live_v2";
 
 function objectId(event: Stripe.Event): string | null {
   const object = event.data.object;
@@ -18,6 +20,55 @@ function objectId(event: Stripe.Event): string | null {
 function paymentIntentId(value: string | Stripe.PaymentIntent | null): string | null {
   if (!value) return null;
   return typeof value === "string" ? value : value.id;
+}
+
+function uatStripeSecretForLivemode(livemode: boolean): string | null {
+  const key = livemode
+    ? Deno.env.get("STRIPE_UAT_LIVE_SECRET_KEY")
+    : Deno.env.get("STRIPE_UAT_TEST_SECRET_KEY");
+  return key || null;
+}
+
+function uatStripeSecretForMode(mode: "test" | "live"): string | null {
+  const key = mode === "test"
+    ? Deno.env.get("STRIPE_UAT_TEST_SECRET_KEY")
+    : Deno.env.get("STRIPE_UAT_LIVE_SECRET_KEY");
+  return key || null;
+}
+
+function connectedAccountId(event: Stripe.Event): string | null {
+  const explicit = event.account;
+  if (explicit && explicit.startsWith("acct_")) return explicit;
+  const obj = event.data.object;
+  if (obj && typeof obj === "object") {
+    const record = obj as Record<string, unknown>;
+    const id = record["id"];
+    if (typeof id === "string" && id.startsWith("acct_")) return id;
+    const account = record["account"];
+    if (typeof account === "string" && account.startsWith("acct_")) return account;
+  }
+  return null;
+}
+
+function accountIdFromThinNotification(
+  notification: { related_object?: unknown; context?: unknown },
+): string | null {
+  // Try related_object.id first
+  const ro = notification.related_object;
+  if (ro && typeof ro === "object") {
+    const record = ro as Record<string, unknown>;
+    const id = record["id"];
+    if (typeof id === "string" && id.startsWith("acct_")) return id;
+    const url = record["url"];
+    if (typeof url === "string") {
+      const match = url.match(/\/(?:v2\/core\/accounts|accounts)\/(acct_[a-zA-Z0-9_]+)/);
+      if (match) return match[1];
+    }
+  }
+  // Fallback to context
+  const ctx = notification.context;
+  if (typeof ctx === "string" && ctx.startsWith("acct_")) return ctx;
+  return null;
 }
 
 async function completeInvoicePayment(
@@ -386,6 +437,103 @@ async function reconcileUatTransfer(
   }
 }
 
+// --- Thin event handling ---
+
+async function handleThinEvent(
+  admin: AdminClient,
+  notification: { id: string; type: string; related_object?: unknown; context?: unknown; fetchRelatedObject(): Promise<unknown> },
+  verifiedEnv: VerifiedEnv,
+): Promise<string | null> {
+  const eventType = notification.type;
+  const eventId = notification.id;
+
+  // Resolve account ID from notification without fetching first
+  let accountId: string | null = accountIdFromThinNotification(notification);
+
+  // Fallback: fetch related object and extract ID
+  if (!accountId) {
+    try {
+      const relatedObject = await notification.fetchRelatedObject();
+      accountId = accountIdFromThinNotification({ related_object: relatedObject });
+    } catch (err) {
+      console.error("Failed to fetch related object for thin event", {
+        eventId,
+        eventType,
+        error: err instanceof Error ? err.message : String(err),
+      });
+      throw new Error("Failed to resolve related account for thin event");
+    }
+  }
+
+  if (!accountId || !accountId.startsWith("acct_")) {
+    throw new Error("Thin event did not resolve a valid account ID");
+  }
+
+  // Determine mode from which v2 secret verified the notification
+  let mode: "test" | "live" | null = null;
+  if (verifiedEnv === "uat_test_v2") mode = "test";
+  else if (verifiedEnv === "uat_live_v2") mode = "live";
+
+  if (!mode) {
+    throw new Error("Thin event verified but mode could not be determined");
+  }
+
+  // Find matching UAT tester
+  const { data: tester, error: testerError } = await admin
+    .from("uat_testers")
+    .select("id, stripe_account_id, stripe_account_mode")
+    .eq("stripe_account_id", accountId)
+    .limit(1)
+    .maybeSingle();
+
+  if (testerError) throw testerError;
+
+  if (!tester) {
+    // Non-UAT account — safely ignore
+    console.log("Thin event for non-UAT account, ignoring", { accountId, eventType, eventId });
+    return accountId;
+  }
+
+  // Mode safety: verify tester mode matches the event mode
+  if (tester.stripe_account_mode !== mode) {
+    console.error("Stripe account mode mismatch for thin event", {
+      eventId,
+      accountId,
+      testerMode: tester.stripe_account_mode,
+      eventMode: mode,
+    });
+    throw new Error("stripe_account_mode_mismatch");
+  }
+
+  // Handle account.closed
+  if (eventType === "v2.core.account.closed") {
+    await admin.from("uat_testers").update({
+      stripe_onboarding_complete: false,
+      stripe_transfers_enabled: false,
+      stripe_payouts_enabled: false,
+      stripe_payment_setup_status: "disabled",
+      stripe_connect_updated_at: new Date().toISOString(),
+    }).eq("id", tester.id);
+    return accountId;
+  }
+
+  // For requirements.updated and capability_status_updated, refresh from Stripe
+  if (
+    eventType === "v2.core.account[requirements].updated" ||
+    eventType === "v2.core.account[configuration.recipient].capability_status_updated"
+  ) {
+    const uatSecret = uatStripeSecretForMode(mode);
+    if (!uatSecret) {
+      throw new Error(`UAT Stripe ${mode} secret not configured`);
+    }
+    const uatStripe = new Stripe(uatSecret);
+    await syncConnectedAccount(admin, uatStripe, accountId);
+    return accountId;
+  }
+
+  return accountId;
+}
+
 Deno.serve(async (req: Request) => {
   if (req.method !== "POST") {
     return Response.json({ error: "Method not allowed" }, { status: 405 });
@@ -402,37 +550,98 @@ Deno.serve(async (req: Request) => {
 
   const rawBody = await req.text();
   const stripe = new Stripe(STRIPE_SECRET_KEY);
-  let event: Stripe.Event;
-  try {
-    event = await stripe.webhooks.constructEventAsync(
-      rawBody,
-      signature,
-      STRIPE_WEBHOOK_SECRET,
-      undefined,
-      Stripe.createSubtleCryptoProvider(),
-    );
-  } catch (error) {
-    console.error(
-      "Stripe signature verification failed",
-      error instanceof Error ? error.message : error,
-    );
+
+  // --- Signature verification: snapshot first, then thin v2 ---
+  const snapshotSecrets = [
+    { secret: STRIPE_WEBHOOK_SECRET, env: "generic" as VerifiedEnv },
+    { secret: Deno.env.get("STRIPE_UAT_TEST_CONNECT_WEBHOOK_SECRET"), env: "uat_test" as VerifiedEnv },
+    { secret: Deno.env.get("STRIPE_UAT_LIVE_CONNECT_WEBHOOK_SECRET"), env: "uat_live" as VerifiedEnv },
+  ].filter((s): s is { secret: string; env: VerifiedEnv } => Boolean(s.secret));
+
+  const v2Secrets = [
+    { secret: Deno.env.get("STRIPE_UAT_TEST_V2_WEBHOOK_SECRET"), env: "uat_test_v2" as VerifiedEnv },
+    { secret: Deno.env.get("STRIPE_UAT_LIVE_V2_WEBHOOK_SECRET"), env: "uat_live_v2" as VerifiedEnv },
+  ].filter((s): s is { secret: string; env: VerifiedEnv } => Boolean(s.secret));
+
+  const cryptoProvider = Stripe.createSubtleCryptoProvider();
+
+  let event: Stripe.Event | null = null;
+  let notification: { id: string; type: string; related_object?: unknown; context?: unknown; fetchRelatedObject(): Promise<unknown> } | null = null;
+  let payloadStyle: PayloadStyle | null = null;
+  let verifiedEnv: VerifiedEnv | null = null;
+
+  // Try snapshot secrets first (existing billing + UAT v1 transfers)
+  for (const { secret, env } of snapshotSecrets) {
+    try {
+      event = await stripe.webhooks.constructEventAsync(
+        rawBody,
+        signature,
+        secret,
+        undefined,
+        cryptoProvider,
+      );
+      payloadStyle = "snapshot";
+      verifiedEnv = env;
+      break;
+    } catch {
+      // Try next configured snapshot secret
+    }
+  }
+
+  // Try v2 thin event secrets
+  if (!event) {
+    for (const { secret, env } of v2Secrets) {
+      try {
+        notification = await stripe.parseEventNotificationAsync(
+          rawBody,
+          signature,
+          secret,
+          undefined,
+          cryptoProvider,
+        );
+        payloadStyle = "thin_v2";
+        verifiedEnv = env;
+        break;
+      } catch {
+        // Try next configured v2 secret
+      }
+    }
+  }
+
+  if (!event && !notification) {
+    console.error("Stripe signature verification failed against all configured webhook secrets");
     return Response.json({ error: "Invalid webhook signature" }, { status: 400 });
   }
 
   const admin = createClient(SUPABASE_URL, SERVICE_ROLE_KEY, {
     auth: { persistSession: false, autoRefreshToken: false },
   });
+
+  const eventId = event?.id ?? notification?.id ?? "unknown";
+  const eventType = event?.type ?? notification?.type ?? "unknown";
+
+  // Determine connected_account_id for ledger
+  let ledgerConnectedAccountId: string | null = null;
+  if (event) {
+    ledgerConnectedAccountId = connectedAccountId(event);
+  } else if (notification) {
+    ledgerConnectedAccountId = accountIdFromThinNotification(notification);
+  }
+
+  // Ledger insert
   const { error: ledgerError } = await admin.from("stripe_webhook_events").insert({
-    event_id: event.id,
-    event_type: event.type,
+    event_id: eventId,
+    event_type: eventType,
     status: "processing",
-    object_id: objectId(event),
+    object_id: event ? objectId(event) : null,
+    connected_account_id: ledgerConnectedAccountId,
   });
+
   if (ledgerError?.code === "23505") {
     const { data: existing, error: existingError } = await admin
       .from("stripe_webhook_events")
       .select("status")
-      .eq("event_id", event.id)
+      .eq("event_id", eventId)
       .maybeSingle();
     if (existingError || !existing) {
       return Response.json({ error: "Unable to read webhook ledger" }, { status: 500 });
@@ -446,7 +655,7 @@ Deno.serve(async (req: Request) => {
     const { error: retryError } = await admin
       .from("stripe_webhook_events")
       .update({ status: "processing", processed_at: null, error_message: null })
-      .eq("event_id", event.id)
+      .eq("event_id", eventId)
       .eq("status", "failed");
     if (retryError) {
       return Response.json({ error: "Unable to retry webhook event" }, { status: 500 });
@@ -458,71 +667,93 @@ Deno.serve(async (req: Request) => {
   }
 
   try {
-    switch (event.type) {
-      case "checkout.session.completed":
-      case "checkout.session.async_payment_succeeded": {
-        const session = event.data.object as Stripe.Checkout.Session;
-        if (session.payment_status !== "paid") {
+    if (event && payloadStyle === "snapshot") {
+      // --- Existing snapshot event handling (unchanged) ---
+      switch (event.type) {
+        case "checkout.session.completed":
+        case "checkout.session.async_payment_succeeded": {
+          const session = event.data.object as Stripe.Checkout.Session;
+          if (session.payment_status !== "paid") {
+            break;
+          }
+          const type = session.metadata?.type;
+          if (type === "website_starting_payment") {
+            await completeWebsiteStartingPayment(admin, session, event);
+          } else if (type === "invoice_payment" || session.metadata?.invoice_id) {
+            await completeInvoicePayment(admin, session, event);
+          } else if (type === "milestone_payment") {
+            await completeMilestonePayment(admin, session);
+          }
           break;
         }
-        const type = session.metadata?.type;
-        if (type === "website_starting_payment") {
-          await completeWebsiteStartingPayment(admin, session, event);
-        } else if (type === "invoice_payment" || session.metadata?.invoice_id) {
-          await completeInvoicePayment(admin, session, event);
-        } else if (type === "milestone_payment") {
-          await completeMilestonePayment(admin, session);
+        case "checkout.session.expired": {
+          const session = event.data.object as Stripe.Checkout.Session;
+          const projectReference = session.metadata?.project_reference;
+          const type = session.metadata?.type;
+          if (type === "website_starting_payment" && projectReference) {
+            const { error: updateError } = await admin
+              .from("dfp_checkout_orders")
+              .update({
+                payment_status: "cancelled",
+                updated_at: new Date().toISOString(),
+              })
+              .eq("project_reference", projectReference)
+              .eq("payment_status", "pending");
+            if (updateError) console.error("Failed to mark order cancelled on expiry", updateError);
+          }
+          break;
         }
-        break;
-      }
-      case "checkout.session.expired": {
-        const session = event.data.object as Stripe.Checkout.Session;
-        const projectReference = session.metadata?.project_reference;
-        const type = session.metadata?.type;
-        if (type === "website_starting_payment" && projectReference) {
-          const { error: updateError } = await admin
-            .from("dfp_checkout_orders")
-            .update({
-              payment_status: "cancelled",
-              updated_at: new Date().toISOString(),
-            })
-            .eq("project_reference", projectReference)
-            .eq("payment_status", "pending");
-          if (updateError) console.error("Failed to mark order cancelled on expiry", updateError);
+        case "payment_intent.payment_failed": {
+          const intent = event.data.object as Stripe.PaymentIntent;
+          await handlePaymentIntentFailed(admin, intent, event);
+          await recordFailedPayment(admin, intent, event);
+          break;
         }
-        break;
+        case "charge.refunded": {
+          await recordRefunds(admin, event.data.object as Stripe.Charge, event);
+          break;
+        }
+        case "account.updated": {
+          const account = event.data.object as Stripe.Account;
+          const uatSecret = uatStripeSecretForLivemode(event.livemode);
+          if (!uatSecret) break;
+          await syncConnectedAccount(admin, new Stripe(uatSecret), account.id);
+          break;
+        }
+        case "capability.updated": {
+          const capability = event.data.object as Stripe.Capability;
+          const accountId =
+            typeof capability.account === "string" && capability.account.startsWith("acct_")
+              ? capability.account
+              : (event.account ?? null);
+          if (!accountId || !accountId.startsWith("acct_")) break;
+          const uatSecret = uatStripeSecretForLivemode(event.livemode);
+          if (!uatSecret) break;
+          await syncConnectedAccount(admin, new Stripe(uatSecret), accountId);
+          break;
+        }
+        case "transfer.created":
+        case "transfer.updated":
+        case "transfer.reversed": {
+          await reconcileUatTransfer(admin, event.data.object as Stripe.Transfer);
+          break;
+        }
+        default:
+          break;
       }
-      case "payment_intent.payment_failed": {
-        const intent = event.data.object as Stripe.PaymentIntent;
-        await handlePaymentIntentFailed(admin, intent, event);
-        await recordFailedPayment(admin, intent, event);
-        break;
+    } else if (notification && payloadStyle === "thin_v2") {
+      // --- Thin v2 event handling ---
+      const thinEventType = notification.type;
+      if (
+        thinEventType === "v2.core.account.closed" ||
+        thinEventType === "v2.core.account[requirements].updated" ||
+        thinEventType === "v2.core.account[configuration.recipient].capability_status_updated"
+      ) {
+        await handleThinEvent(admin, notification, verifiedEnv!);
       }
-      case "charge.refunded": {
-        await recordRefunds(admin, event.data.object as Stripe.Charge, event);
-        break;
-      }
-      case "account.updated": {
-        const account = event.data.object as Stripe.Account;
-        await syncConnectedAccount(admin, stripe, account.id);
-        break;
-      }
-      case "capability.updated": {
-        const capability = event.data.object as Stripe.Capability;
-        const accountId = typeof capability.account === "string" ? capability.account : null;
-        if (accountId) await syncConnectedAccount(admin, stripe, accountId);
-        break;
-      }
-      case "transfer.created":
-      case "transfer.updated":
-      case "transfer.reversed": {
-        await reconcileUatTransfer(admin, event.data.object as Stripe.Transfer);
-        break;
-      }
-      default:
-        break;
     }
 
+    // Mark processed
     const { error: processedError } = await admin
       .from("stripe_webhook_events")
       .update({
@@ -530,7 +761,7 @@ Deno.serve(async (req: Request) => {
         processed_at: new Date().toISOString(),
         error_message: null,
       })
-      .eq("event_id", event.id);
+      .eq("event_id", eventId);
     if (processedError) throw processedError;
 
     return Response.json({ received: true });
@@ -543,14 +774,16 @@ Deno.serve(async (req: Request) => {
         processed_at: new Date().toISOString(),
         error_message: message.slice(0, 2000),
       })
-      .eq("event_id", event.id);
+      .eq("event_id", eventId);
     console.error("Stripe webhook processing failed", {
-      eventId: event.id,
-      eventType: event.type,
+      eventId,
+      eventType,
+      payloadStyle,
+      verifiedEnv,
       message,
     });
 
-    const alertTitle = `Stripe webhook failed: ${event.type}`;
+    const alertTitle = `Stripe webhook failed: ${eventType}`;
     const { data: existingAlert } = await admin
       .from("digital_footprint_alerts")
       .select("id")
@@ -562,7 +795,7 @@ Deno.serve(async (req: Request) => {
       await admin.from("digital_footprint_alerts").insert({
         alert_type: "critical",
         title: alertTitle,
-        description: `Event ${event.id} failed to process and payment/refund recording may be incomplete. ${message.slice(0, 300)}`,
+        description: `Event ${eventId} failed to process and payment/refund recording may be incomplete. ${message.slice(0, 300)}`,
         source: "payment",
         is_read: false,
         is_resolved: false,

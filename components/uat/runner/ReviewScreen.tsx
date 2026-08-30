@@ -1,6 +1,6 @@
 'use client';
 
-import { X, CheckCircle2, XCircle, Minus, Circle, AlertCircle, Loader2, Paperclip, ShieldCheck } from 'lucide-react';
+import { X, CircleCheck, CircleX, Minus, Circle, CircleAlert, LoaderCircle, Paperclip, ShieldCheck } from 'lucide-react';
 
 interface ReviewScreenProps {
   open: boolean;
@@ -55,15 +55,15 @@ export default function ReviewScreen({
         <div className="p-5 space-y-5">
           {loading ? (
             <div className="flex items-center justify-center gap-2 py-6 text-slate-400">
-              <Loader2 className="h-4 w-4 animate-spin" />
+              <LoaderCircle className="h-4 w-4 animate-spin" />
               <span className="text-sm">Checking your submission...</span>
             </div>
           ) : (
             <>
               <div className="grid grid-cols-5 gap-2">
                 <Stat icon={<Circle className="h-4 w-4 text-slate-500" />} label="Total" value={totalCases} color="text-slate-600" />
-                <Stat icon={<CheckCircle2 className="h-4 w-4" />} label="Passed" value={passed} color="text-emerald-600" />
-                <Stat icon={<XCircle className="h-4 w-4" />} label="Failed" value={failed} color="text-red-600" />
+                <Stat icon={<CircleCheck className="h-4 w-4" />} label="Passed" value={passed} color="text-emerald-600" />
+                <Stat icon={<CircleX className="h-4 w-4" />} label="Failed" value={failed} color="text-red-600" />
                 <Stat icon={<Minus className="h-4 w-4" />} label="Blocked" value={blocked} color="text-amber-600" />
                 <Stat icon={<Circle className="h-4 w-4" />} label="Incomplete" value={incomplete} color="text-slate-400" />
               </div>
@@ -84,7 +84,7 @@ export default function ReviewScreen({
               {missing.length > 0 && (
                 <div className="rounded-xl border border-red-100 bg-red-50 p-4">
                   <div className="flex items-center gap-2 mb-2">
-                    <AlertCircle className="h-4 w-4 text-red-500" />
+                    <CircleAlert className="h-4 w-4 text-red-500" />
                     <p className="text-sm font-semibold text-red-700">Complete the following before submitting:</p>
                   </div>
                   <ul className="space-y-1.5">
@@ -127,7 +127,7 @@ export default function ReviewScreen({
             disabled={!canSubmit || submitting}
             className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[#2878d0] hover:bg-[#1e68b9] disabled:opacity-40 text-sm font-semibold text-white cursor-pointer whitespace-nowrap transition-colors"
           >
-            {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <CheckCircle2 className="h-4 w-4" />}
+            {submitting ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <CircleCheck className="h-4 w-4" />}
             Submit UAT
           </button>
         </div>

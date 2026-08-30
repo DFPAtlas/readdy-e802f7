@@ -2,8 +2,8 @@
 
 import { motion } from '@/components/motion';
 import {
-  Radar, Activity, Wifi, WifiOff, AlertTriangle,
-  Clock, Flag, Eye, FileWarning, Zap, Loader2,
+  Radar, Activity, Wifi, WifiOff, TriangleAlert,
+  Clock, Flag, Eye, FileWarning, Zap, LoaderCircle,
 } from 'lucide-react';
 import type { MonitorConnectionStatus } from '@/lib/uat-monitor/types';
 
@@ -25,10 +25,10 @@ interface MonitoringCardProps {
 
 const statusConfig: Record<MonitorConnectionStatus, { label: string; color: string; bg: string; icon: any }> = {
   not_enabled: { label: 'Not Enabled', color: '#94A3B8', bg: 'bg-slate-100', icon: WifiOff },
-  connecting: { label: 'Connecting', color: '#F59E0B', bg: 'bg-amber-100', icon: Loader2 },
+  connecting: { label: 'Connecting', color: '#F59E0B', bg: 'bg-amber-100', icon: LoaderCircle },
   active: { label: 'Active', color: '#10B981', bg: 'bg-emerald-100', icon: Wifi },
   paused: { label: 'Paused', color: '#F59E0B', bg: 'bg-amber-100', icon: Activity },
-  degraded: { label: 'Degraded', color: '#F97316', bg: 'bg-orange-100', icon: AlertTriangle },
+  degraded: { label: 'Degraded', color: '#F97316', bg: 'bg-orange-100', icon: TriangleAlert },
   disconnected: { label: 'Disconnected', color: '#EF4444', bg: 'bg-red-100', icon: WifiOff },
   expired: { label: 'Expired', color: '#6B7280', bg: 'bg-slate-100', icon: Clock },
 };
@@ -136,7 +136,7 @@ export default function MonitoringCard({
 
         {(isPaused || isError) && (
           <div className="mt-3 p-3 bg-amber-50 border border-amber-100 rounded-xl flex items-start gap-2">
-            <AlertTriangle className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
+            <TriangleAlert className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
             <p className="text-xs text-amber-700">
               Technical monitoring is temporarily unavailable. Your test-case work is still being saved.
             </p>

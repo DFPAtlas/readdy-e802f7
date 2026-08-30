@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { supabase } from '@/lib/supabase';
 import { Briefcase, SlidersHorizontal, X } from 'lucide-react';
 import { useUATTester } from '@/components/uat/UATTesterProvider';
@@ -28,9 +28,10 @@ function rewardBucket(job: any): string {
 
 export default function TesterJobsPage() {
   const { tester } = useUATTester();
-  const testerId = tester.id;
-  const { jobs, loading } = useAvailableUatJobs();
+  const testerId = tester?.id ?? '';
+  const { jobs, loading, error, refetch } = useAvailableUatJobs();
   const [testerDevices, setTesterDevices] = useState<{ category: string; browser: string | null }[]>([]);
+  const mountedRef = useRef(true);
 
   const [deviceFilter, setDeviceFilter] = useState('all');
   const [browserFilter, setBrowserFilter] = useState('all');
@@ -39,15 +40,31 @@ export default function TesterJobsPage() {
   const [rewardFilter, setRewardFilter] = useState('all');
 
   useEffect(() => {
+    mountedRef.current = true;
+    return () => { mountedRef.current = false; };
+  }, []);
+
+  useEffect(() => {
     if (!testerId) return;
+    let cancelled = false;
     (async () => {
-      const { data } = await supabase
-        .from('uat_tester_devices')
-        .select('category, browser')
-        .eq('tester_id', testerId)
-        .eq('is_active', true);
-      setTesterDevices((data || []).map((d: any) => ({ category: d.category, browser: d.browser })));
+      try {
+        const { data } = await supabase
+          .from('uat_tester_devices')
+          .select('category, browser')
+          .eq('tester_id', testerId)
+          .eq('is_active', true);
+        if (!cancelled && mountedRef.current) {
+          setTesterDevices((data || []).map((d: any) => ({ category: d.category, browser: d.browser })));
+        }
+      } catch (err) {
+        console.error('[uat/jobs] device fetch failed:', err);
+        if (!cancelled && mountedRef.current) {
+          setTesterDevices([]);
+        }
+      }
     })();
+    return () => { cancelled = true; };
   }, [testerId]);
 
   const deviceOptions: FilterOption[] = useMemo(() => {
@@ -128,6 +145,34 @@ export default function TesterJobsPage() {
     );
   }
 
+  if (error) {
+    return (
+      <>
+        <UATPortalBreadcrumbs items={[{ label: 'Available Tests' }]} />
+        <div className="mt-4">
+          <p className="text-sm font-bold uppercase tracking-[0.2em] text-[#789265]">Paid UAT Opportunities</p>
+          <h1 className="mt-2 font-serif text-4xl font-semibold tracking-tight text-[#17325c] sm:text-5xl">Available Tests</h1>
+        </div>
+        <div className="mt-6 rounded-2xl border border-slate-100 bg-white shadow-sm">
+          <UATEmptyState
+            icon={Briefcase}
+            title="Unable to load available tests"
+            description={error}
+          />
+          <div className="pb-6 text-center">
+            <button
+              type="button"
+              onClick={() => refetch()}
+              className="inline-flex items-center gap-2 rounded-xl bg-[#2878d0] px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-blue-200 hover:bg-[#1e68b9] transition cursor-pointer whitespace-nowrap"
+            >
+              Try again
+            </button>
+          </div>
+        </div>
+      </>
+    );
+  }
+
   return (
     <>
       <UATPortalBreadcrumbs items={[{ label: 'Available Tests' }]} />
@@ -172,7 +217,7 @@ export default function TesterJobsPage() {
             <UATMarketplaceCard
               key={job.id}
               job={job}
-              match={computeTesterMatch(job, testerDevices, tester.experience_level)}
+              match={computeTesterMatch(job, testerDevices, tester?.experience_level ?? null)}
             />
           ))}
         </div>

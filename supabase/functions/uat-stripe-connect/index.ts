@@ -5,7 +5,8 @@ const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const SITE_URL = Deno.env.get("SITE_URL") || "https://digital-footprint.uk";
 
-// Stripe v2 API version — must include the named release suffix
+// Stripe v2 API version — 2026-08-26.dahlia is the current stable release
+// that supports POST /v2/core/accounts (no .preview suffix required)
 const STRIPE_V2_VERSION = "2026-08-26.dahlia";
 
 type StripeMode = "test" | "live";
@@ -100,7 +101,8 @@ function countryCode(country: string | null | undefined): string {
 
 // ---------------------------------------------------------------------------
 // Stripe v2 account creation via raw fetch
-// Requires Stripe-Version: 2026-08-26.dahlia (or later named release)
+// POST /v2/core/accounts with recipient configuration
+// Stripe-Version: 2026-08-26.dahlia (current stable release for v2 accounts)
 // ---------------------------------------------------------------------------
 async function createStripeV2Account(
   secretKey: string,
@@ -123,6 +125,25 @@ async function createStripeV2Account(
       },
     },
     dashboard: "express",
+    // Recipient configuration — enables stripe_balance.stripe_transfers capability
+    // so this account can receive marketplace transfers from DFP
+    configuration: {
+      recipient: {
+        capabilities: {
+          stripe_balance: {
+            stripe_transfers: {
+              requested: true,
+            },
+          },
+        },
+      },
+    },
+    // Request response fields for verification
+    include: [
+      "configuration.recipient",
+      "identity",
+      "requirements",
+    ],
     metadata: {
       tester_id: params.tester_id,
       venture_code: "digital-footprint",
@@ -163,6 +184,12 @@ async function createStripeV2Account(
     errWithCode.stripeCode = code;
     errWithCode.stripeType = (errObj?.type as string) || "unknown";
     throw errWithCode;
+  }
+
+  // Validate returned account ID
+  const accountId = parsed?.id as string | undefined;
+  if (!accountId || !accountId.startsWith("acct_")) {
+    throw new Error(`Stripe v2 response missing valid account ID. Got: ${JSON.stringify(accountId)}`);
   }
 
   return parsed as { id: string; object: string; livemode: boolean; [key: string]: unknown };
@@ -260,8 +287,8 @@ Deno.serve(async (req: Request) => {
     return json(req, { error: "Stripe Connect is not configured" }, 503);
   }
 
-  const mode = resolveStripeMode(req);
-  const secretKey = stripeSecretForMode(mode);
+  let mode = resolveStripeMode(req);
+  let secretKey = stripeSecretForMode(mode);
   if (!secretKey) {
     return json(req, {
       error: `Stripe ${mode} mode is not configured for UAT`,
@@ -301,7 +328,30 @@ Deno.serve(async (req: Request) => {
     return json(req, { error: "Approved tester profile not found" }, 403);
   }
 
-  // Use SDK only for platform account verification (v1 reads still work fine)
+  // For an existing connected account, always honour the persisted Stripe mode.
+  // A tester onboarded in the sandbox has stripe_account_mode = "test" even when
+  // Stripe returns the browser to digital-footprint.uk (a live host). Deriving
+  // mode solely from Origin here would wrongly switch a test account to live.
+  if (
+    tester.stripe_account_id &&
+    (tester.stripe_account_mode === "test" || tester.stripe_account_mode === "live")
+  ) {
+    const persistedMode = tester.stripe_account_mode as StripeMode;
+    if (persistedMode !== mode) {
+      const persistedKey = stripeSecretForMode(persistedMode);
+      if (!persistedKey) {
+        return json(req, {
+          error: `Stripe ${persistedMode} mode is not configured for UAT`,
+          code: "stripe_mode_not_configured",
+          stripe_mode: persistedMode,
+        }, 503);
+      }
+      mode = persistedMode;
+      secretKey = persistedKey;
+    }
+  }
+
+  // Use SDK for platform account verification (v1 reads still work fine)
   const stripe = new Stripe(secretKey);
   const testerId = tester.id as string;
 
@@ -350,6 +400,8 @@ Deno.serve(async (req: Request) => {
           email: tester.email || user.email || null,
           tester_id: testerId,
           display_name: (tester.full_name as string | null) || null,
+          // Deterministic idempotency key — same key on every retry,
+          // prevents duplicate accounts from double-clicks or retries
           idempotency_key: `dfp-uat-connect-v2-${testerId}`,
         });
       } catch (err) {
@@ -373,9 +425,27 @@ Deno.serve(async (req: Request) => {
           stripe_error_message: stripeMessage,
         }, 502);
       }
+
+      // Validate livemode matches expected mode before persisting
+      const accountLivemode = account.livemode === true;
+      const accountMode: StripeMode = accountLivemode ? "live" : "test";
+      if (accountMode !== mode) {
+        console.error(JSON.stringify({
+          action: "uat-stripe-connect:account_mode_mismatch",
+          expected_mode: mode,
+          account_livemode: accountLivemode,
+          account_id: account.id,
+        }));
+        return json(req, {
+          error: "Created account mode does not match expected environment",
+          code: "account_mode_mismatch",
+          stripe_mode: mode,
+        }, 500);
+      }
+
       accountId = account.id;
 
-      // Persist with null-guard to prevent duplicates
+      // Persist with null-guard to prevent duplicates from race conditions
       const { data: guard, error: guardError } = await admin
         .from("uat_testers")
         .update({
@@ -403,13 +473,13 @@ Deno.serve(async (req: Request) => {
 
     if (!accountId) return json(req, { error: "Unable to create Stripe account" }, 502);
 
-    const returnBase = trustedOrigin(req);
+    const returnBase = SITE_URL;
     let link: { url: string };
     try {
       link = await createStripeAccountLink(secretKey, {
         account: accountId,
-        refresh_url: `${returnBase}/uat/payments/account`,
-        return_url: `${returnBase}/uat/payments/account`,
+        refresh_url: `${returnBase}/uat/payments/account?stripe_return=refresh`,
+        return_url: `${returnBase}/uat/payments/account?stripe_return=complete`,
         type: "account_onboarding",
       });
     } catch (err) {

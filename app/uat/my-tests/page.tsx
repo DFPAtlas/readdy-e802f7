@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import {
-  ClipboardCheck, Hourglass, CheckCircle2, XCircle, Calendar,
+  ClipboardCheck, Hourglass, CircleCheck, CircleX, Calendar,
 } from 'lucide-react';
 import { useUATTester } from '@/components/uat/UATTesterProvider';
 import { useMyTests } from '@/hooks/useMyTests';
@@ -147,7 +147,7 @@ export default function MyTestsPage() {
                       </button>
                       <div className="flex shrink-0 items-center gap-4 text-xs text-slate-500">
                         <span className="flex items-center gap-1.5">
-                          <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
+                          <CircleCheck className="h-3.5 w-3.5 text-emerald-500" />
                           Completed {formatDate(item.completed_at)}
                         </span>
                         <span className="font-bold text-[#617a50]">{item.agreed_reward_label}</span>
@@ -175,7 +175,7 @@ export default function MyTestsPage() {
                       </div>
                       <div className="flex shrink-0 items-center gap-4 text-xs text-slate-500">
                         <span className="flex items-center gap-1.5">
-                          <XCircle className="h-3.5 w-3.5 text-slate-400" />
+                          <CircleX className="h-3.5 w-3.5 text-slate-400" />
                           <Calendar className="h-3.5 w-3.5 text-slate-400" />
                           {formatDate(item.last_activity)}
                         </span>

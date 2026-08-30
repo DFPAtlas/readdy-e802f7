@@ -12,7 +12,7 @@ import CaseNavigator from '@/components/uat/runner/CaseNavigator';
 import CaseRunner from '@/components/uat/runner/CaseRunner';
 import ReviewScreen from '@/components/uat/runner/ReviewScreen';
 import RequestedInfoPanel from '@/components/uat/runner/RequestedInfoPanel';
-import { Ban, AlertCircle, CheckCircle2, Play } from 'lucide-react';
+import { Ban, CircleAlert, CircleCheck, Play } from 'lucide-react';
 
 interface ReviewData {
   totalCases: number;
@@ -107,7 +107,7 @@ export default function RunnerClient({ assignmentId }: { assignmentId: string })
         <div className="flex items-center justify-center py-16">
           <div className="bg-white border border-slate-100 rounded-3xl p-12 shadow-sm text-center max-w-md">
             <div className="w-16 h-16 rounded-2xl bg-red-50 flex items-center justify-center mx-auto mb-6">
-              <AlertCircle className="w-8 h-8 text-red-400" />
+              <CircleAlert className="w-8 h-8 text-red-400" />
             </div>
             <h3 className="text-xl font-bold text-[#17325c] mb-2">Assignment Not Available</h3>
             <p className="text-slate-500 mb-6">This test assignment does not exist or does not belong to you.</p>
@@ -158,7 +158,7 @@ export default function RunnerClient({ assignmentId }: { assignmentId: string })
         <div className="flex items-center justify-center py-16">
           <div className="bg-white border border-slate-100 rounded-3xl p-12 shadow-sm text-center max-w-md">
             <div className="w-16 h-16 rounded-2xl bg-emerald-50 flex items-center justify-center mx-auto mb-6">
-              <CheckCircle2 className="w-8 h-8 text-emerald-500" />
+              <CircleCheck className="w-8 h-8 text-emerald-500" />
             </div>
             <h3 className="text-xl font-bold text-[#17325c] mb-2">UAT Submitted</h3>
             <p className="text-slate-500 mb-6">Your test is now awaiting DFP review.</p>
@@ -274,7 +274,7 @@ export default function RunnerClient({ assignmentId }: { assignmentId: string })
             disabled={reviewLoading}
             className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#617a50] hover:bg-[#546a43] disabled:opacity-50 text-sm font-semibold text-white cursor-pointer whitespace-nowrap transition-colors"
           >
-            <CheckCircle2 className="h-4 w-4" /> Review &amp; Submit
+            <CircleCheck className="h-4 w-4" /> Review &amp; Submit
           </button>
         </div>
       </div>

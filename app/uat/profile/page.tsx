@@ -6,9 +6,9 @@ import { supabase } from '@/lib/supabase';
 import Link from 'next/link';
 import { motion } from '@/components/motion';
 import {
-  ArrowLeft, Award, Calendar, Mail, Shield, Star, Save, CheckCircle2,
+  ArrowLeft, Award, Calendar, Mail, Shield, Star, Save, CircleCheck,
   MonitorSmartphone, Clock, Settings, Heart,
-  Loader2,
+  LoaderCircle,
 } from 'lucide-react';
 import {
   DEVICE_OPTIONS, AVAILABILITY_HOURS_OPTIONS, DAY_OPTIONS, TIME_OPTIONS,
@@ -451,12 +451,12 @@ export default function TesterProfilePage() {
           <div className="flex items-center gap-3">
             {saved && (
               <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm text-emerald-600 font-medium flex items-center gap-1.5">
-                <CheckCircle2 className="w-4 h-4" /> Profile updated
+                <CircleCheck className="w-4 h-4" /> Profile updated
               </motion.span>
             )}
             {saving && (
               <span className="text-sm text-slate-400 flex items-center gap-1.5">
-                <Loader2 className="w-4 h-4 animate-spin" /> Saving...
+                <LoaderCircle className="w-4 h-4 animate-spin" /> Saving...
               </span>
             )}
           </div>

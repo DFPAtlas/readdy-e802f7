@@ -1,6 +1,6 @@
 'use client';
 
-import { X, Download, AlertTriangle } from 'lucide-react';
+import { X, Download, TriangleAlert } from 'lucide-react';
 import { UATEvidence, formatFileSize, isImageEvidence } from './evidence-types';
 
 interface UATEvidencePreviewProps {
@@ -46,7 +46,7 @@ export default function UATEvidencePreview({ evidence, onClose }: UATEvidencePre
           ) : (
             <div className="text-center p-8">
               <div className="w-16 h-16 rounded-2xl bg-slate-100 flex items-center justify-center mx-auto mb-4">
-                <AlertTriangle className="w-8 h-8 text-slate-400" />
+                <TriangleAlert className="w-8 h-8 text-slate-400" />
               </div>
               <p className="text-sm text-slate-500">Preview not available for this file type.</p>
               {evidence.signedUrl && (

@@ -9,7 +9,7 @@ import {
   MONITORING_CATEGORY_LABELS,
   type MonitoringSettings,
 } from '@/lib/uat-monitoring-definitions';
-import { Loader2, Shield, X } from 'lucide-react';
+import { LoaderCircle, Shield, X } from 'lucide-react';
 
 interface UATMonitoringNoticeProps {
   assignmentId: string;
@@ -158,7 +158,7 @@ export default function UATMonitoringNotice({
 
         {loading ? (
           <div className="p-8 flex items-center justify-center">
-            <Loader2 className="w-6 h-6 animate-spin text-[#2878d0]" />
+            <LoaderCircle className="w-6 h-6 animate-spin text-[#2878d0]" />
           </div>
         ) : error ? (
           <div className="p-6">
@@ -233,7 +233,7 @@ export default function UATMonitoringNotice({
             disabled={!confirmed || acknowledging || loading || !!error}
             className="px-4 py-2.5 bg-[#2878d0] hover:bg-[#1e68b9] disabled:opacity-40 rounded-xl text-sm font-semibold text-white cursor-pointer transition-colors whitespace-nowrap flex items-center gap-2"
           >
-            {acknowledging ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
+            {acknowledging ? <LoaderCircle className="w-4 h-4 animate-spin" /> : null}
             Accept and Continue
           </button>
         </div>

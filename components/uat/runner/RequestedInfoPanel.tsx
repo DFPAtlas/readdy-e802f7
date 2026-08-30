@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { Info, AlertCircle, CheckCircle2, Loader2, Lock, Save, Send } from 'lucide-react';
+import { Info, CircleAlert, CircleCheck, LoaderCircle, Lock, Save, Send } from 'lucide-react';
 import type { RunnerCase } from '@/lib/uat-runner';
 import UATPortalBreadcrumbs from '@/components/uat/portal/UATPortalBreadcrumbs';
 import CaseEvidence from './CaseEvidence';
@@ -120,9 +120,9 @@ function RequestedCaseEditor({
 
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 text-xs">
-            {saving && <span className="text-slate-400 flex items-center gap-1"><Loader2 className="w-3 h-3 animate-spin" /> Saving...</span>}
-            {saved && <span className="text-emerald-500 flex items-center gap-1"><CheckCircle2 className="w-3 h-3" /> Saved</span>}
-            {error && <span className="text-red-500 flex items-center gap-1"><AlertCircle className="w-3 h-3" /> {error}</span>}
+            {saving && <span className="text-slate-400 flex items-center gap-1"><LoaderCircle className="w-3 h-3 animate-spin" /> Saving...</span>}
+            {saved && <span className="text-emerald-500 flex items-center gap-1"><CircleCheck className="w-3 h-3" /> Saved</span>}
+            {error && <span className="text-red-500 flex items-center gap-1"><CircleAlert className="w-3 h-3" /> {error}</span>}
           </div>
           <button
             onClick={handleSave}
@@ -182,7 +182,7 @@ export default function RequestedInfoPanel({
         <div className="flex items-center justify-center py-16">
           <div className="bg-white border border-slate-100 rounded-3xl p-12 shadow-sm text-center max-w-md">
             <div className="w-16 h-16 rounded-2xl bg-emerald-50 flex items-center justify-center mx-auto mb-6">
-              <CheckCircle2 className="w-8 h-8 text-emerald-500" />
+              <CircleCheck className="w-8 h-8 text-emerald-500" />
             </div>
             <h3 className="text-xl font-bold text-[#17325c] mb-2">UAT Resubmitted</h3>
             <p className="text-slate-500 mb-6">Your updated information has been sent to DFP for review.</p>
@@ -258,7 +258,7 @@ export default function RequestedInfoPanel({
 
         {resubmitError && (
           <div className="rounded-xl border border-red-100 bg-red-50 p-4 flex items-start gap-2">
-            <AlertCircle className="h-4 w-4 text-red-500 shrink-0 mt-0.5" />
+            <CircleAlert className="h-4 w-4 text-red-500 shrink-0 mt-0.5" />
             <p className="text-sm text-red-600">{resubmitError}</p>
           </div>
         )}
@@ -275,7 +275,7 @@ export default function RequestedInfoPanel({
             disabled={resubmitting}
             className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[#2878d0] hover:bg-[#1e68b9] disabled:opacity-50 text-sm font-semibold text-white cursor-pointer whitespace-nowrap transition-colors"
           >
-            {resubmitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
+            {resubmitting ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
             Resubmit for Review
           </button>
         </div>

@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { supabase } from '@/lib/supabase';
 import { motion } from '@/components/motion';
-import { Mail, ArrowLeft, CheckCircle2, Loader2, FlaskConical, ShieldCheck, Smartphone, Clock3, Lock, Eye, EyeOff } from 'lucide-react';
+import { Mail, ArrowLeft, CircleCheck, LoaderCircle, FlaskConical, ShieldCheck, Smartphone, Clock3, Lock, Eye, EyeOff } from 'lucide-react';
 import Link from 'next/link';
 
 export default function UATTesterLoginPage() {
@@ -164,7 +164,7 @@ export default function UATTesterLoginPage() {
                 >
                   {loading ? (
                     <>
-                      <Loader2 className="w-4 h-4 animate-spin" />
+                      <LoaderCircle className="w-4 h-4 animate-spin" />
                       Signing in...
                     </>
                   ) : (
@@ -214,7 +214,7 @@ export default function UATTesterLoginPage() {
                 >
                   {loading ? (
                     <>
-                      <Loader2 className="w-4 h-4 animate-spin" />
+                      <LoaderCircle className="w-4 h-4 animate-spin" />
                       Sending link...
                     </>
                   ) : (
@@ -237,7 +237,7 @@ export default function UATTesterLoginPage() {
                 className="text-center py-4"
               >
                 <div className="w-16 h-16 bg-[#2878d0]/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <CheckCircle2 className="w-8 h-8 text-[#2878d0]" />
+                  <CircleCheck className="w-8 h-8 text-[#2878d0]" />
                 </div>
                 <h3 className="text-xl font-bold text-[#17325c] mb-2">Check your email</h3>
                 <p className="text-slate-500 text-sm mb-1">We sent a magic link to</p>

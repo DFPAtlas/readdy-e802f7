@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { AlertCircle, Loader2, Check, X, Minus, ChevronLeft, ChevronRight, Save } from 'lucide-react';
+import { CircleAlert, LoaderCircle, Check, X, Minus, ChevronLeft, ChevronRight, Save } from 'lucide-react';
 import type { RunnerCase, RunnerSession, EvidenceRules } from '@/lib/uat-runner';
 import CaseEvidence from './CaseEvidence';
 
@@ -240,7 +240,7 @@ export default function CaseRunner({
 
             {updateError && (
               <div className="mt-3 p-3 bg-red-50 border border-red-100 rounded-xl flex items-center gap-2">
-                <AlertCircle className="w-4 h-4 text-red-500 shrink-0" />
+                <CircleAlert className="w-4 h-4 text-red-500 shrink-0" />
                 <p className="text-sm text-red-600">{updateError}</p>
               </div>
             )}
@@ -275,14 +275,14 @@ export default function CaseRunner({
               disabled={savingNow || saveState === 'saving'}
               className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-white border border-slate-200 hover:border-[#2878d0]/40 text-sm font-semibold text-slate-600 cursor-pointer whitespace-nowrap transition-colors"
             >
-              {saveState === 'saving' ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />} Save
+              {saveState === 'saving' ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />} Save
             </button>
             <button
               onClick={() => handleSave(true)}
               disabled={savingNow || saveState === 'saving'}
               className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-[#2878d0] hover:bg-[#1e68b9] disabled:opacity-50 text-sm font-semibold text-white cursor-pointer whitespace-nowrap transition-colors"
             >
-              {savingNow ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
+              {savingNow ? <LoaderCircle className="h-4 w-4 animate-spin" /> : null}
               {isLast ? 'Save & Finish' : 'Save & Next'}
               {!isLast && <ChevronRight className="h-4 w-4" />}
             </button>

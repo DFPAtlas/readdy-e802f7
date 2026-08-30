@@ -7,7 +7,7 @@ import { useUATTester } from '@/components/uat/UATTesterProvider';
 import UATPortalBreadcrumbs from '@/components/uat/portal/UATPortalBreadcrumbs';
 import MailboxPanel from '@/components/uat/portal/MailboxPanel';
 import { useMailbox } from '@/hooks/useMailbox';
-import { AlertCircle, Ban, ArrowLeft } from 'lucide-react';
+import { CircleAlert, Ban, ArrowLeft } from 'lucide-react';
 
 export default function TesterMailboxPage({ assignmentId }: { assignmentId: string }) {
   const router = useRouter();
@@ -97,7 +97,7 @@ export default function TesterMailboxPage({ assignmentId }: { assignmentId: stri
         <div className="flex items-center justify-center py-16">
           <div className="bg-white border border-slate-100 rounded-3xl p-12 shadow-sm text-center max-w-md">
             <div className="w-16 h-16 rounded-2xl bg-red-50 flex items-center justify-center mx-auto mb-6">
-              <AlertCircle className="w-8 h-8 text-red-400" />
+              <CircleAlert className="w-8 h-8 text-red-400" />
             </div>
             <h3 className="text-xl font-bold text-[#17325c] mb-2">Assignment Not Available</h3>
             <p className="text-slate-500 mb-6" data-testid="access-denied">This mailbox does not exist or does not belong to you.</p>

@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { supabase } from '@/lib/supabase';
-import { Bug, Clock, Monitor, Play, Pause, RotateCcw, CheckCircle, Loader2, Shield } from 'lucide-react';
+import { Bug, Clock, Monitor, Play, Pause, RotateCcw, CircleCheckBig, LoaderCircle, Shield } from 'lucide-react';
 import UATMonitoringNotice from '@/components/uat/portal/UATMonitoringNotice';
 import { NOTICE_VERSION } from '@/lib/uat-monitoring-definitions';
 
@@ -363,7 +363,7 @@ export default function SessionPanel({
           {!session || session.status === 'completed' ? (
             <button onClick={handleStartSession} disabled={actionLoading || session?.status === 'completed'}
               className="w-full flex items-center justify-center gap-2 py-2.5 bg-[#2878d0] hover:bg-[#1e68b9] disabled:opacity-50 rounded-xl text-xs font-semibold text-white transition-colors cursor-pointer whitespace-nowrap">
-              {actionLoading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Play className="w-3.5 h-3.5" />}
+              {actionLoading ? <LoaderCircle className="w-3.5 h-3.5 animate-spin" /> : <Play className="w-3.5 h-3.5" />}
               {session?.status === 'completed' ? 'Session Complete' : 'Start Session'}
             </button>
           ) : (
@@ -371,18 +371,18 @@ export default function SessionPanel({
               {session.status === 'active' && (
                 <button onClick={handlePauseSession} disabled={actionLoading}
                   className="w-full flex items-center justify-center gap-2 py-2.5 bg-amber-500 hover:bg-amber-600 disabled:opacity-50 rounded-xl text-xs font-semibold text-white transition-colors cursor-pointer whitespace-nowrap">
-                  {actionLoading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Pause className="w-3.5 h-3.5" />} Pause Session
+                  {actionLoading ? <LoaderCircle className="w-3.5 h-3.5 animate-spin" /> : <Pause className="w-3.5 h-3.5" />} Pause Session
                 </button>
               )}
               {session.status === 'paused' && (
                 <button onClick={handleResumeSession} disabled={actionLoading}
                   className="w-full flex items-center justify-center gap-2 py-2.5 bg-emerald-500 hover:bg-emerald-600 disabled:opacity-50 rounded-xl text-xs font-semibold text-white transition-colors cursor-pointer whitespace-nowrap">
-                  {actionLoading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <RotateCcw className="w-3.5 h-3.5" />} Resume Session
+                  {actionLoading ? <LoaderCircle className="w-3.5 h-3.5 animate-spin" /> : <RotateCcw className="w-3.5 h-3.5" />} Resume Session
                 </button>
               )}
               <button onClick={() => setFinishModal(true)} data-testid="uat-complete"
                 className="w-full flex items-center justify-center gap-2 py-2.5 bg-red-500 hover:bg-red-600 rounded-xl text-xs font-semibold text-white transition-colors cursor-pointer whitespace-nowrap">
-                <CheckCircle className="w-3.5 h-3.5" /> Finish Session
+                <CircleCheckBig className="w-3.5 h-3.5" /> Finish Session
               </button>
             </>
           )}

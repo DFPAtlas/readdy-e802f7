@@ -5,7 +5,7 @@ import { motion } from '@/components/motion';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
 import {
-  FileText, Clock, CheckCircle, XCircle, Eye,
+  FileText, Clock, CircleCheckBig, CircleX, Eye,
 } from 'lucide-react';
 import { useUATTester } from '@/components/uat/UATTesterProvider';
 import UATPortalBreadcrumbs from '@/components/uat/portal/UATPortalBreadcrumbs';
@@ -69,9 +69,9 @@ export default function TesterApplicationsPage() {
 
   const statusIcons: Record<string, any> = {
     applied: { icon: Clock, color: '#2878d0', bg: 'bg-sky-50', label: 'Pending Review' },
-    accepted: { icon: CheckCircle, color: '#10B981', bg: 'bg-emerald-50', label: 'Accepted' },
-    rejected: { icon: XCircle, color: '#EF4444', bg: 'bg-red-50', label: 'Rejected' },
-    completed: { icon: CheckCircle, color: '#7C3AED', bg: 'bg-violet-50', label: 'Completed' },
+    accepted: { icon: CircleCheckBig, color: '#10B981', bg: 'bg-emerald-50', label: 'Accepted' },
+    rejected: { icon: CircleX, color: '#EF4444', bg: 'bg-red-50', label: 'Rejected' },
+    completed: { icon: CircleCheckBig, color: '#7C3AED', bg: 'bg-violet-50', label: 'Completed' },
   };
 
   return (

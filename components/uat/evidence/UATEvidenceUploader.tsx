@@ -2,7 +2,7 @@
 
 import { useState, useRef, useCallback } from 'react';
 import { supabase } from '@/lib/supabase';
-import { Upload, X, Loader2, AlertCircle, FileText, Image, Paperclip } from 'lucide-react';
+import { Upload, X, LoaderCircle, CircleAlert, FileText, Image, Paperclip } from 'lucide-react';
 import { UATEvidence, formatFileSize } from './evidence-types';
 import UATEvidenceCard from './UATEvidenceCard';
 

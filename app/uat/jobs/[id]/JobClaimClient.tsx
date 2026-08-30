@@ -6,7 +6,7 @@ import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
 import {
   ArrowLeft, Clock, PoundSterling, Calendar, Users,
-  AlertCircle, CheckCircle, Loader2, Monitor, Compass, Award,
+  CircleAlert, CircleCheckBig, LoaderCircle, Monitor, Compass, Award,
   FileText, ClipboardList, Send, ShieldCheck,
 } from 'lucide-react';
 import { useUATTester } from '@/components/uat/UATTesterProvider';
@@ -175,7 +175,7 @@ export default function JobClaimClient({ jobId }: { jobId: string }) {
         <div className="flex items-center justify-center py-16">
           <div className="bg-white border border-slate-100 rounded-3xl p-12 shadow-sm text-center max-w-md">
             <div className="w-16 h-16 rounded-2xl bg-red-50 flex items-center justify-center mx-auto mb-6">
-              <AlertCircle className="w-8 h-8 text-red-400" />
+              <CircleAlert className="w-8 h-8 text-red-400" />
             </div>
             <h3 className="text-xl font-bold text-[#17325c] mb-2">Test Not Found</h3>
             <p className="text-slate-500 mb-6">This test may have been removed or is no longer available.</p>
@@ -290,7 +290,7 @@ export default function JobClaimClient({ jobId }: { jobId: string }) {
             {claimResult ? (
               <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="text-center py-4">
                 <div className="w-14 h-14 rounded-2xl bg-emerald-50 flex items-center justify-center mx-auto mb-4">
-                  <CheckCircle className="w-7 h-7 text-emerald-500" />
+                  <CircleCheckBig className="w-7 h-7 text-emerald-500" />
                 </div>
                 <h3 className="text-lg font-bold text-[#17325c] mb-3">Test Assigned</h3>
                 <div className="mx-auto max-w-xs rounded-2xl bg-slate-50 p-4 space-y-2 text-sm">
@@ -325,7 +325,7 @@ export default function JobClaimClient({ jobId }: { jobId: string }) {
             ) : existingAssignmentId ? (
               <div className="text-center py-4">
                 <div className="w-14 h-14 rounded-2xl bg-emerald-50 flex items-center justify-center mx-auto mb-4">
-                  <CheckCircle className="w-7 h-7 text-emerald-500" />
+                  <CircleCheckBig className="w-7 h-7 text-emerald-500" />
                 </div>
                 <h3 className="text-lg font-bold text-[#17325c] mb-2">You are already assigned to this test</h3>
                 <p className="text-sm text-slate-500 mb-5">You can continue or view your assignment.</p>
@@ -347,7 +347,7 @@ export default function JobClaimClient({ jobId }: { jobId: string }) {
             ) : !available ? (
               <div className="text-center py-4">
                 <div className="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center mx-auto mb-4">
-                  <AlertCircle className="w-7 h-7 text-slate-400" />
+                  <CircleAlert className="w-7 h-7 text-slate-400" />
                 </div>
                 <h3 className="text-lg font-bold text-[#17325c] mb-2">This test is no longer available</h3>
                 <p className="text-sm text-slate-500 mb-5">It may have been filled, paused, or closed.</p>
@@ -359,7 +359,7 @@ export default function JobClaimClient({ jobId }: { jobId: string }) {
               <div className="text-center">
                 {error && (
                   <div className="mb-4 flex items-center gap-2 rounded-xl bg-red-50 border border-red-100 p-3 text-left">
-                    <AlertCircle className="w-4 h-4 text-red-500 shrink-0" />
+                    <CircleAlert className="w-4 h-4 text-red-500 shrink-0" />
                     <p className="text-sm text-red-600">{error}</p>
                   </div>
                 )}
@@ -368,7 +368,7 @@ export default function JobClaimClient({ jobId }: { jobId: string }) {
                   disabled={busy}
                   className="w-full max-w-sm px-6 py-3.5 bg-[#2878d0] hover:bg-[#1e68b9] disabled:opacity-60 rounded-xl text-sm font-semibold text-white shadow-md shadow-blue-200 transition-all cursor-pointer flex items-center justify-center gap-2 mx-auto whitespace-nowrap"
                 >
-                  {busy ? <Loader2 className="w-4 h-4 animate-spin" /> : isInstant ? <CheckCircle className="w-4 h-4" /> : <Send className="w-4 h-4" />}
+                  {busy ? <LoaderCircle className="w-4 h-4 animate-spin" /> : isInstant ? <CircleCheckBig className="w-4 h-4" /> : <Send className="w-4 h-4" />}
                   {isInstant ? 'Claim Test' : 'Apply for Test'}
                 </button>
               </div>

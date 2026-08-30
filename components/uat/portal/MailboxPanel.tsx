@@ -9,9 +9,9 @@ import {
 import type { UATSandboxMessage, MailboxStats, MessageFilter } from '@/lib/uat-communications/types';
 import { filterMessages } from '@/hooks/useMailbox';
 import {
-  Mail, MessageSquare, Webhook, Ban, CheckCircle, XCircle,
+  Mail, MessageSquare, Webhook, Ban, CircleCheckBig, CircleX,
   Search, RefreshCw, Inbox, ArrowLeft, Link2, Flag,
-  Eye, Download, AlertTriangle, ChevronRight, Clock,
+  Eye, Download, TriangleAlert, ChevronRight, Clock,
 } from 'lucide-react';
 
 interface MailboxPanelProps {
@@ -33,8 +33,8 @@ const FILTER_BUTTONS: { key: MessageFilter; label: string; icon: React.ReactNode
   { key: 'email', label: 'Email', icon: <Mail className="w-3.5 h-3.5" /> },
   { key: 'sms', label: 'SMS', icon: <MessageSquare className="w-3.5 h-3.5" /> },
   { key: 'webhook', label: 'Webhook', icon: <Webhook className="w-3.5 h-3.5" /> },
-  { key: 'delivered', label: 'Delivered', icon: <CheckCircle className="w-3.5 h-3.5" /> },
-  { key: 'failed', label: 'Failed', icon: <XCircle className="w-3.5 h-3.5" /> },
+  { key: 'delivered', label: 'Delivered', icon: <CircleCheckBig className="w-3.5 h-3.5" /> },
+  { key: 'failed', label: 'Failed', icon: <CircleX className="w-3.5 h-3.5" /> },
   { key: 'blocked', label: 'Blocked', icon: <Ban className="w-3.5 h-3.5" /> },
 ];
 
@@ -152,7 +152,7 @@ export default function MailboxPanel({
 
       {error && (
         <div className="p-3 bg-red-50 border border-red-100 rounded-xl flex items-center gap-2">
-          <AlertTriangle className="w-4 h-4 text-red-500" />
+          <TriangleAlert className="w-4 h-4 text-red-500" />
           <span className="text-sm text-red-600">{error}</span>
         </div>
       )}
@@ -298,7 +298,7 @@ export default function MailboxPanel({
                     <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">HTML Preview</h4>
                     <div className="border border-slate-200 rounded-xl overflow-hidden bg-white">
                       <div className="bg-slate-50 px-3 py-1.5 border-b border-slate-200 flex items-center gap-2">
-                        <AlertTriangle className="w-3 h-3 text-amber-500" />
+                        <TriangleAlert className="w-3 h-3 text-amber-500" />
                         <span className="text-[10px] text-slate-500">Sandboxed preview — scripts and forms disabled</span>
                       </div>
                       <iframe

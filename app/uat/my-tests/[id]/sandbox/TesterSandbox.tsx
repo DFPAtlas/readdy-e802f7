@@ -7,8 +7,8 @@ import { useRouter } from 'next/navigation';
 import { useUATTester } from '@/components/uat/UATTesterProvider';
 import UATPortalBreadcrumbs from '@/components/uat/portal/UATPortalBreadcrumbs';
 import {
-  Box, Play, Pause, RotateCcw, Clock, StopCircle, AlertCircle,
-  ExternalLink, Loader2, Eye, EyeOff, ChevronRight, Shield,
+  Box, Play, Pause, RotateCcw, Clock, CircleStop, CircleAlert,
+  ExternalLink, LoaderCircle, Eye, EyeOff, ChevronRight, Shield,
   RefreshCw, Server, Wifi, WifiOff,
 } from 'lucide-react';
 import {
@@ -320,7 +320,7 @@ export default function TesterSandboxPage({ assignmentId }: { assignmentId: stri
         <UATPortalBreadcrumbs items={[{ label: 'My Tests', href: '/uat/my-tests' }, { label: 'Sandbox' }]} />
         <div className="flex items-center justify-center py-16">
           <div className="bg-white border border-slate-100 rounded-3xl p-12 shadow-sm text-center max-w-md">
-            <AlertCircle className="w-12 h-12 text-red-400 mx-auto mb-4" />
+            <CircleAlert className="w-12 h-12 text-red-400 mx-auto mb-4" />
             <h3 className="text-lg font-bold text-[#17325c] mb-2">Not Available</h3>
             <p className="text-slate-500" data-testid="access-denied">This assignment does not exist or does not belong to you.</p>
           </div>
@@ -346,7 +346,7 @@ export default function TesterSandboxPage({ assignmentId }: { assignmentId: stri
 
       {errorMsg && (
         <div className="mb-4 p-3 bg-red-50 border border-red-100 rounded-xl flex items-center gap-2">
-          <AlertCircle className="w-4 h-4 text-red-400 shrink-0" />
+          <CircleAlert className="w-4 h-4 text-red-400 shrink-0" />
           <span className="text-sm text-red-600">{errorMsg}</span>
         </div>
       )}
@@ -374,7 +374,7 @@ export default function TesterSandboxPage({ assignmentId }: { assignmentId: stri
           {settings?.sandbox_enabled ? (
             <button onClick={handleRequestSandbox} disabled={actionInProgress}
               className="w-full py-3 bg-cyan-500 hover:bg-cyan-600 disabled:opacity-50 rounded-xl text-sm font-semibold text-white cursor-pointer flex items-center justify-center gap-2 whitespace-nowrap transition-colors">
-              {actionInProgress ? <Loader2 className="w-4 h-4 animate-spin" /> : <Box className="w-4 h-4" />}
+              {actionInProgress ? <LoaderCircle className="w-4 h-4 animate-spin" /> : <Box className="w-4 h-4" />}
               Prepare Sandbox
             </button>
           ) : (
@@ -469,7 +469,7 @@ export default function TesterSandboxPage({ assignmentId }: { assignmentId: stri
                     </div>
                   ) : (
                     <div className="bg-amber-50 border border-amber-100 rounded-xl p-3 flex items-start gap-2">
-                      <AlertCircle className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
+                      <CircleAlert className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
                       <div>
                         <p className="text-xs font-semibold text-amber-700">Isolated validation browser status unavailable</p>
                         <p className="text-xs text-amber-600 mt-0.5">The worker may be offline or the sandbox is not yet provisioned.</p>
@@ -570,7 +570,7 @@ export default function TesterSandboxPage({ assignmentId }: { assignmentId: stri
               <div className="space-y-2">
                 {instance.status === 'requested' || instance.status === 'provisioning' ? (
                   <button disabled className="w-full py-2.5 bg-slate-100 text-slate-400 rounded-xl text-sm font-semibold cursor-not-allowed whitespace-nowrap">
-                    <Loader2 className="w-4 h-4 animate-spin inline mr-2" />Provisioning...
+                    <LoaderCircle className="w-4 h-4 animate-spin inline mr-2" />Provisioning...
                   </button>
                 ) : instance.status === 'ready' ? (
                   <>
@@ -587,7 +587,7 @@ export default function TesterSandboxPage({ assignmentId }: { assignmentId: stri
                     )}
                     <button onClick={() => handleRpcAction('end')} disabled={actionInProgress}
                       className="w-full py-2.5 bg-slate-100 hover:bg-slate-200 rounded-xl text-sm font-semibold text-slate-600 cursor-pointer whitespace-nowrap transition-colors">
-                      <StopCircle className="w-4 h-4 inline mr-1.5" />End Sandbox
+                      <CircleStop className="w-4 h-4 inline mr-1.5" />End Sandbox
                     </button>
                   </>
                 ) : instance.status === 'active' ? (
@@ -612,7 +612,7 @@ export default function TesterSandboxPage({ assignmentId }: { assignmentId: stri
                     )}
                     <button onClick={() => handleRpcAction('end')} disabled={actionInProgress}
                       className="w-full py-2.5 bg-slate-100 hover:bg-slate-200 rounded-xl text-sm font-semibold text-slate-600 cursor-pointer whitespace-nowrap transition-colors">
-                      <StopCircle className="w-4 h-4 inline mr-1.5" />End Sandbox
+                      <CircleStop className="w-4 h-4 inline mr-1.5" />End Sandbox
                     </button>
                   </>
                 ) : instance.status === 'paused' ? (
@@ -627,7 +627,7 @@ export default function TesterSandboxPage({ assignmentId }: { assignmentId: stri
                     </button>
                     <button onClick={() => handleRpcAction('end')} disabled={actionInProgress}
                       className="w-full py-2.5 bg-slate-100 hover:bg-slate-200 rounded-xl text-sm font-semibold text-slate-600 cursor-pointer whitespace-nowrap transition-colors">
-                      <StopCircle className="w-4 h-4 inline mr-1.5" />End Sandbox
+                      <CircleStop className="w-4 h-4 inline mr-1.5" />End Sandbox
                     </button>
                   </>
                 ) : (

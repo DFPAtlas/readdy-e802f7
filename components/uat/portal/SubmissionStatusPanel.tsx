@@ -1,7 +1,7 @@
 'use client';
 
 import {
-  Calendar, CheckCircle2, XCircle, AlertTriangle,
+  Calendar, CircleCheck, CircleX, TriangleAlert,
   ClipboardList, FileCheck2, Info, Clock, ArrowRight,
 } from 'lucide-react';
 import { rewardStatusBadge, rewardStatusExplanation, type RewardStatus } from '@/lib/uat-earnings';
@@ -82,7 +82,7 @@ export default function SubmissionStatusPanel({
             <h2 className="mt-2 text-lg font-bold text-[#17325c]">{jobTitle}</h2>
           </div>
           <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-emerald-50">
-            <CheckCircle2 className="h-6 w-6 text-emerald-500" />
+            <CircleCheck className="h-6 w-6 text-emerald-500" />
           </div>
         </div>
 
@@ -128,7 +128,7 @@ export default function SubmissionStatusPanel({
             <div className="mb-5 rounded-xl border border-emerald-100 bg-emerald-50/60 p-4">
               <div className="flex items-start gap-3">
                 <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-emerald-100">
-                  <CheckCircle2 className="h-4 w-4 text-emerald-600" />
+                  <CircleCheck className="h-4 w-4 text-emerald-600" />
                 </div>
                 <div className="min-w-0">
                   <p className="text-sm font-bold text-emerald-800">Submission Accepted</p>
@@ -144,7 +144,7 @@ export default function SubmissionStatusPanel({
             <div className="mb-5 rounded-xl border border-rose-100 bg-rose-50/60 p-4">
               <div className="flex items-start gap-3">
                 <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-rose-100">
-                  <XCircle className="h-4 w-4 text-rose-600" />
+                  <CircleX className="h-4 w-4 text-rose-600" />
                 </div>
                 <div className="min-w-0">
                   <p className="text-sm font-bold text-rose-800">Submission Not Accepted</p>
@@ -214,7 +214,7 @@ export default function SubmissionStatusPanel({
         <div className="rounded-2xl border border-slate-100 bg-white shadow-sm">
           <div className="border-b border-slate-100 px-6 py-4">
             <div className="flex items-center gap-2">
-              <AlertTriangle className="h-4 w-4 text-amber-500" />
+              <TriangleAlert className="h-4 w-4 text-amber-500" />
               <h3 className="text-sm font-bold text-[#17325c]">DFP Feedback</h3>
             </div>
             {reviewedAt && <p className="mt-1 text-xs text-slate-400">Reviewed {formatDate(reviewedAt)}</p>}

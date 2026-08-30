@@ -6,7 +6,7 @@ import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import {
-  Briefcase, FileText, ClipboardCheck, Bug, Clock, CheckCircle2,
+  Briefcase, FileText, ClipboardCheck, Bug, Clock, CircleCheck,
   Play, WalletCards, MonitorSmartphone,
   ChevronRight, Gauge,
 } from 'lucide-react';
@@ -172,7 +172,7 @@ export default function TesterDashboard() {
         <UATStatCard label="My Applications" value={stats.myApplications} icon={FileText} color="#7C3AED" bg="bg-violet-100" href="/uat/applications" />
         <UATStatCard label="Active Tests" value={stats.activeTests} icon={ClipboardCheck} color="#10B981" bg="bg-emerald-100" href="/uat/my-tests" />
         <UATStatCard label="Awaiting Review" value={stats.awaitingReview} icon={Clock} color="#F59E0B" bg="bg-amber-100" href="/uat/my-tests" />
-        <UATStatCard label="Completed" value={stats.completed} icon={CheckCircle2} color="#7C3AED" bg="bg-violet-100" href="/uat/my-tests" />
+        <UATStatCard label="Completed" value={stats.completed} icon={CircleCheck} color="#7C3AED" bg="bg-violet-100" href="/uat/my-tests" />
         <UATStatCard label="Feedback" value={stats.feedbackCount} icon={Bug} color="#F59E0B" bg="bg-amber-100" href="/uat/my-feedback" />
       </div>
 

@@ -9,7 +9,7 @@ import {
   STRIPE_STATUS_CONFIG,
   type TesterStripeFields,
 } from '@/lib/uat-stripe-connect';
-import { CreditCard, ShieldCheck, ArrowLeftRight, Landmark, Loader2, RefreshCw, CheckCircle2, AlertTriangle, ExternalLink } from 'lucide-react';
+import { CreditCard, ShieldCheck, ArrowLeftRight, Landmark, LoaderCircle, RefreshCw, CircleCheck, TriangleAlert, ExternalLink } from 'lucide-react';
 
 export default function StripeConnectPanel({ autoRefresh = false }: { autoRefresh?: boolean }) {
   const { tester } = useUATTester();
@@ -83,7 +83,7 @@ export default function StripeConnectPanel({ autoRefresh = false }: { autoRefres
   if (loading) {
     return (
       <div className="flex items-center justify-center py-10">
-        <Loader2 className="h-5 w-5 animate-spin text-slate-300" />
+        <LoaderCircle className="h-5 w-5 animate-spin text-slate-300" />
       </div>
     );
   }
@@ -100,7 +100,7 @@ export default function StripeConnectPanel({ autoRefresh = false }: { autoRefres
       disabled={busy}
       className="inline-flex items-center gap-2 rounded-xl bg-[#2878d0] px-5 py-2.5 text-sm font-bold text-white shadow-md shadow-blue-200 hover:bg-[#1e68b9] transition disabled:opacity-60 disabled:cursor-not-allowed whitespace-nowrap cursor-pointer"
     >
-      {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <ExternalLink className="h-4 w-4" />}
+      {busy ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <ExternalLink className="h-4 w-4" />}
       Manage Payment Account
     </button>
   ) : status === 'not_started' ? (
@@ -109,7 +109,7 @@ export default function StripeConnectPanel({ autoRefresh = false }: { autoRefres
       disabled={busy}
       className="inline-flex items-center gap-2 rounded-xl bg-[#2878d0] px-5 py-2.5 text-sm font-bold text-white shadow-md shadow-blue-200 hover:bg-[#1e68b9] transition disabled:opacity-60 disabled:cursor-not-allowed whitespace-nowrap cursor-pointer"
     >
-      {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <CreditCard className="h-4 w-4" />}
+      {busy ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <CreditCard className="h-4 w-4" />}
       Set Up Payments
     </button>
   ) : (
@@ -118,7 +118,7 @@ export default function StripeConnectPanel({ autoRefresh = false }: { autoRefres
       disabled={busy}
       className="inline-flex items-center gap-2 rounded-xl bg-[#2878d0] px-5 py-2.5 text-sm font-bold text-white shadow-md shadow-blue-200 hover:bg-[#1e68b9] transition disabled:opacity-60 disabled:cursor-not-allowed whitespace-nowrap cursor-pointer"
     >
-      {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <ShieldCheck className="h-4 w-4" />}
+      {busy ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <ShieldCheck className="h-4 w-4" />}
       Complete Verification
     </button>
   );
@@ -199,7 +199,7 @@ export default function StripeConnectPanel({ autoRefresh = false }: { autoRefres
 
         {error && (
           <div className="mb-4 flex items-center gap-2 rounded-xl border border-red-100 bg-red-50 p-3 text-sm text-red-600">
-            <AlertTriangle className="h-4 w-4 shrink-0" />
+            <TriangleAlert className="h-4 w-4 shrink-0" />
             {error}
           </div>
         )}
@@ -234,7 +234,7 @@ function Row({ ready, icon, label, value }: { ready: boolean; icon: ReactNode; l
       <span className="flex items-center gap-1.5 text-sm">
         {ready ? (
           <>
-            <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+            <CircleCheck className="h-4 w-4 text-emerald-500" />
             <span className="font-semibold text-emerald-700">{value}</span>
           </>
         ) : (

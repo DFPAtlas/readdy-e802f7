@@ -5,7 +5,7 @@ import { motion } from '@/components/motion';
 import { supabase } from '@/lib/supabase';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
-  AlertCircle, CheckCircle, Loader2, Send,
+  CircleAlert, CircleCheckBig, LoaderCircle, Send,
   Bug, ChevronDown, FileText, Camera, Paperclip,
   Activity,
 } from 'lucide-react';
@@ -287,7 +287,7 @@ function FeedbackFormInner({ assignmentId }: { assignmentId: string }) {
     return (
       <>
         <UATPortalBreadcrumbs items={[{ label: 'My Tests', href: '/uat/my-tests' }, { label: 'Access Denied' }]} />
-        <div className="flex items-center justify-center py-16" data-testid="access-denied"><div className="bg-white border border-slate-100 rounded-3xl p-12 shadow-sm text-center max-w-md"><div className="w-16 h-16 rounded-2xl bg-amber-50 flex items-center justify-center mx-auto mb-6"><AlertCircle className="w-8 h-8 text-amber-500" /></div><h3 className="text-xl font-bold text-[#17325c] mb-2">Access Denied</h3><p className="text-slate-500 mb-6">{blockMessage}</p><button onClick={() => router.push('/uat/my-tests')} className="px-5 py-2.5 bg-[#2878d0] rounded-xl text-sm font-semibold text-white cursor-pointer whitespace-nowrap">Back to My Tests</button></div></div>
+        <div className="flex items-center justify-center py-16" data-testid="access-denied"><div className="bg-white border border-slate-100 rounded-3xl p-12 shadow-sm text-center max-w-md"><div className="w-16 h-16 rounded-2xl bg-amber-50 flex items-center justify-center mx-auto mb-6"><CircleAlert className="w-8 h-8 text-amber-500" /></div><h3 className="text-xl font-bold text-[#17325c] mb-2">Access Denied</h3><p className="text-slate-500 mb-6">{blockMessage}</p><button onClick={() => router.push('/uat/my-tests')} className="px-5 py-2.5 bg-[#2878d0] rounded-xl text-sm font-semibold text-white cursor-pointer whitespace-nowrap">Back to My Tests</button></div></div>
       </>
     );
   }
@@ -296,7 +296,7 @@ function FeedbackFormInner({ assignmentId }: { assignmentId: string }) {
     return (
       <>
         <UATPortalBreadcrumbs items={[{ label: 'My Tests', href: '/uat/my-tests' }, { label: 'Feedback Submitted' }]} />
-        <div className="flex items-center justify-center py-16"><motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="bg-white border border-slate-100 rounded-3xl p-12 shadow-sm text-center max-w-md"><div className="w-16 h-16 rounded-2xl bg-emerald-50 flex items-center justify-center mx-auto mb-6"><CheckCircle className="w-8 h-8 text-emerald-500" /></div><h3 className="text-xl font-bold text-[#17325c] mb-2">Feedback Submitted</h3><p className="text-slate-500 mb-6">Your feedback has been recorded. Staff will review it shortly.</p>{evidenceError && <div className="mb-4 p-3 bg-amber-50 border border-amber-100 rounded-xl text-xs text-amber-700">{evidenceError}</div>}<div className="flex flex-col gap-3"><button onClick={() => setSubmitted(false)} className="px-5 py-2.5 bg-[#2878d0] rounded-xl text-sm font-semibold text-white cursor-pointer whitespace-nowrap">Submit Another</button><button onClick={() => { if (atcId) router.push(`/uat/my-tests/${assignmentId}`); else router.push('/uat/my-tests'); }} className="px-5 py-2.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-600 hover:text-[#2878d0] cursor-pointer whitespace-nowrap">Back to My Tests</button></div></motion.div></div>
+        <div className="flex items-center justify-center py-16"><motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="bg-white border border-slate-100 rounded-3xl p-12 shadow-sm text-center max-w-md"><div className="w-16 h-16 rounded-2xl bg-emerald-50 flex items-center justify-center mx-auto mb-6"><CircleCheckBig className="w-8 h-8 text-emerald-500" /></div><h3 className="text-xl font-bold text-[#17325c] mb-2">Feedback Submitted</h3><p className="text-slate-500 mb-6">Your feedback has been recorded. Staff will review it shortly.</p>{evidenceError && <div className="mb-4 p-3 bg-amber-50 border border-amber-100 rounded-xl text-xs text-amber-700">{evidenceError}</div>}<div className="flex flex-col gap-3"><button onClick={() => setSubmitted(false)} className="px-5 py-2.5 bg-[#2878d0] rounded-xl text-sm font-semibold text-white cursor-pointer whitespace-nowrap">Submit Another</button><button onClick={() => { if (atcId) router.push(`/uat/my-tests/${assignmentId}`); else router.push('/uat/my-tests'); }} className="px-5 py-2.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-600 hover:text-[#2878d0] cursor-pointer whitespace-nowrap">Back to My Tests</button></div></motion.div></div>
       </>
     );
   }
@@ -457,11 +457,11 @@ function FeedbackFormInner({ assignmentId }: { assignmentId: string }) {
             )}
 
             <div className="p-6 border-t border-slate-100 bg-slate-50/50">
-              {submitError && (<div className="mb-4 p-3 bg-red-50 border border-red-100 rounded-xl flex items-center gap-2"><AlertCircle className="w-4 h-4 text-red-500 shrink-0" /><p className="text-sm text-red-600">{submitError}</p></div>)}
+              {submitError && (<div className="mb-4 p-3 bg-red-50 border border-red-100 rounded-xl flex items-center gap-2"><CircleAlert className="w-4 h-4 text-red-500 shrink-0" /><p className="text-sm text-red-600">{submitError}</p></div>)}
               {evidenceError && (<div className="mb-4 p-3 bg-amber-50 border border-amber-100 rounded-xl text-xs text-amber-700">{evidenceError}</div>)}
               <button type="submit" disabled={submitting || !form.title.trim() || !form.description.trim()}
                 className="px-6 py-3 bg-[#2878d0] hover:bg-[#1e68b9] disabled:opacity-40 disabled:cursor-not-allowed rounded-xl text-sm font-semibold text-white transition-all cursor-pointer flex items-center gap-2 whitespace-nowrap">
-                {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+                {submitting ? <LoaderCircle className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
                 Submit Feedback{selectedEvidenceIds.size > 0 ? ` (with ${selectedEvidenceIds.size} attachment(s))` : ''}
               </button>
             </div>

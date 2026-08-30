@@ -10,7 +10,7 @@ import {
   Bug,
   WalletCards,
   UserRound,
-  HelpCircle,
+  CircleHelp,
   X,
 } from 'lucide-react';
 
@@ -22,7 +22,7 @@ const navigation = [
   { label: 'My Feedback', href: '/uat/my-feedback', icon: Bug },
   { label: 'Earnings', href: '/uat/payments', icon: WalletCards },
   { label: 'Profile', href: '/uat/profile', icon: UserRound },
-  { label: 'Help', href: '/account/help', icon: HelpCircle },
+  { label: 'Help', href: '/account/help', icon: CircleHelp },
 ];
 
 interface UATMobileNavigationProps {

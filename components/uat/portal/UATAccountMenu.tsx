@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { useUATTester } from '@/components/uat/UATTesterProvider';
-import { ChevronDown, UserRound, WalletCards, HelpCircle, LogOut, Landmark } from 'lucide-react';
+import { ChevronDown, UserRound, WalletCards, CircleHelp, LogOut, Landmark } from 'lucide-react';
 
 export default function UATAccountMenu() {
   const router = useRouter();
@@ -44,7 +44,7 @@ export default function UATAccountMenu() {
     { label: 'My Profile', href: '/uat/profile', icon: UserRound },
     { label: 'Payments', href: '/uat/payments', icon: WalletCards },
     { label: 'Payment Account', href: '/uat/payments/account', icon: Landmark },
-    { label: 'Help & Support', href: '/account/help', icon: HelpCircle },
+    { label: 'Help & Support', href: '/account/help', icon: CircleHelp },
   ];
 
   return (

@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { ArrowLeft, Calendar, CheckCircle2, Loader2, AlertCircle } from 'lucide-react';
+import { ArrowLeft, Calendar, CircleCheck, LoaderCircle, CircleAlert } from 'lucide-react';
 
 interface RunnerHeaderProps {
   title: string;
@@ -61,9 +61,9 @@ export default function RunnerHeader({
           {expired ? 'Deadline passed' : `Deadline ${formatDate(deadline)}`}
         </span>
         <span className="flex items-center gap-1.5 text-xs">
-          {saveState === 'saving' && <Loader2 className="h-3.5 w-3.5 animate-spin text-slate-400" />}
-          {saveState === 'saved' && <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />}
-          {saveState === 'error' && <AlertCircle className="h-3.5 w-3.5 text-red-500" />}
+          {saveState === 'saving' && <LoaderCircle className="h-3.5 w-3.5 animate-spin text-slate-400" />}
+          {saveState === 'saved' && <CircleCheck className="h-3.5 w-3.5 text-emerald-500" />}
+          {saveState === 'error' && <CircleAlert className="h-3.5 w-3.5 text-red-500" />}
           <span className={saveState === 'error' ? 'text-red-500' : 'text-slate-400'}>
             {saveState === 'saving' ? 'Saving…' : saveState === 'saved' ? 'Saved' : saveState === 'error' ? 'Save failed' : sessionStatus === 'active' ? 'Autosave on' : 'Not started'}
           </span>
