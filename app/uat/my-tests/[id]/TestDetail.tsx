@@ -92,7 +92,7 @@ export default function TestDetail({ assignmentId }: { assignmentId: string }) {
   } = useMailbox(assignmentId, testerId);
 
   const handleOpenMailbox = () => {
-    router.push(`/uat/my-tests/${assignmentId}/mailbox`);
+    router.push(`/uat/my-tests/mailbox?id=${assignmentId}`);
   };
 
   const monitorStatusState = useUATMonitorStatus(monitorRef, () => {});
@@ -296,7 +296,7 @@ export default function TestDetail({ assignmentId }: { assignmentId: string }) {
   };
 
   const handleViewEvents = () => {
-    router.push(`/uat/my-tests/${assignmentId}/events`);
+    router.push(`/uat/my-tests/events?id=${assignmentId}`);
   };
 
   const completedCases = testCases.filter((c) => ['passed', 'failed', 'blocked', 'skipped'].includes(c.status));
@@ -376,7 +376,7 @@ export default function TestDetail({ assignmentId }: { assignmentId: string }) {
             reviewFeedback={reviewFeedback}
             responseDeadline={null}
             requestedCases={requestedCases}
-            onUpdateRequestedItems={() => router.push(`/uat/my-tests/${assignmentId}/run`)}
+            onUpdateRequestedItems={() => router.push(`/uat/my-tests/run?id=${assignmentId}`)}
             onViewMyTests={() => router.push('/uat/my-tests')}
           />
         </div>
@@ -410,7 +410,7 @@ export default function TestDetail({ assignmentId }: { assignmentId: string }) {
           <p className="text-xs text-slate-500 mt-0.5">Work through cases one by one, attach evidence and submit for review.</p>
         </div>
         <Link
-          href={`/uat/my-tests/${assignmentId}/run`}
+          href={`/uat/my-tests/run?id=${assignmentId}`}
           className="inline-flex items-center gap-1.5 rounded-xl bg-[#2878d0] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#1e68b9] transition-colors whitespace-nowrap"
         >
           <Play className="h-4 w-4" /> Run Test
@@ -511,7 +511,7 @@ export default function TestDetail({ assignmentId }: { assignmentId: string }) {
           sandboxUrl={sandboxUrl}
           accountCount={sandboxAccountCount}
           workerOnline={workerOnline}
-          onNavigate={() => router.push(`/uat/my-tests/${assignmentId}/sandbox`)}
+          onNavigate={() => router.push(`/uat/my-tests/sandbox?id=${assignmentId}`)}
         />
       </div>
 

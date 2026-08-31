@@ -116,7 +116,7 @@ export default function MyTestsPage() {
                 <div className="divide-y divide-slate-100">
                   {review.map((item) => (
                     <div key={item.id} className="flex items-center justify-between px-5 py-4">
-                      <button onClick={() => router.push(`/uat/my-tests/${item.id}`)} className="min-w-0 text-left cursor-pointer">
+                      <button onClick={() => router.push(`/uat/my-tests/view?id=${item.id}`)} className="min-w-0 text-left cursor-pointer">
                         <p className="font-semibold text-[#17325c] truncate hover:text-[#2878d0]">{item.job_title}</p>
                         {item.project_name && <p className="mt-0.5 text-xs text-slate-500">{item.project_name}</p>}
                       </button>
@@ -141,7 +141,7 @@ export default function MyTestsPage() {
                 <div className="divide-y divide-slate-100">
                   {completed.map((item) => (
                     <div key={item.id} className="flex items-center justify-between px-5 py-4">
-                      <button onClick={() => router.push(`/uat/my-tests/${item.id}`)} className="min-w-0 text-left cursor-pointer">
+                      <button onClick={() => router.push(`/uat/my-tests/view?id=${item.id}`)} className="min-w-0 text-left cursor-pointer">
                         <p className="font-semibold text-[#17325c] truncate hover:text-[#2878d0]">{item.job_title}</p>
                         {item.project_name && <p className="mt-0.5 text-xs text-slate-500">{item.project_name}</p>}
                       </button>

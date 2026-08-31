@@ -177,7 +177,7 @@ export default function RunnerClient({ assignmentId }: { assignmentId: string })
               )}
             </div>
             <Link
-              href={`/uat/my-tests/${assignmentId}`}
+              href={`/uat/my-tests/view?id=${assignmentId}`}
               className="inline-block px-6 py-2.5 bg-[#2878d0] hover:bg-[#1e68b9] rounded-xl text-sm font-semibold text-white cursor-pointer whitespace-nowrap transition-colors"
             >
               Go to My Test

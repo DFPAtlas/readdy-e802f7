@@ -130,7 +130,7 @@ export default function TesterMailboxPage({ assignmentId }: { assignmentId: stri
     <>
       <UATPortalBreadcrumbs items={[
         { label: 'My Tests', href: '/uat/my-tests' },
-        { label: jobTitle || 'Test', href: `/uat/my-tests/${assignmentId}` },
+        { label: jobTitle || 'Test', href: `/uat/my-tests/view?id=${assignmentId}` },
         { label: 'Mailbox' },
       ]} />
 

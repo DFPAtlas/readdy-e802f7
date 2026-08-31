@@ -187,7 +187,7 @@ export default function RequestedInfoPanel({
             <h3 className="text-xl font-bold text-[#17325c] mb-2">UAT Resubmitted</h3>
             <p className="text-slate-500 mb-6">Your updated information has been sent to DFP for review.</p>
             <button
-              onClick={() => router.push(`/uat/my-tests/${assignmentId}`)}
+              onClick={() => router.push(`/uat/my-tests/view?id=${assignmentId}`)}
               className="px-6 py-2.5 bg-[#2878d0] hover:bg-[#1e68b9] rounded-xl text-sm font-semibold text-white cursor-pointer whitespace-nowrap transition-colors"
             >
               Back to Test
@@ -265,7 +265,7 @@ export default function RequestedInfoPanel({
 
         <div className="flex justify-end gap-3">
           <button
-            onClick={() => router.push(`/uat/my-tests/${assignmentId}`)}
+            onClick={() => router.push(`/uat/my-tests/view?id=${assignmentId}`)}
             className="px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-sm font-semibold text-slate-600 cursor-pointer whitespace-nowrap transition-colors"
           >
             Back

@@ -63,13 +63,13 @@ export default function UATMyTestCard({ item }: { item: MyTestItem }) {
           <span className="text-lg font-bold text-[#617a50]">{item.agreed_reward_label}</span>
           <div className="flex items-center gap-2">
             <Link
-              href={`/uat/my-tests/${item.id}/run`}
+              href={`/uat/my-tests/run?id=${item.id}`}
               className="inline-flex items-center gap-1.5 rounded-xl bg-[#2878d0] px-3.5 py-2 text-xs font-semibold text-white hover:bg-[#1e68b9] transition-colors whitespace-nowrap"
             >
               <Play className="h-3.5 w-3.5" /> Continue Test
             </Link>
             <Link
-              href={`/uat/my-tests/${item.id}`}
+              href={`/uat/my-tests/view?id=${item.id}`}
               className="inline-flex items-center rounded-xl bg-slate-100 px-3.5 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-200 transition-colors whitespace-nowrap"
             >
               View Details

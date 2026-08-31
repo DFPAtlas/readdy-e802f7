@@ -333,12 +333,12 @@ export default function TesterSandboxPage({ assignmentId }: { assignmentId: stri
     <>
       <UATPortalBreadcrumbs items={[
         { label: 'My Tests', href: '/uat/my-tests' },
-        { label: 'Test Runner', href: `/uat/my-tests/${assignmentId}` },
+        { label: 'Test Runner', href: `/uat/my-tests/view?id=${assignmentId}` },
         { label: 'Sandbox' },
       ]} />
 
       <div className="mt-3">
-        <button onClick={() => router.push(`/uat/my-tests/${assignmentId}`)}
+        <button onClick={() => router.push(`/uat/my-tests/view?id=${assignmentId}`)}
           className="flex items-center gap-2 text-sm text-slate-400 hover:text-[#2878d0] transition-colors cursor-pointer mb-4">
           <i className="ri-arrow-left-line" /> Return to Test Runner
         </button>

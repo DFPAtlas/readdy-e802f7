@@ -149,7 +149,7 @@ export default function TesterEarningsPage() {
                   {items.map((item) => (
                     <tr
                       key={item.id}
-                      onClick={() => router.push(`/uat/my-tests/${item.assignment_id}`)}
+                      onClick={() => router.push(`/uat/my-tests/view?id=${item.assignment_id}`)}
                       className="cursor-pointer transition-colors hover:bg-slate-50"
                     >
                       <td className="px-5 py-4">

@@ -307,7 +307,7 @@ export default function JobClaimClient({ jobId }: { jobId: string }) {
                     </div>
                   )}
                 </div>
-                <button onClick={() => router.push(`/uat/my-tests/${claimResult.assignmentId}`)} className="mt-5 px-6 py-2.5 bg-[#2878d0] hover:bg-[#1e68b9] rounded-xl text-sm font-semibold text-white cursor-pointer whitespace-nowrap transition-colors">
+                <button onClick={() => router.push(`/uat/my-tests/view?id=${claimResult.assignmentId}`)} className="mt-5 px-6 py-2.5 bg-[#2878d0] hover:bg-[#1e68b9] rounded-xl text-sm font-semibold text-white cursor-pointer whitespace-nowrap transition-colors">
                   Go to My Test
                 </button>
               </motion.div>
@@ -329,7 +329,7 @@ export default function JobClaimClient({ jobId }: { jobId: string }) {
                 </div>
                 <h3 className="text-lg font-bold text-[#17325c] mb-2">You are already assigned to this test</h3>
                 <p className="text-sm text-slate-500 mb-5">You can continue or view your assignment.</p>
-                <button onClick={() => router.push(`/uat/my-tests/${existingAssignmentId}`)} className="px-6 py-2.5 bg-[#2878d0] hover:bg-[#1e68b9] rounded-xl text-sm font-semibold text-white cursor-pointer whitespace-nowrap transition-colors">
+                <button onClick={() => router.push(`/uat/my-tests/view?id=${existingAssignmentId}`)} className="px-6 py-2.5 bg-[#2878d0] hover:bg-[#1e68b9] rounded-xl text-sm font-semibold text-white cursor-pointer whitespace-nowrap transition-colors">
                   View My Test
                 </button>
               </div>

@@ -7,7 +7,7 @@ export default function RedirectClient({ assignmentId }: { assignmentId: string 
   const router = useRouter();
 
   useEffect(() => {
-    router.replace(`/uat/my-tests/${assignmentId}`);
+    router.replace(`/uat/my-tests/view?id=${assignmentId}`);
   }, [assignmentId, router]);
 
   return (

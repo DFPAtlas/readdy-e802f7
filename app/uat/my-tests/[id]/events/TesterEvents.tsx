@@ -162,7 +162,7 @@ export default function TesterEvents({ assignmentId }: { assignmentId: string })
             </div>
             <h3 className="text-xl font-bold text-[#17325c] mb-2">Not Available</h3>
             <p className="text-slate-500 mb-6" data-testid="access-denied">{blockMessage}</p>
-            <button onClick={() => router.push(`/uat/my-tests/${assignmentId}`)}
+            <button onClick={() => router.push(`/uat/my-tests/view?id=${assignmentId}`)}
               className="px-5 py-2.5 bg-[#2878d0] rounded-xl text-sm font-semibold text-white cursor-pointer whitespace-nowrap">
               Back to Test
             </button>
@@ -183,7 +183,7 @@ export default function TesterEvents({ assignmentId }: { assignmentId: string })
             </div>
             <h3 className="text-xl font-bold text-[#17325c] mb-2">Monitoring Disabled</h3>
             <p className="text-slate-500 mb-6">Technical monitoring is not enabled for this project.</p>
-            <button onClick={() => router.push(`/uat/my-tests/${assignmentId}`)}
+            <button onClick={() => router.push(`/uat/my-tests/view?id=${assignmentId}`)}
               className="px-5 py-2.5 bg-[#2878d0] rounded-xl text-sm font-semibold text-white cursor-pointer whitespace-nowrap">
               Back to Test
             </button>
@@ -195,11 +195,11 @@ export default function TesterEvents({ assignmentId }: { assignmentId: string })
 
   return (
     <>
-      <UATPortalBreadcrumbs items={[{ label: 'My Tests', href: '/uat/my-tests' }, { label: jobTitle || 'Test', href: `/uat/my-tests/${assignmentId}` }, { label: 'Technical Events' }]} />
+      <UATPortalBreadcrumbs items={[{ label: 'My Tests', href: '/uat/my-tests' }, { label: jobTitle || 'Test', href: `/uat/my-tests/view?id=${assignmentId}` }, { label: 'Technical Events' }]} />
 
       <div className="mt-6 max-w-3xl mx-auto">
         <div className="flex items-center justify-between mb-4">
-          <button onClick={() => router.push(`/uat/my-tests/${assignmentId}`)}
+          <button onClick={() => router.push(`/uat/my-tests/view?id=${assignmentId}`)}
             className="flex items-center gap-1.5 text-sm text-slate-500 hover:text-[#2878d0] transition-colors cursor-pointer">
             <ArrowLeft className="w-4 h-4" /> Back to Test
           </button>

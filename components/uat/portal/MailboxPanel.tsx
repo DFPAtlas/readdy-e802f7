@@ -80,7 +80,7 @@ export default function MailboxPanel({
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-2">
-        <button onClick={() => router.push(`/uat/my-tests/${assignmentId}`)}
+        <button onClick={() => router.push(`/uat/my-tests/view?id=${assignmentId}`)}
           className="flex items-center gap-1.5 text-sm text-slate-500 hover:text-[#2878d0] transition-colors cursor-pointer">
           <ArrowLeft className="w-4 h-4" /> Back to test
         </button>

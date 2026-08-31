@@ -25,7 +25,7 @@ export default function UATAssignmentCard({ id, jobTitle, projectName, status, r
       <div className="flex items-center gap-4">
         {rewardLabel && <span className="text-sm font-bold text-[#617a50]">{rewardLabel}</span>}
         <Link
-          href={`/uat/my-tests/${id}`}
+          href={`/uat/my-tests/view?id=${id}`}
           className="rounded-lg bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-600 hover:bg-[#2878d0] hover:text-white transition-colors whitespace-nowrap"
         >
           Open

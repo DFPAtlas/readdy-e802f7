@@ -7,7 +7,7 @@ export default function RunRedirectClient({ assignmentId }: { assignmentId: stri
   const router = useRouter();
 
   useEffect(() => {
-    router.replace(`/uat/my-tests/${assignmentId}/run`);
+    router.replace(`/uat/my-tests/run?id=${assignmentId}`);
   }, [assignmentId, router]);
 
   return (

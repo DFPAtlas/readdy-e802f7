@@ -1,11 +1,7 @@
 import TesterEvents from './TesterEvents';
 
 export async function generateStaticParams() {
-  return [
-    { id: '1' },
-    { id: '2' },
-    { id: '3' },
-  ];
+  return [];
 }
 
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {

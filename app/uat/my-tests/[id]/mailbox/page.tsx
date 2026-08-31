@@ -1,11 +1,7 @@
 import TesterMailbox from './TesterMailbox';
 
 export async function generateStaticParams() {
-  return [
-    { id: '1' },
-    { id: '2' },
-    { id: '3' },
-  ];
+  return [];
 }
 
 export default async function MailboxPage({ params }: { params: Promise<{ id: string }> }) {
