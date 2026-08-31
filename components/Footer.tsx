@@ -52,10 +52,10 @@ export default function Footer() {
               <li><Link href="/services#digital-launch" className="text-sm text-slate-500 hover:text-[#F97316] transition-colors cursor-pointer">Digital Launch</Link></li>
               <li><Link href="/services#digital-growth" className="text-sm text-slate-500 hover:text-[#F97316] transition-colors cursor-pointer">Digital Growth</Link></li>
               <li><Link href="/services#digital-transformation" className="text-sm text-slate-500 hover:text-[#F97316] transition-colors cursor-pointer">Digital Transformation</Link></li>
-              <li><Link href="/services#web-design" className="text-sm text-slate-500 hover:text-[#F97316] transition-colors cursor-pointer">Digital Platforms</Link></li>
-              <li><Link href="/services#ai" className="text-sm text-slate-500 hover:text-[#F97316] transition-colors cursor-pointer">AI and Automation</Link></li>
-              <li><Link href="/services#portals" className="text-sm text-slate-500 hover:text-[#F97316] transition-colors cursor-pointer">Business Systems</Link></li>
-              <li><Link href="/services#cloud" className="text-sm text-slate-500 hover:text-[#F97316] transition-colors cursor-pointer">Infrastructure</Link></li>
+              <li><Link href="/services/websites-saas" className="text-sm text-slate-500 hover:text-[#F97316] transition-colors cursor-pointer">Digital Platforms</Link></li>
+              <li><Link href="/services/ai-automation" className="text-sm text-slate-500 hover:text-[#F97316] transition-colors cursor-pointer">AI and Automation</Link></li>
+              <li><Link href="/services/business-portals" className="text-sm text-slate-500 hover:text-[#F97316] transition-colors cursor-pointer">Business Systems</Link></li>
+              <li><Link href="/services/cloud-infrastructure" className="text-sm text-slate-500 hover:text-[#F97316] transition-colors cursor-pointer">Infrastructure</Link></li>
             </ul>
           </div>
 

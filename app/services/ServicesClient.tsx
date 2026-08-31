@@ -43,19 +43,54 @@ const serviceRoutes = [
   },
 ];
 
+const serviceCategories = [
+  {
+    id: 'websites-saas',
+    title: 'Websites & SaaS',
+    description: 'Websites, web applications and SaaS platforms designed around your business.',
+    href: '/services/websites-saas',
+    icon: 'ri-code-s-slash-line',
+    color: '#06B6D4',
+  },
+  {
+    id: 'ai-automation',
+    title: 'AI & Automation',
+    description: 'AI agents, workflow automation and connected business processes.',
+    href: '/services/ai-automation',
+    icon: 'ri-robot-line',
+    color: '#7C3AED',
+  },
+  {
+    id: 'business-portals',
+    title: 'Business Portals',
+    description: 'Customer, staff and operational portals that bring business activity into one place.',
+    href: '/services/business-portals',
+    icon: 'ri-dashboard-line',
+    color: '#10B981',
+  },
+  {
+    id: 'cloud-infrastructure',
+    title: 'Cloud & Infrastructure',
+    description: 'Cloud, servers, networks, cyber security and IT infrastructure.',
+    href: '/services/cloud-infrastructure',
+    icon: 'ri-cloud-line',
+    color: '#3B82F6',
+  },
+];
+
 const allServices = [
-  { icon: 'ri-code-s-slash-line', title: 'Website Design & Development', desc: 'Beautiful, high-performance websites built with modern technology stacks. Responsive, accessible, and conversion-optimised.', color: '#06B6D4', features: ['Custom Design', 'Next.js & React', 'E-Commerce', 'CMS Integration', 'SEO Optimised', 'Mobile-First'] },
-  { icon: 'ri-robot-line', title: 'AI Agent Development', desc: 'Custom AI agents that automate customer service, lead qualification, scheduling and intelligent workflows.', color: '#7C3AED', features: ['Chatbots', 'Voice Assistants', 'Lead Qualification', 'Custom Training', 'API Integration', 'Analytics'] },
-  { icon: 'ri-settings-3-line', title: 'Business Process Automation', desc: 'Streamline repetitive tasks, reduce errors and free your team to focus on high-value work.', color: '#10B981', features: ['Workflow Design', 'Document Processing', 'Email Automation', 'Data Entry', 'Approval Flows', 'Reporting'] },
-  { icon: 'ri-dashboard-line', title: 'Customer Portals', desc: 'Secure, branded client portals with dashboards, document sharing, messaging and real-time project tracking.', color: '#F97316', features: ['Client Dashboard', 'File Sharing', 'Messaging', 'Progress Tracking', 'Invoice Viewing', 'Custom Branding'] },
-  { icon: 'ri-contacts-line', title: 'CRM Integration', desc: 'Connect and optimise your customer relationship tools for seamless data flow and better insights.', color: '#EF4444', features: ['Salesforce', 'HubSpot', 'Zoho', 'Custom CRM', 'Data Migration', 'Automation'] },
-  { icon: 'ri-cloud-line', title: 'Cloud Systems', desc: 'Scalable cloud infrastructure, migration and management with leading providers.', color: '#0891B2', features: ['AWS', 'Azure', 'Google Cloud', 'Migration', 'Management', 'Cost Optimisation'] },
-  { icon: 'ri-server-line', title: 'Server Management', desc: 'Proactive server monitoring, maintenance and optimisation for peak performance.', color: '#6366F1', features: ['24/7 Monitoring', 'Updates', 'Security Patching', 'Performance Tuning', 'Backup Management', 'Disaster Recovery'] },
-  { icon: 'ri-router-line', title: 'Network Infrastructure', desc: 'Design, implementation and support for reliable, secure business networks that scale.', color: '#0D9488', features: ['Network Design', 'WiFi Solutions', 'VPN Setup', 'Firewall Config', 'Switch Management', 'Cabling'] },
-  { icon: 'ri-shield-check-line', title: 'Cyber Security', desc: 'Comprehensive cyber security solutions to protect your business from evolving threats.', color: '#DC2626', features: ['Risk Assessment', 'Firewalls', 'Endpoint Protection', 'Security Audits', 'Training', 'Incident Response'] },
-  { icon: 'ri-camera-line', title: 'CCTV & Smart Security', desc: 'Modern surveillance and access control systems for physical security.', color: '#1E40AF', features: ['IP Cameras', 'NVR Systems', 'Access Control', 'Remote Viewing', 'AI Detection', 'Mobile App'] },
-  { icon: 'ri-computer-line', title: 'IT Support', desc: 'Responsive technical support for your entire organisation — remote and on-site.', color: '#6366F1', features: ['Help Desk', 'Remote Support', 'On-Site Visits', 'Hardware Setup', 'Software Support', 'SLA Options'] },
-  { icon: 'ri-lightbulb-line', title: 'Technology Consultancy', desc: 'Expert advice to guide your digital strategy, vendor selection and transformation roadmap.', color: '#D97706', features: ['Strategy', 'Audit', 'Roadmap', 'Vendor Selection', 'Digital Transformation', 'ROI Analysis'] },
+  { icon: 'ri-code-s-slash-line', href: '/services/websites-saas', title: 'Website Design & Development', desc: 'Beautiful, high-performance websites built with modern technology stacks. Responsive, accessible, and conversion-optimised.', color: '#06B6D4', features: ['Custom Design', 'Next.js & React', 'E-Commerce', 'CMS Integration', 'SEO Optimised', 'Mobile-First'] },
+  { icon: 'ri-robot-line', href: '/services/ai-automation', title: 'AI Agent Development', desc: 'Custom AI agents that automate customer service, lead qualification, scheduling and intelligent workflows.', color: '#7C3AED', features: ['Chatbots', 'Voice Assistants', 'Lead Qualification', 'Custom Training', 'API Integration', 'Analytics'] },
+  { icon: 'ri-settings-3-line', href: '/services/ai-automation', title: 'Business Process Automation', desc: 'Streamline repetitive tasks, reduce errors and free your team to focus on high-value work.', color: '#10B981', features: ['Workflow Design', 'Document Processing', 'Email Automation', 'Data Entry', 'Approval Flows', 'Reporting'] },
+  { icon: 'ri-dashboard-line', href: '/services/business-portals', title: 'Customer Portals', desc: 'Secure, branded client portals with dashboards, document sharing, messaging and real-time project tracking.', color: '#F97316', features: ['Client Dashboard', 'File Sharing', 'Messaging', 'Progress Tracking', 'Invoice Viewing', 'Custom Branding'] },
+  { icon: 'ri-contacts-line', href: '/services/ai-automation', title: 'CRM Integration', desc: 'Connect and optimise your customer relationship tools for seamless data flow and better insights.', color: '#EF4444', features: ['Salesforce', 'HubSpot', 'Zoho', 'Custom CRM', 'Data Migration', 'Automation'] },
+  { icon: 'ri-cloud-line', href: '/services/cloud-infrastructure', title: 'Cloud Systems', desc: 'Scalable cloud infrastructure, migration and management with leading providers.', color: '#0891B2', features: ['AWS', 'Azure', 'Google Cloud', 'Migration', 'Management', 'Cost Optimisation'] },
+  { icon: 'ri-server-line', href: '/services/cloud-infrastructure', title: 'Server Management', desc: 'Proactive server monitoring, maintenance and optimisation for peak performance.', color: '#6366F1', features: ['24/7 Monitoring', 'Updates', 'Security Patching', 'Performance Tuning', 'Backup Management', 'Disaster Recovery'] },
+  { icon: 'ri-router-line', href: '/services/cloud-infrastructure', title: 'Network Infrastructure', desc: 'Design, implementation and support for reliable, secure business networks that scale.', color: '#0D9488', features: ['Network Design', 'WiFi Solutions', 'VPN Setup', 'Firewall Config', 'Switch Management', 'Cabling'] },
+  { icon: 'ri-shield-check-line', href: '/services/cloud-infrastructure', title: 'Cyber Security', desc: 'Comprehensive cyber security solutions to protect your business from evolving threats.', color: '#DC2626', features: ['Risk Assessment', 'Firewalls', 'Endpoint Protection', 'Security Audits', 'Training', 'Incident Response'] },
+  { icon: 'ri-camera-line', href: '/services/cloud-infrastructure', title: 'CCTV & Smart Security', desc: 'Modern surveillance and access control systems for physical security.', color: '#1E40AF', features: ['IP Cameras', 'NVR Systems', 'Access Control', 'Remote Viewing', 'AI Detection', 'Mobile App'] },
+  { icon: 'ri-computer-line', href: '/services/cloud-infrastructure', title: 'IT Support', desc: 'Responsive technical support for your entire organisation — remote and on-site.', color: '#6366F1', features: ['Help Desk', 'Remote Support', 'On-Site Visits', 'Hardware Setup', 'Software Support', 'SLA Options'] },
+  { icon: 'ri-lightbulb-line', href: '/contact', title: 'Technology Consultancy', desc: 'Expert advice to guide your digital strategy, vendor selection and transformation roadmap.', color: '#D97706', features: ['Strategy', 'Audit', 'Roadmap', 'Vendor Selection', 'Digital Transformation', 'ROI Analysis'] },
 ];
 
 export default function ServicesPage() {
@@ -135,6 +170,53 @@ export default function ServicesPage() {
               className="text-center mb-12"
             >
               <p className="text-[#06B6D4] text-xs sm:text-sm uppercase tracking-[0.14em] font-semibold mb-4">
+                What capability do you need?
+              </p>
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-slate-900 mb-4">
+                Choose a service category
+              </h2>
+              <p className="text-lg text-slate-500 max-w-2xl mx-auto">
+                Each category has its own dedicated page with the full detail behind it.
+              </p>
+            </motion.div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-20">
+              {serviceCategories.map((category, i) => (
+                <motion.div
+                  key={category.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.08 }}
+                >
+                  <Link
+                    href={category.href}
+                    className="group block h-full rounded-2xl border border-slate-200 bg-white p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#06B6D4] focus:ring-offset-2 focus:ring-offset-white"
+                  >
+                    <div
+                      className="w-12 h-12 rounded-xl flex items-center justify-center mb-5 transition-transform group-hover:scale-105"
+                      style={{ backgroundColor: `${category.color}15` }}
+                    >
+                      <i className={`${category.icon} text-xl w-6 h-6 flex items-center justify-center`} style={{ color: category.color }} />
+                    </div>
+                    <h3 className="text-lg font-bold text-slate-800 mb-2 group-hover:text-[#06B6D4] transition-colors">{category.title}</h3>
+                    <p className="text-sm text-slate-500 leading-relaxed mb-4">{category.description}</p>
+                    <span className="inline-flex items-center gap-1.5 text-sm font-semibold" style={{ color: category.color }}>
+                      Explore
+                      <i className="ri-arrow-right-line w-4 h-4 flex items-center justify-center group-hover:translate-x-0.5 transition-transform duration-200" />
+                    </span>
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-12"
+            >
+              <p className="text-[#06B6D4] text-xs sm:text-sm uppercase tracking-[0.14em] font-semibold mb-4">
                 Individual capabilities
               </p>
               <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-slate-900 mb-4">
@@ -152,18 +234,23 @@ export default function ServicesPage() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.05 }}
-                    className="group glass-card rounded-2xl p-6 cursor-pointer scroll-mt-28"
+                    className="scroll-mt-28"
                   >
-                    <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-colors" style={{ backgroundColor: `${service.color}15` }}>
-                      <i className={`${service.icon} text-xl w-5 h-5 flex items-center justify-center`} style={{ color: service.color }} />
-                    </div>
-                    <h3 className="text-lg font-bold text-slate-800 mb-2">{service.title}</h3>
-                    <p className="text-sm text-slate-500 leading-relaxed mb-4">{service.desc}</p>
-                    <div className="flex flex-wrap gap-1.5">
-                      {service.features.map((f) => (
-                        <span key={f} className="px-2 py-0.5 rounded-md text-xs font-medium bg-slate-50 text-slate-500 border border-slate-100">{f}</span>
-                      ))}
-                    </div>
+                    <Link
+                      href={service.href}
+                      className="group glass-card rounded-2xl p-6 block h-full cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-[#06B6D4] focus:ring-offset-2 focus:ring-offset-white"
+                    >
+                      <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-colors" style={{ backgroundColor: `${service.color}15` }}>
+                        <i className={`${service.icon} text-xl w-5 h-5 flex items-center justify-center`} style={{ color: service.color }} />
+                      </div>
+                      <h3 className="text-lg font-bold text-slate-800 mb-2">{service.title}</h3>
+                      <p className="text-sm text-slate-500 leading-relaxed mb-4">{service.desc}</p>
+                      <div className="flex flex-wrap gap-1.5">
+                        {service.features.map((f) => (
+                          <span key={f} className="px-2 py-0.5 rounded-md text-xs font-medium bg-slate-50 text-slate-500 border border-slate-100">{f}</span>
+                        ))}
+                      </div>
+                    </Link>
                   </motion.div>
                 );
               })}

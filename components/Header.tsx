@@ -220,10 +220,10 @@ export default function Header() {
   };
 
   const servicesDropdown = [
-    { href: '/services#web-design', label: 'Websites and SaaS', icon: 'ri-code-s-slash-line' },
-    { href: '/services#ai', label: 'AI and Automation', icon: 'ri-robot-line' },
-    { href: '/services#portals', label: 'Business Portals', icon: 'ri-dashboard-line' },
-    { href: '/services#cloud', label: 'Cloud and Infrastructure', icon: 'ri-cloud-line' },
+    { href: '/services/websites-saas', label: 'Websites and SaaS', icon: 'ri-code-s-slash-line' },
+    { href: '/services/ai-automation', label: 'AI and Automation', icon: 'ri-robot-line' },
+    { href: '/services/business-portals', label: 'Business Portals', icon: 'ri-dashboard-line' },
+    { href: '/services/cloud-infrastructure', label: 'Cloud and Infrastructure', icon: 'ri-cloud-line' },
     { href: '/pricing', label: 'Pricing', icon: 'ri-price-tag-3-line' },
     { href: '/services', label: 'View All Services', icon: 'ri-arrow-right-line', divider: true },
   ];
