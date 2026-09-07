@@ -1,7 +1,11 @@
 import TestDetail from './TestDetail';
 
 export async function generateStaticParams() {
-  return [];
+  return [
+    { id: '1' },
+    { id: '2' },
+    { id: '3' },
+  ];
 }
 
 export default async function MyTestPage({ params }: { params: Promise<{ id: string }> }) {
