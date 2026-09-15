@@ -376,7 +376,7 @@ export default function UATApplyPage() {
         return;
       }
 
-      const { data: insertedApp, error } = await supabase.from('uat_tester_applications').insert({
+      const payload = {
         application_reference: ref,
         legal_name: data.legalName.trim(),
         display_name: data.displayName.trim(),
@@ -431,24 +431,34 @@ export default function UATApplyPage() {
         eligibility_confirmations: data.eligibilityConfirmations,
         matching_tags: generateMatchingTags(data),
         matching_profile: buildMatchingProfile(data),
-        status: 'submitted',
-      }).select('id');
+      };
+
+      const { data: applicationId, error } = await supabase
+        .rpc('submit_uat_tester_application', { p_payload: payload });
 
       if (error) {
-        setServerError(error.message || 'Submission failed. Please try again.');
+        if (error.message === 'invalid_application_reference') {
+          setServerError('There was a problem with your application reference. Please try again.');
+        } else if (error.message === 'invalid_email') {
+          setServerError('Please check your email address and try again.');
+        } else {
+          console.error('UAT application submission failed:', error);
+          setServerError("We couldn't submit your application, please try again");
+        }
         setSubmitting(false);
         return;
       }
 
-      if (insertedApp?.[0]?.id) {
-        notifyLeadSubmission('uat_tester_applications', insertedApp[0].id);
+      if (applicationId) {
+        notifyLeadSubmission('uat_tester_applications', applicationId);
       }
 
       localStorage.removeItem('uat_application_draft');
       sessionStorage.setItem('uat_app_complete', JSON.stringify({ reference: ref, name: data.legalName.trim(), date: new Date().toISOString() }));
       router.replace('/uat-testing/application-complete');
-    } catch {
-      setServerError('Network error. Please check your connection and try again.');
+    } catch (err) {
+      console.error('UAT application submission failed:', err);
+      setServerError("We couldn't submit your application, please try again");
       setSubmitting(false);
     }
   };
