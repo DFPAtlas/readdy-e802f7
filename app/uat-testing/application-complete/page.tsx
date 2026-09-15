@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { supabase, getSessionSafe } from '@/lib/supabase';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { CheckCircle2, ArrowRight, Loader2, FileText, Search } from 'lucide-react';
@@ -27,49 +26,10 @@ export default function ApplicationCompletePage() {
           });
           setLoading(false);
         }
-        return () => { cancelled = true; };
       } catch {}
-    }
-
-    const init = async () => {
-      const session = await getSessionSafe();
-      if (cancelled) return;
-      if (!session) { setLoading(false); return; }
-
-      const { data: app } = await supabase
-        .from('uat_tester_applications')
-        .select('*')
-        .eq('user_id', session.user.id)
-        .eq('status', 'submitted')
-        .order('submitted_at', { ascending: false })
-        .limit(1)
-        .maybeSingle();
-
-      if (cancelled) return;
-
-      if (!app) {
-        const { data: draft } = await supabase
-          .from('uat_tester_applications')
-          .select('*')
-          .eq('user_id', session.user.id)
-          .eq('status', 'draft')
-          .maybeSingle();
-
-        if (cancelled) return;
-
-        if (draft) {
-          window.location.href = '/uat-testing/apply';
-          return;
-        }
-
-        setLoading(false);
-        return;
-      }
-
-      setAppData(app);
+    } else if (!cancelled) {
       setLoading(false);
-    };
-    init();
+    }
 
     return () => { cancelled = true; };
   }, []);

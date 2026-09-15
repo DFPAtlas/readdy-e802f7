@@ -13,8 +13,8 @@ const STATUS_TABS = [
   { key: 'all', label: 'All' },
   { key: 'submitted', label: 'Submitted' },
   { key: 'under_review', label: 'Under Review' },
-  { key: 'approved', label: 'Approved' },
-  { key: 'declined', label: 'Declined' },
+  { key: 'accepted', label: 'Accepted' },
+  { key: 'rejected', label: 'Rejected' },
   { key: 'waitlisted', label: 'Waitlisted' },
 ];
 
@@ -58,14 +58,14 @@ function StaffApplicationsContent() {
     all: applications.length,
     submitted: applications.filter((a) => a.status === 'submitted').length,
     under_review: applications.filter((a) => a.status === 'under_review').length,
-    approved: applications.filter((a) => a.status === 'approved').length,
-    declined: applications.filter((a) => a.status === 'declined').length,
+    accepted: applications.filter((a) => a.status === 'accepted').length,
+    rejected: applications.filter((a) => a.status === 'rejected').length,
     waitlisted: applications.filter((a) => a.status === 'waitlisted').length,
   };
 
   const viewDetail = async (app: any) => {
     setSelectedApp(app);
-    setStaffNotes(app.staff_notes || '');
+    setStaffNotes(app.admin_notes || '');
     setNoteFeedback('');
     setBugScoreOverride(app.practical_bug_report_score ?? null);
     setScoreOverrideFeedback('');
@@ -89,13 +89,13 @@ function StaffApplicationsContent() {
     if (!email) return;
 
     const statusMessages: Record<string, { subject: string; heading: string; body: string; colour: string }> = {
-      approved: {
+      accepted: {
         subject: `DFP UAT — Your application has been approved — ${ref}`,
         heading: 'Application Approved',
         body: `Congratulations ${name}, your application to become a DFP UAT Tester has been <strong>approved</strong>. Our team will be in touch soon with onboarding details and your first testing opportunities.`,
         colour: '#10B981',
       },
-      declined: {
+      rejected: {
         subject: `DFP UAT — Update on your application — ${ref}`,
         heading: 'Application Update',
         body: `Hi ${name}, thank you for your interest in becoming a DFP UAT Tester. After careful review we are unable to progress your application at this time. We may reach out if future opportunities match your profile.`,
@@ -146,19 +146,14 @@ function StaffApplicationsContent() {
     try {
       const payload: any = { status: newStatus, reviewed_at: new Date().toISOString(), reviewed_by: (await getSessionSafe())?.user?.id, updated_at: new Date().toISOString() };
       const app = applications.find((a) => a.id === appId);
-      if (newStatus === 'approved') {
+      if (newStatus === 'accepted') {
         if (app) {
           const testerRef = `DFP-UAT-TST-${new Date().getFullYear()}-${Math.floor(Math.random() * 900000) + 100000}`;
           await supabase.from('uat_testers').insert({
-            user_id: app.user_id, full_name: app.legal_name || app.application_data?.legalName || 'Unknown',
-            email: app.email, reference: testerRef, status: 'active', onboarding_status: 'approved',
+            full_name: app.legal_name || 'Unknown',
+            email: app.email, reference: testerRef, status: 'active', onboarding_status: 'not_started',
             preferred_payment_method: app.application_data?.preferredPaymentMethod || null,
           }).select('id').single();
-        }
-        if (app?.generated_tags && app.generated_tags.length > 0) {
-          for (const tag of app.generated_tags) {
-            await supabase.from('uat_tester_tags').insert({ tester_id: app.user_id, tag, source: 'auto' });
-          }
         }
       }
       await supabase.from('uat_tester_applications').update(payload).eq('id', appId);
@@ -172,7 +167,7 @@ function StaffApplicationsContent() {
   const saveNotes = async () => {
     if (!selectedApp) return;
     try {
-      await supabase.from('uat_tester_applications').update({ staff_notes: staffNotes, updated_at: new Date().toISOString() }).eq('id', selectedApp.id);
+      await supabase.from('uat_tester_applications').update({ admin_notes: staffNotes, updated_at: new Date().toISOString() }).eq('id', selectedApp.id);
       setNoteFeedback('Notes saved.');
       setTimeout(() => setNoteFeedback(''), 2000);
     } catch { setNoteFeedback('Failed to save notes.'); }
@@ -401,10 +396,10 @@ function StaffApplicationsContent() {
 
                 <div className="flex flex-wrap gap-2 pt-2">
                   <button onClick={() => updateStatus(selectedApp.id, 'under_review')} disabled={actionLoading === selectedApp.id} className="inline-flex items-center gap-1.5 rounded-lg bg-[#06B6D4]/10 border border-[#06B6D4]/20 px-3 py-2 text-xs font-semibold text-[#06B6D4] hover:bg-[#06B6D4]/20 transition whitespace-nowrap cursor-pointer disabled:opacity-50"><Eye className="h-3.5 w-3.5" /> Review</button>
-                  <button onClick={() => updateStatus(selectedApp.id, 'approved')} disabled={actionLoading === selectedApp.id} className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 px-3 py-2 text-xs font-semibold text-emerald-400 hover:bg-emerald-500/20 transition whitespace-nowrap cursor-pointer disabled:opacity-50"><CheckCircle2 className="h-3.5 w-3.5" /> Approve</button>
+                  <button onClick={() => updateStatus(selectedApp.id, 'accepted')} disabled={actionLoading === selectedApp.id} className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 px-3 py-2 text-xs font-semibold text-emerald-400 hover:bg-emerald-500/20 transition whitespace-nowrap cursor-pointer disabled:opacity-50"><CheckCircle2 className="h-3.5 w-3.5" /> Approve</button>
                   <button onClick={() => requestMoreInfo(selectedApp.id)} disabled={actionLoading === selectedApp.id} className="inline-flex items-center gap-1.5 rounded-lg bg-amber-500/10 border border-amber-500/20 px-3 py-2 text-xs font-semibold text-amber-400 hover:bg-amber-500/20 transition whitespace-nowrap cursor-pointer disabled:opacity-50"><AlertTriangle className="h-3.5 w-3.5" /> More Info</button>
                   <button onClick={() => updateStatus(selectedApp.id, 'waitlisted')} disabled={actionLoading === selectedApp.id} className="inline-flex items-center gap-1.5 rounded-lg bg-cyan-500/10 border border-cyan-500/20 px-3 py-2 text-xs font-semibold text-cyan-400 hover:bg-cyan-500/20 transition whitespace-nowrap cursor-pointer disabled:opacity-50"><Clock3 className="h-3.5 w-3.5" /> Waitlist</button>
-                  <button onClick={() => updateStatus(selectedApp.id, 'declined')} disabled={actionLoading === selectedApp.id} className="inline-flex items-center gap-1.5 rounded-lg bg-red-500/10 border border-red-500/20 px-3 py-2 text-xs font-semibold text-red-400 hover:bg-red-500/20 transition whitespace-nowrap cursor-pointer disabled:opacity-50"><UserX className="h-3.5 w-3.5" /> Decline</button>
+                  <button onClick={() => updateStatus(selectedApp.id, 'rejected')} disabled={actionLoading === selectedApp.id} className="inline-flex items-center gap-1.5 rounded-lg bg-red-500/10 border border-red-500/20 px-3 py-2 text-xs font-semibold text-red-400 hover:bg-red-500/20 transition whitespace-nowrap cursor-pointer disabled:opacity-50"><UserX className="h-3.5 w-3.5" /> Decline</button>
                 </div>
               </div>
             </div>

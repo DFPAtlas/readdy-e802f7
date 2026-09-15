@@ -1,5 +1,5 @@
 export const APPLICATION_STATUSES = [
-  'draft', 'submitted', 'under_review', 'more_information_required', 'approved', 'declined', 'waitlisted', 'suspended', 'closed',
+  'draft', 'submitted', 'under_review', 'more_information_required', 'accepted', 'rejected', 'waitlisted', 'suspended', 'closed',
 ] as const;
 export type ApplicationStatus = typeof APPLICATION_STATUSES[number];
 
@@ -8,8 +8,8 @@ export const APPLICATION_STATUS_CONFIG: Record<ApplicationStatus, { label: strin
   submitted: { label: 'Submitted', color: '#3B82F6', bg: 'bg-blue-500/10', text: 'text-blue-600' },
   under_review: { label: 'Under Review', color: '#8B5CF6', bg: 'bg-violet-500/10', text: 'text-violet-600' },
   more_information_required: { label: 'More Info Required', color: '#F59E0B', bg: 'bg-amber-500/10', text: 'text-amber-600' },
-  approved: { label: 'Approved', color: '#10B981', bg: 'bg-emerald-500/10', text: 'text-emerald-600' },
-  declined: { label: 'Declined', color: '#EF4444', bg: 'bg-red-500/10', text: 'text-red-600' },
+  accepted: { label: 'Accepted', color: '#10B981', bg: 'bg-emerald-500/10', text: 'text-emerald-600' },
+  rejected: { label: 'Rejected', color: '#EF4444', bg: 'bg-red-500/10', text: 'text-red-600' },
   waitlisted: { label: 'Waitlisted', color: '#06B6D4', bg: 'bg-cyan-500/10', text: 'text-cyan-600' },
   suspended: { label: 'Suspended', color: '#F97316', bg: 'bg-orange-500/10', text: 'text-orange-600' },
   closed: { label: 'Closed', color: '#6B7280', bg: 'bg-gray-500/10', text: 'text-gray-600' },
