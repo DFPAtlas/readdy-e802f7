@@ -76,6 +76,14 @@ const serviceCategories = [
     icon: 'ri-cloud-line',
     color: '#3B82F6',
   },
+  {
+    id: 'ai-security-testing',
+    title: 'AI Security Testing',
+    description: 'AI-driven testing that finds security weaknesses in your systems before attackers do.',
+    href: '/services/ai-security-testing',
+    icon: 'ri-shield-keyhole-line',
+    color: '#E11D48',
+  },
 ];
 
 const allServices = [
@@ -88,6 +96,7 @@ const allServices = [
   { icon: 'ri-server-line', href: '/services/cloud-infrastructure', title: 'Server Management', desc: 'Proactive server monitoring, maintenance and optimisation for peak performance.', color: '#6366F1', features: ['24/7 Monitoring', 'Updates', 'Security Patching', 'Performance Tuning', 'Backup Management', 'Disaster Recovery'] },
   { icon: 'ri-router-line', href: '/services/cloud-infrastructure', title: 'Network Infrastructure', desc: 'Design, implementation and support for reliable, secure business networks that scale.', color: '#0D9488', features: ['Network Design', 'WiFi Solutions', 'VPN Setup', 'Firewall Config', 'Switch Management', 'Cabling'] },
   { icon: 'ri-shield-check-line', href: '/services/cloud-infrastructure', title: 'Cyber Security', desc: 'Comprehensive cyber security solutions to protect your business from evolving threats.', color: '#DC2626', features: ['Risk Assessment', 'Firewalls', 'Endpoint Protection', 'Security Audits', 'Training', 'Incident Response'] },
+  { icon: 'ri-shield-keyhole-line', href: '/services/ai-security-testing', title: 'AI Security Testing', desc: 'AI-driven attack simulation across your websites, APIs, cloud systems and AI agents. Findings validated by hand, with verified retesting.', color: '#E11D48', features: ['Attack Simulation', 'Penetration Testing', 'Vulnerability Scanning', 'Cloud Checks', 'AI & LLM Testing', 'Verified Retest'] },
   { icon: 'ri-camera-line', href: '/services/cloud-infrastructure', title: 'CCTV & Smart Security', desc: 'Modern surveillance and access control systems for physical security.', color: '#1E40AF', features: ['IP Cameras', 'NVR Systems', 'Access Control', 'Remote Viewing', 'AI Detection', 'Mobile App'] },
   { icon: 'ri-computer-line', href: '/services/cloud-infrastructure', title: 'IT Support', desc: 'Responsive technical support for your entire organisation — remote and on-site.', color: '#6366F1', features: ['Help Desk', 'Remote Support', 'On-Site Visits', 'Hardware Setup', 'Software Support', 'SLA Options'] },
   { icon: 'ri-lightbulb-line', href: '/contact', title: 'Technology Consultancy', desc: 'Expert advice to guide your digital strategy, vendor selection and transformation roadmap.', color: '#D97706', features: ['Strategy', 'Audit', 'Roadmap', 'Vendor Selection', 'Digital Transformation', 'ROI Analysis'] },

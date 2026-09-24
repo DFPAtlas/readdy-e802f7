@@ -224,6 +224,7 @@ export default function Header() {
     { href: '/services/ai-automation', label: 'AI and Automation', icon: 'ri-robot-line' },
     { href: '/services/business-portals', label: 'Business Portals', icon: 'ri-dashboard-line' },
     { href: '/services/cloud-infrastructure', label: 'Cloud and Infrastructure', icon: 'ri-cloud-line' },
+    { href: '/services/ai-security-testing', label: 'AI Security Testing', icon: 'ri-shield-keyhole-line' },
     { href: '/pricing', label: 'Pricing', icon: 'ri-price-tag-3-line' },
     { href: '/services', label: 'View All Services', icon: 'ri-arrow-right-line', divider: true },
   ];
