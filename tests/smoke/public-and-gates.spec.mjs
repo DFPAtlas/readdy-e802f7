@@ -24,7 +24,7 @@ for (const [name, route, loginPath] of [
     await page.goto(route, { waitUntil: 'domcontentloaded' });
     await expect.poll(async () => {
       if (new URL(page.url()).pathname === loginPath) return true;
-      return page.getByText(/access denied|sign-in required|no portal access|unauthenticated/i).first().isVisible().catch(() => false);
+      return page.getByRole('heading', { name: /sign[ -]in required|access denied|no portal access/i }).isVisible().catch(() => false);
     }, { timeout: 20_000 }).toBe(true);
   });
 }
