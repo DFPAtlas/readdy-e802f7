@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from '@/components/motion';
-import { retentionClasses, retentionNote } from '../data-model-data';
+import { retentionClasses, retentionNote } from '../../data-model-data';
 
 export default function RetentionSection() {
   return (

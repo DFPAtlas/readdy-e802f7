@@ -164,18 +164,6 @@ export default function ContactPage() {
                   <div>
                     <h3 className="font-semibold text-slate-800 text-base">Email</h3>
                     <a href="mailto:info@digital-footprint.uk" className="text-slate-500 text-sm hover:text-[#F97316] transition-colors cursor-pointer">info@digital-footprint.uk</a>
-                    <p className="text-xs text-slate-400 mt-0.5">Response within 24 hours</p>
-                  </div>
-                </div>
-
-                <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md hover:border-slate-300 transition-all duration-300 flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-[#F97316]/8 flex items-center justify-center shrink-0">
-                    <i className="ri-phone-line text-xl text-[#F97316] w-6 h-6 flex items-center justify-center" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-slate-800 text-base">Phone</h3>
-                    <a href="tel:+441438123456" className="text-slate-500 text-sm hover:text-[#F97316] transition-colors cursor-pointer">01438 123 456</a>
-                    <p className="text-xs text-slate-400 mt-0.5">Mon-Fri, 9am-6pm</p>
                   </div>
                 </div>
 
@@ -194,7 +182,7 @@ export default function ContactPage() {
                   <h3 className="font-semibold text-slate-800 mb-3 text-base">What happens next?</h3>
                   <ul className="space-y-2.5">
                     {[
-                      'We review your inquiry within 2 hours',
+                      'We review your inquiry and get back to you',
                       'A team member reaches out to discuss your needs',
                       'You get a free consultation and project roadmap',
                     ].map((item, i) => (
@@ -399,8 +387,8 @@ export default function ContactPage() {
           <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {[
-                { icon: 'ri-shield-check-line', title: 'Trusted Partner', desc: 'Working with businesses across the UK since 2018, delivering reliable technology solutions.' },
-                { icon: 'ri-speed-up-line', title: 'Fast Response', desc: 'Most inquiries receive a response within 2 hours during business hours. We move quickly.' },
+                { icon: 'ri-shield-check-line', title: 'Trusted Partner', desc: 'Technology solutions for businesses across the UK.' },
+                { icon: 'ri-speed-up-line', title: 'Get in Touch', desc: 'Tell us what you need and we will review your inquiry.' },
                 { icon: 'ri-user-heart-line', title: 'No-Pressure Approach', desc: 'Honest advice with no hard sell. If we are not the right fit, we will tell you upfront.' },
               ].map((item) => (
                 <div key={item.title} className="bg-white rounded-2xl p-6 border border-slate-200 text-center">

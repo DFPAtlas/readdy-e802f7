@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from '@/components/motion';
-import { unresolvedQuestions } from '../data-model-data';
+import { unresolvedQuestions } from '../../data-model-data';
 
 export default function UnresolvedQuestionsSection() {
   return (

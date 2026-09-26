@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from '@/components/motion';
-import { findingVersioning } from '../data-model-data';
+import { findingVersioning } from '../../data-model-data';
 
 export default function FindingVersioningSection() {
   return (

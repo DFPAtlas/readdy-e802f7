@@ -1,6 +1,6 @@
 'use client';
 
-import { rlsPermissionMeta, type RlsPermission } from '../data-model-data';
+import { rlsPermissionMeta, type RlsPermission } from '../../data-model-data';
 
 export default function RlsPermissionChips({ perms }: { perms: RlsPermission[] }) {
   if (!perms || perms.length === 0) {

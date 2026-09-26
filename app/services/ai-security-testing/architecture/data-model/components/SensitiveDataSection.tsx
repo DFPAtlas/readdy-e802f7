@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from '@/components/motion';
-import { sensitiveDataRules } from '../data-model-data';
+import { sensitiveDataRules } from '../../data-model-data';
 
 export default function SensitiveDataSection() {
   return (

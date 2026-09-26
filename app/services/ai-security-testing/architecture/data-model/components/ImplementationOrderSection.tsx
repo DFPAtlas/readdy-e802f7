@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from '@/components/motion';
-import { implementationOrder } from '../data-model-data';
+import { implementationOrder } from '../../data-model-data';
 
 export default function ImplementationOrderSection() {
   return (

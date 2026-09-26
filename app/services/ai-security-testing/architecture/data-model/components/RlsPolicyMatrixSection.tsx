@@ -10,7 +10,7 @@ import {
   rlsPolicyRules,
   rlsMatrixNote,
   type RlsCell,
-} from '../data-model-data';
+} from '../../data-model-data';
 
 const actors: { key: 'customer' | 'staff' | 'agent'; label: string }[] = [
   { key: 'customer', label: 'Customer users' },
@@ -119,12 +119,11 @@ export default function RlsPolicyMatrixSection() {
 
         <div className="mt-10 grid grid-cols-1 lg:grid-cols-3 gap-5">
           {rlsPolicyRules.map((rule) => (
-            <div key={rule.title} className="border border-slate-200 rounded-xl p-5 bg-white">
+            <div key={rule} className="border border-slate-200 rounded-xl p-5 bg-white">
               <div className="w-9 h-9 flex items-center justify-center rounded-lg bg-rose-50 text-[#E11D48] mb-3">
-                <i className={`${rule.icon} text-lg`}></i>
+                <i className="ri-shield-check-line text-lg"></i>
               </div>
-              <p className="text-sm font-semibold text-slate-800 mb-1.5">{rule.title}</p>
-              <p className="text-xs text-slate-500 leading-relaxed">{rule.desc}</p>
+              <p className="text-sm text-slate-700 leading-relaxed">{rule}</p>
             </div>
           ))}
         </div>
