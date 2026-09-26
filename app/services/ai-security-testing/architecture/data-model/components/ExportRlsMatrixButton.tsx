@@ -1,6 +1,6 @@
 'use client';
 
-import { rlsMatrix, rlsAccessLevels, rlsPermissionMeta } from '../data-model-data';
+import { rlsMatrix, rlsAccessLevels, rlsPermissionMeta } from '../../data-model-data';
 
 const levelLabel = (id: string) => rlsAccessLevels.find((l) => l.id === id)?.label ?? id;
 const permText = (perms: string[]) =>

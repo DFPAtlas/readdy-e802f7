@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from '@/components/motion';
-import { entities, groupMeta } from '../data-model-data';
+import { entities, groupMeta } from '../../data-model-data';
 import EntityCard from './EntityCard';
 
 const order = ['foundation', 'scoping', 'execution', 'findings', 'remediation', 'monitoring'];

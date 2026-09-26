@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from '@/components/motion';
-import { isolationRoles } from '../data-model-data';
+import { isolationRoles } from '../../data-model-data';
 
 export default function TenantIsolationSection() {
   return (

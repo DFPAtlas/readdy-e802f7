@@ -275,7 +275,7 @@ export default function ContactForm({ onClose }: ContactFormProps) {
                 <div className="text-sm text-blue-800">
                   <p className="font-semibold mb-1">What happens next?</p>
                   <ul className="space-y-1 text-blue-700">
-                    <li>• We&apos;ll review your inquiry within 2 hours</li>
+                    <li>• We&apos;ll review your inquiry and get back to you</li>
                     <li>• Our team will contact you to discuss your needs</li>
                     <li>• We&apos;ll provide a free consultation and quote</li>
                   </ul>

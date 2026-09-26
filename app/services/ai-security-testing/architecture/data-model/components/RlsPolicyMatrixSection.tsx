@@ -10,7 +10,7 @@ import {
   rlsPolicyRules,
   rlsMatrixNote,
   type RlsCell,
-} from '../data-model-data';
+} from '../../data-model-data';
 
 const actors: { key: 'customer' | 'staff' | 'agent'; label: string }[] = [
   { key: 'customer', label: 'Customer users' },

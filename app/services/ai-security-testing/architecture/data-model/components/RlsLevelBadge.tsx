@@ -1,6 +1,6 @@
 'use client';
 
-import { rlsAccessLevels, type RlsLevel } from '../data-model-data';
+import { rlsAccessLevels, type RlsLevel } from '../../data-model-data';
 
 const lookup = Object.fromEntries(rlsAccessLevels.map((l) => [l.id, l]));
 

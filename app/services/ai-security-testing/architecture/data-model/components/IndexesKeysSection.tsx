@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from '@/components/motion';
-import { suggestedIndexes, foreignKeyBehaviour } from '../data-model-data';
+import { suggestedIndexes, foreignKeyBehaviour } from '../../data-model-data';
 
 export default function IndexesKeysSection() {
   return (

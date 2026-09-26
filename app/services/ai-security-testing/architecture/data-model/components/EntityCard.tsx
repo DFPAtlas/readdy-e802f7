@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import type { Entity } from '../data-model-data';
+import type { Entity } from '../../data-model-data';
 
 export default function EntityCard({ entity }: { entity: Entity }) {
   const [open, setOpen] = useState(false);

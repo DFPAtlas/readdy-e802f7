@@ -8,7 +8,7 @@ import {
   findingStateFlow,
   findingAltEnds,
   approvalStateFlow,
-} from '../data-model-data';
+} from '../../data-model-data';
 
 function FlowRow({ states, accent }: { states: string[]; accent?: boolean }) {
   return (

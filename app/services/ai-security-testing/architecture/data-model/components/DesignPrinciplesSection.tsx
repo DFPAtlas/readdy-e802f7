@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from '@/components/motion';
-import { dataModelPrinciples } from '../data-model-data';
+import { dataModelPrinciples } from '../../data-model-data';
 
 export default function DesignPrinciplesSection() {
   return (
