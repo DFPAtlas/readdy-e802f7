@@ -1,4 +1,5 @@
 export type MessageType = 'email' | 'sms' | 'webhook' | 'notification';
+export type MessageFilter = 'all' | 'email' | 'sms' | 'webhook' | 'delivered' | 'failed' | 'blocked';
 export type MessageDirection = 'outbound' | 'inbound_test';
 export type MessageStatus = 'intercepted' | 'simulated_delivered' | 'simulated_failed' | 'blocked' | 'quarantined' | 'reviewed' | 'expired';
 export type DeliverySimulation = 'intercept_only' | 'simulate_delivered' | 'simulate_failed';
