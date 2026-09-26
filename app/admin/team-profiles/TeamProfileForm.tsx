@@ -174,7 +174,7 @@ export default function TeamProfileForm({ profile, existingProfiles, onClose, on
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: 20, scale: 0.98 }}
         transition={{ duration: 0.2 }}
-        onClick={(e) => e.stopPropagation()}
+        onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
         className="w-full max-w-3xl bg-[#1E293B] border border-[rgba(255,255,255,0.08)] rounded-2xl shadow-2xl my-4"
       >
         <div className="flex items-center justify-between px-6 py-4 border-b border-[rgba(255,255,255,0.08)] sticky top-0 bg-[#1E293B] rounded-t-2xl z-10">

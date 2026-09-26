@@ -106,7 +106,7 @@ export default function AdminMfaSetupPage() {
       const totpFactors = (factorsData?.totp ?? []).filter((f) => f && typeof f.id === 'string');
 
       const verified = totpFactors.filter((f) => f.status === 'verified');
-      const unverified = totpFactors.filter((f) => f.status === 'unverified');
+      const unverified = (factorsData?.all ?? []).filter((f) => f.factor_type === 'totp' && f.status === 'unverified');
 
       if (verified.length > 0) {
         navigate('/admin/mfa');
@@ -399,14 +399,7 @@ export default function AdminMfaSetupPage() {
                     disabled={buttonDisabled}
                     className="w-full py-3 bg-gradient-to-r from-[#06B6D4] to-[#0891B2] rounded-xl font-bold text-white hover:shadow-lg hover:shadow-[#06B6D4]/20 transition-all cursor-pointer flex items-center justify-center gap-2 disabled:opacity-50 whitespace-nowrap"
                   >
-                    {phase === 'verifying' ? (
-                      <>
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                        Verifying…
-                      </>
-                    ) : (
-                      'Enable MFA'
-                    )}
+                    Enable MFA
                   </button>
                 </form>
               </>

@@ -8,3 +8,5 @@ playwright-report/
 *.log
 .env.local
 .env.*.local
+
+next-env.d.ts

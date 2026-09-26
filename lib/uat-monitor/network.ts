@@ -81,7 +81,7 @@ export function createNetworkTracker(
       (this as any).__uat_method = method;
       (this as any).__uat_url = typeof url === 'string' ? url : url.href;
       (this as any).__uat_start = 0;
-      return originalXHROpen.call(this, method, url, ...rest);
+      return originalXHROpen.apply(this, [method, url, ...rest] as Parameters<typeof originalXHROpen>);
     };
 
     XMLHttpRequest.prototype.send = function (this: XMLHttpRequest, ...args: any[]) {
