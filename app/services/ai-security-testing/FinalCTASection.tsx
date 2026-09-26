@@ -13,27 +13,26 @@ export default function FinalCTASection() {
       <div className="relative z-10 max-w-3xl mx-auto text-center">
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
           <h2 className="text-3xl md:text-5xl font-bold text-white tracking-tight mb-6">
-            Ready to see how exposed you really are?
+            Ready to understand your real security exposure?
           </h2>
           <p className="text-lg md:text-xl text-slate-400 mb-10 leading-relaxed">
-            Tell us which systems you want tested and we will scope an AI security assessment around
-            them — no obligation.
+            Tell us what you want assessed and we&apos;ll help define the right scope.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
-              href="/contact?need=security&need_label=AI%20Security%20Testing"
+              href="/contact?need=security&need_label=Scope%20My%20Assessment"
               className="group relative inline-flex items-center gap-2.5 px-8 py-4 rounded-xl font-semibold text-white overflow-hidden whitespace-nowrap cursor-pointer transition-all duration-300 bg-gradient-to-r from-[#F97316] to-[#EA580C] hover:from-[#EA580C] hover:to-[#C2410C] hover:-translate-y-0.5 shadow-lg shadow-[#F97316]/15 hover:shadow-xl hover:shadow-[#F97316]/25 focus:outline-none focus:ring-2 focus:ring-[#F97316] focus:ring-offset-2 focus:ring-offset-[#060F1E]"
             >
-              <span className="relative z-10">Request a Security Test</span>
+              <span className="relative z-10">Scope My Assessment</span>
               <i className="ri-arrow-right-line w-5 h-5 flex items-center justify-center relative z-10 group-hover:translate-x-0.5 transition-transform duration-200" />
               <span className="absolute inset-0 rounded-xl bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
             </Link>
             <Link
-              href="/services"
+              href="/contact?need=security&need_label=AI%20Security%20Testing"
               className="inline-flex items-center gap-2.5 px-8 py-4 rounded-xl font-semibold text-slate-200 border border-white/15 hover:border-[#E11D48]/50 hover:text-[#E11D48] transition-all duration-300 whitespace-nowrap cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#E11D48] focus:ring-offset-2 focus:ring-offset-[#060F1E]"
             >
-              View All Services
+              Talk to Digital Footprint
               <i className="ri-arrow-right-line w-4 h-4 flex items-center justify-center" />
             </Link>
           </div>

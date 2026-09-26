@@ -63,16 +63,6 @@ export default function HowItWorksSection() {
             ))}
           </div>
         </div>
-
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center text-slate-400 max-w-2xl mx-auto mt-16 leading-relaxed"
-        >
-          Testing runs against a staging copy where possible, and every engagement is covered by a
-          written scope and authorisation so your systems are never put at risk.
-        </motion.p>
       </div>
     </section>
   );

@@ -43,7 +43,7 @@ const targets = [
 
 export default function WhatWeTestSection() {
   return (
-    <section className="py-24 px-6 relative overflow-hidden">
+    <section id="what-we-test" className="py-24 px-6 relative overflow-hidden scroll-mt-28">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_100%_0%,rgba(225,29,72,0.04),transparent_55%)]" />
       <div className="relative z-10 max-w-7xl mx-auto">
         <motion.div

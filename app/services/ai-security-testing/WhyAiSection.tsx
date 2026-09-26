@@ -53,31 +53,6 @@ export default function WhyAiSection() {
             </motion.div>
           ))}
         </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mt-14 rounded-2xl border border-slate-200 bg-slate-50/60 p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6"
-        >
-          <div className="flex items-start gap-4">
-            <div className="w-12 h-12 rounded-xl bg-[#E11D48]/10 flex items-center justify-center shrink-0">
-              <i className="ri-lock-2-line text-xl w-6 h-6 flex items-center justify-center text-[#E11D48]" />
-            </div>
-            <div>
-              <h3 className="text-lg font-bold text-slate-800 mb-1">Testing done responsibly</h3>
-              <p className="text-sm text-slate-500 leading-relaxed max-w-xl">
-                Every engagement runs under a written scope and authorisation. We work on staging
-                copies where possible, never disrupt live services, and handle all data under strict
-                confidentiality.
-              </p>
-            </div>
-          </div>
-          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-slate-200 text-sm font-semibold text-slate-600 whitespace-nowrap">
-            <i className="ri-shield-check-line w-4 h-4 flex items-center justify-center text-[#E11D48]" />
-            Authorised testing only
-          </span>
-        </motion.div>
       </div>
     </section>
   );
