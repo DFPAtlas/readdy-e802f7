@@ -10,7 +10,7 @@ import {
   LayoutDashboard, FolderKanban, Heart, Activity, DollarSign,
   LifeBuoy, Bell, ListTodo, Rocket, Database, Shield,
   FileText, LogOut, Menu, X, ChevronDown, Search,
-  Cpu
+  Cpu, LockKeyhole
 } from 'lucide-react';
 
 const navItems = [
@@ -18,6 +18,7 @@ const navItems = [
   { href: '/admin/command-centre/projects', icon: FolderKanban, label: 'Projects' },
   { href: '/admin/command-centre/health', icon: Heart, label: 'Health' },
   { href: '/admin/command-centre/n8n', icon: Cpu, label: 'n8n Agents' },
+  { href: '/admin/command-centre/security', icon: LockKeyhole, label: 'Security Command' },
   { href: '/admin/command-centre/finance', icon: DollarSign, label: 'Finance' },
   { href: '/admin/command-centre/support', icon: LifeBuoy, label: 'Support' },
   { href: '/admin/command-centre/alerts', icon: Bell, label: 'Alerts' },
