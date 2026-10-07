@@ -7,6 +7,8 @@ import Footer from '@/components/Footer';
 
 import {
   generateApplicationReference,
+  buildAccessibilitySelection,
+  buildProjectConflictSelection,
   ELIGIBILITY_CONFIRMATIONS,
   EXPERIENCE_LEVELS,
   DEVICE_OPTIONS,
@@ -47,14 +49,9 @@ import {
   CheckCircle2,
   Loader2,
   AlertTriangle,
-  UserRound,
-  MonitorSmartphone,
-  Heart,
   WalletCards,
   ShieldCheck,
   Bug,
-  SearchCheck,
-  ClipboardList,
 } from 'lucide-react';
 
 const TOTAL_STEPS = 9;
@@ -70,12 +67,6 @@ const STEP_TITLES: Record<number, string> = {
   8: 'Payments & Tax',
   9: 'Review & Submit',
 };
-
-function generateRef(): string {
-  const year = new Date().getFullYear();
-  const seq = Math.floor(Math.random() * 900000) + 100000;
-  return `DFP-UAT-APP-${year}-${seq}`;
-}
 
 function makeDefaultData(): WizardApplicationData {
   return {
@@ -228,7 +219,7 @@ export default function UATApplyPage() {
   const autosave = useCallback((currentData: WizardApplicationData, currentStep: number) => {
     setSaving(true);
     try {
-      const ref = applicationRef || generateRef();
+      const ref = applicationRef || generateApplicationReference();
       if (!applicationRef) setApplicationRef(ref);
       localStorage.setItem('uat_application_draft', JSON.stringify({
         data: currentData,
@@ -252,9 +243,6 @@ export default function UATApplyPage() {
     setErrors([]);
     debouncedSave(next, step);
   };
-
-  const toggleArray = (arr: string[], item: string): string[] =>
-    arr.includes(item) ? arr.filter((a) => a !== item) : [...arr, item];
 
   const validateStep = (s: number): string[] => {
     const errs: string[] = [];
@@ -366,7 +354,7 @@ export default function UATApplyPage() {
     setSubmitting(true);
     setServerError('');
     try {
-      const ref = applicationRef || generateRef();
+      const ref = applicationRef || generateApplicationReference();
 
       const honeypotEl = document.querySelector<HTMLInputElement>('#app_hp_field');
       if (honeypotEl && honeypotEl.value.trim()) {
@@ -659,7 +647,6 @@ function Step3({ data, updateData }: { data: WizardApplicationData; updateData: 
     });
   };
 
-  const hasGeneralIndustry = data.industryExperience.some((ie) => ie.industry === 'No specialist industry experience');
   const specificIndustries = data.industryExperience.filter((ie) => ie.industry !== 'No specialist industry experience');
   const hasNoExperience = data.industryExperience.length === 0;
 
@@ -953,8 +940,7 @@ function Step6({ data, updateData }: { data: WizardApplicationData; updateData: 
           <p className="text-slate-500 text-sm mb-3">Would you like to take part in accessibility testing? *</p>
           <div className="flex flex-wrap gap-2 mb-4">
             {yesNoUnsure.map((o) => <TagButton key={o} label={o} selected={data.accessibilityInterest === o} onClick={() => {
-              updateData({ accessibilityInterest: o });
-              if (o === 'No') updateData({ accessibilityCapabilities: [], accessibilityTools: '' });
+              updateData(buildAccessibilitySelection(o));
             }} />)}
           </div>
           {(data.accessibilityInterest === 'Yes' || data.accessibilityInterest === 'Maybe, with training') && (
@@ -980,8 +966,7 @@ function Step6({ data, updateData }: { data: WizardApplicationData; updateData: 
           <p className="text-slate-500 text-sm mb-3">Are you working for, advising or testing for an organisation that could compete with a DFP project? *</p>
           <div className="flex flex-wrap gap-2 mb-3">
             {conflictOptions.map((o) => <TagButton key={o} label={o} selected={data.projectConflictStatus === o} onClick={() => {
-              updateData({ projectConflictStatus: o });
-              if (o === 'No') updateData({ projectConflictDetails: '' });
+              updateData(buildProjectConflictSelection(o));
             }} />)}
           </div>
           {(data.projectConflictStatus === 'Yes' || data.projectConflictStatus === 'Unsure') && (
