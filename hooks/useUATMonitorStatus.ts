@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useRef } from 'react';
 import type { MonitorConnectionStatus, EventCounts } from '@/lib/uat-monitor/types';
-import type { UATMonitor } from '@/lib/uat-monitor/client';
+import type { UATMonitor } from '@/lib/uat-monitor/types';
 
 interface MonitorStatusState {
   status: MonitorConnectionStatus;

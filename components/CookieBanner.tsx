@@ -133,7 +133,7 @@ export default function CookieBanner() {
                     <div>
                       <h2 className="text-base font-bold text-slate-900 mb-1">Cookie Preferences</h2>
                       <p className="text-sm text-slate-500 leading-relaxed">
-                        We use cookies to enhance your browsing experience, analyse site traffic, and personalise content. By continuing, you agree to our use of cookies as described in our{' '}
+                        We use cookies to enhance your browsing experience, analyse site traffic, and personalise content. You can accept, reject or customise optional cookies. Read our{' '}
                         <Link href="/cookie-policy" className="text-[#06B6D4] underline hover:text-[#0891B2]">Cookie Policy</Link>.
                       </p>
                     </div>

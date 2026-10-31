@@ -75,7 +75,7 @@ export async function invokeStripeConnect(
   try {
     const res = await supabase.functions.invoke('uat-stripe-connect', { body: { action } });
     data = res.data;
-    invokeError = (res.error as typeof invokeError) ?? null;
+    invokeError = (res.error as { message?: string; context?: { status?: number } } | null) ?? null;
   } catch {
     throw new StripeConnectError(
       'network',

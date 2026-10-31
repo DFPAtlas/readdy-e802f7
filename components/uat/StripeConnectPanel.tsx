@@ -184,13 +184,13 @@ export default function StripeConnectPanel({ autoRefresh = false }: { autoRefres
             value={ready ? 'Complete' : fields?.stripe_details_submitted ? 'Submitted' : 'Not complete'}
           />
           <Row
-            ready={fields?.stripe_transfers_enabled}
+            ready={!!fields?.stripe_transfers_enabled}
             icon={<ArrowLeftRight className="h-4 w-4" />}
             label="Transfers"
             value={fields?.stripe_transfers_enabled ? 'Enabled' : 'Disabled'}
           />
           <Row
-            ready={fields?.stripe_payouts_enabled}
+            ready={!!fields?.stripe_payouts_enabled}
             icon={<CreditCard className="h-4 w-4" />}
             label="Payouts"
             value={fields?.stripe_payouts_enabled ? 'Enabled' : 'Disabled'}

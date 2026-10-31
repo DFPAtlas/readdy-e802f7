@@ -49,18 +49,18 @@ export interface EventCounts {
 export interface MonitorEvent {
   event_type: UatMonitoringEventType;
   event_timestamp?: string;
-  page_url?: string;
-  page_path?: string;
+  page_url?: string | null;
+  page_path?: string | null;
   page_title?: string;
   event_name?: string;
   severity?: string;
-  message?: string;
-  source_file?: string;
-  source_line?: number;
-  source_column?: number;
+  message?: string | null;
+  source_file?: string | null;
+  source_line?: number | null;
+  source_column?: number | null;
   request_method?: string;
   request_path?: string;
-  response_status?: number;
+  response_status?: number | null;
   duration_ms?: number;
   performance_data?: Record<string, unknown>;
   safe_metadata?: Record<string, unknown>;

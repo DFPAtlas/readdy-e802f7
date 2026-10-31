@@ -20,7 +20,7 @@ import SubmissionStatusPanel from '@/components/uat/portal/SubmissionStatusPanel
 import { useUATMonitorStatus } from '@/hooks/useUATMonitorStatus';
 import { useMailbox } from '@/hooks/useMailbox';
 import { checkWorkerHealth } from '@/lib/uat-sandbox/worker/sandbox-service';
-import type { UATMonitor } from '@/lib/uat-monitor/client';
+import type { UATMonitor } from '@/lib/uat-monitor/types';
 
 interface AssignmentSummary {
   id: string;
