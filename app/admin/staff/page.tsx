@@ -181,7 +181,7 @@ export default function StaffHub() {
                                   </span>
                                 </td>
                                 <td className="py-3.5 px-4">
-                                  <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium border ${mfaCfg.bg} ${mfaCfg.color} ${mfaCfg.border || 'border-transparent'}`}>
+                                  <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium border border-transparent ${mfaCfg.bg} ${mfaCfg.color}`}>
                                     {mfaCfg.label}
                                   </span>
                                 </td>

@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from 'next/font/google';
 import "./globals.css";
 import "./brand.css";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
@@ -8,7 +7,6 @@ import ScrollToTop from "@/components/ScrollToTop";
 import ThemeProvider from "@/components/ThemeProvider";
 import CookieBanner from "@/components/CookieBanner";
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' });
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://digital-footprint.uk'),
@@ -33,13 +31,13 @@ export const metadata: Metadata = {
     siteName: "Digital Footprint",
     title: "Digital Footprint | Digital Systems for Independent UK Businesses",
     description: "Websites, client portals, automation and AI-powered tools that help independent UK businesses launch, grow and operate more efficiently.",
-    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "Digital Footprint — SaaS, AI Automation and Digital Business Systems" }]
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Digital Footprint — SaaS, AI Automation and Digital Business Systems" }]
   },
   twitter: {
     card: "summary_large_image",
     title: "Digital Footprint | Digital Systems for Independent UK Businesses",
     description: "Websites, client portals, automation and AI-powered tools that help independent UK businesses launch, grow and operate more efficiently.",
-    images: ["/og-image.jpg"],
+    images: ["/opengraph-image"],
     creator: "@digitalfootprint"
   },
   robots: {
@@ -69,20 +67,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning={true} className={inter.variable}>
-      <head>
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZC4Y8SMRR7" />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-ZC4Y8SMRR7');
-            `,
-          }}
-        />
-      </head>
+    <html lang="en" suppressHydrationWarning={true}>
       <body className="antialiased bg-white" suppressHydrationWarning={true}>
         <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />

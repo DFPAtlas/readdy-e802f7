@@ -328,7 +328,7 @@ export default function TeamProfilesAdminPage() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              onClick={(e) => e.stopPropagation()}
+              onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
               className="w-full max-w-sm bg-[#1E293B] border border-[rgba(255,255,255,0.08)] rounded-2xl p-6"
             >
               <div className="w-12 h-12 rounded-full bg-red-500/10 flex items-center justify-center mb-4">

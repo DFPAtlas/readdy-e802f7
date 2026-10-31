@@ -6,6 +6,7 @@ import Link from 'next/link';
 interface DataStateProps {
   className?: string;
   onRetry?: () => void;
+  onBack?: () => void;
   actionLabel?: string;
   onAction?: () => void;
 }
