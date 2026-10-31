@@ -18,6 +18,7 @@ import ErDiagramSection from './components/ErDiagramSection';
 import ImplementationOrderSection from './components/ImplementationOrderSection';
 import UnresolvedQuestionsSection from './components/UnresolvedQuestionsSection';
 import DataModelSafetyStrip from './components/DataModelSafetyStrip';
+import OnThisPageNav from './components/OnThisPageNav';
 
 export default function DataModelClient() {
   useEffect(() => {
@@ -39,6 +40,7 @@ export default function DataModelClient() {
   return (
     <>
       <Header />
+      <OnThisPageNav />
       <main id="main-content" className="min-h-screen pt-24 bg-white text-slate-800">
         <DataModelHero />
         <EntityHierarchyDiagram />
