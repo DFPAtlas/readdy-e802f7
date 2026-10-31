@@ -2,6 +2,7 @@
 
 import { motion } from '@/components/motion';
 import { commandResponsibilities, orchestratorResponsibilities, orchestratorNote } from '../architecture-data';
+import DataModelLink from './DataModelLink';
 
 export default function CoreArchitectureSection() {
   return (
@@ -80,6 +81,16 @@ export default function CoreArchitectureSection() {
         <div className="mt-6 rounded-2xl border border-[#F97316]/30 bg-[#F97316]/5 px-5 py-4 flex items-start gap-3">
           <i className="ri-information-line w-5 h-5 flex items-center justify-center shrink-0 text-[#EA580C]" aria-hidden="true" />
           <p className="text-sm text-slate-600 leading-relaxed">{orchestratorNote}</p>
+        </div>
+
+        <div className="mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <p className="text-xs text-slate-500 leading-relaxed">
+            How engagement, scope and approval records are stored is defined in the proposed data model.
+          </p>
+          <div className="flex flex-wrap gap-2">
+            <DataModelLink href="#entities" label="Engagement entities" icon="ri-stack-line" />
+            <DataModelLink href="#rls-matrix" label="Access rules" icon="ri-shield-keyhole-line" />
+          </div>
         </div>
       </div>
     </section>

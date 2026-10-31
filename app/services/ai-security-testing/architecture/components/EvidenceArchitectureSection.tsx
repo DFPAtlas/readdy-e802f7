@@ -2,6 +2,7 @@
 
 import { motion } from '@/components/motion';
 import { evidenceFields } from '../architecture-data';
+import DataModelLink from './DataModelLink';
 
 export default function EvidenceArchitectureSection() {
   return (
@@ -48,6 +49,17 @@ export default function EvidenceArchitectureSection() {
             </p>
           </div>
         </motion.div>
+
+        <div className="mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <p className="text-xs text-slate-500 leading-relaxed">
+            The full evidence, versioning and retention rules are specified in the proposed data model.
+          </p>
+          <div className="flex flex-wrap gap-2">
+            <DataModelLink href="#finding-versioning" label="Finding versioning" icon="ri-git-branch-line" />
+            <DataModelLink href="#sensitive-data" label="Sensitive data rules" icon="ri-lock-password-line" />
+            <DataModelLink href="#retention" label="Retention classes" icon="ri-archive-line" />
+          </div>
+        </div>
       </div>
     </section>
   );

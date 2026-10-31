@@ -2,6 +2,7 @@
 
 import { motion } from '@/components/motion';
 import { findingStates, findingAltStates } from '../architecture-data';
+import DataModelLink from './DataModelLink';
 
 export default function FindingStatesSection() {
   return (
@@ -51,6 +52,16 @@ export default function FindingStatesSection() {
             ))}
           </div>
         </motion.div>
+
+        <div className="mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <p className="text-xs text-slate-500 leading-relaxed">
+            State transitions, allowed actors and audit rules are documented in the data model.
+          </p>
+          <div className="flex flex-wrap gap-2">
+            <DataModelLink href="#state-diagrams" label="Full state diagrams" icon="ri-flow-chart" />
+            <DataModelLink href="#finding-versioning" label="Finding versioning" icon="ri-git-branch-line" />
+          </div>
+        </div>
       </div>
     </section>
   );

@@ -2,6 +2,7 @@
 
 import { motion } from '@/components/motion';
 import { approvalGates } from '../architecture-data';
+import DataModelLink from './DataModelLink';
 
 export default function ApprovalGatesSection() {
   return (
@@ -44,6 +45,16 @@ export default function ApprovalGatesSection() {
               </div>
             </motion.div>
           ))}
+        </div>
+
+        <div className="mt-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <p className="text-xs text-slate-500 leading-relaxed">
+            Each gate is a recorded approval object with an owner, timestamp and state history.
+          </p>
+          <div className="flex flex-wrap gap-2">
+            <DataModelLink href="#state-diagrams" label="Approval & engagement states" icon="ri-flow-chart" />
+            <DataModelLink href="#entities" label="Approval entities" icon="ri-stack-line" />
+          </div>
         </div>
       </div>
     </section>

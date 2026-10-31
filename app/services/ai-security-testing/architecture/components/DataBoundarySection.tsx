@@ -2,6 +2,7 @@
 
 import { motion } from '@/components/motion';
 import { isolationItems } from '../architecture-data';
+import DataModelLink from './DataModelLink';
 
 export default function DataBoundarySection() {
   return (
@@ -66,6 +67,17 @@ export default function DataBoundarySection() {
               Least privilege applies to agents, evidence access and reporting. Agents only reach the assets within their scope token.
             </p>
           </motion.div>
+        </div>
+
+        <div className="mt-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <p className="text-xs text-slate-500 leading-relaxed">
+            Isolation is enforced at the database level, not only in application code.
+          </p>
+          <div className="flex flex-wrap gap-2">
+            <DataModelLink href="#tenant-isolation" label="Tenant isolation model" icon="ri-lock-2-line" />
+            <DataModelLink href="#rls-matrix" label="RLS policy matrix" icon="ri-shield-keyhole-line" />
+            <DataModelLink href="#sensitive-data" label="Sensitive data handling" icon="ri-lock-password-line" />
+          </div>
         </div>
       </div>
     </section>

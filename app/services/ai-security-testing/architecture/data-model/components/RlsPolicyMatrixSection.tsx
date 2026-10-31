@@ -29,7 +29,7 @@ function ActorCell({ cell }: { cell: RlsCell }) {
 
 export default function RlsPolicyMatrixSection() {
   return (
-    <section id="rls-matrix" className="w-full bg-white py-16 px-6">
+    <section id="rls-matrix" className="scroll-mt-28 w-full bg-white py-16 px-6">
       <div className="max-w-6xl mx-auto">
         <div className="flex items-start justify-between gap-6 mb-10">
           <div className="max-w-2xl">

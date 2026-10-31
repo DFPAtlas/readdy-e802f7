@@ -5,7 +5,7 @@ import { isolationRoles } from '../data-model-data';
 
 export default function TenantIsolationSection() {
   return (
-    <section className="py-20 px-6 bg-[#F7F9FC]">
+    <section id="tenant-isolation" className="scroll-mt-28 py-20 px-6 bg-[#F7F9FC]">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
           <p className="text-[#E11D48] text-xs sm:text-sm uppercase tracking-[0.14em] font-semibold mb-3">

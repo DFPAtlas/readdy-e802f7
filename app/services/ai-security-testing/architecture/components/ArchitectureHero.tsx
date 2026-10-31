@@ -3,6 +3,7 @@
 import { motion } from '@/components/motion';
 import Link from 'next/link';
 import { safetyWording } from '../architecture-data';
+import DataModelLink from './DataModelLink';
 
 export default function ArchitectureHero() {
   return (
@@ -44,6 +45,19 @@ export default function ArchitectureHero() {
               <i className="ri-database-2-line w-4 h-4 flex items-center justify-center text-[#E11D48]" aria-hidden="true" />
               Proposed data model &amp; schema
             </Link>
+          </div>
+
+          <div className="mt-6 pt-6 border-t border-slate-100">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-400 mb-3">
+              Jump to the data model
+            </p>
+            <div className="flex flex-wrap gap-2">
+              <DataModelLink href="#entities" label="Entities" icon="ri-stack-line" />
+              <DataModelLink href="#state-diagrams" label="State diagrams" icon="ri-flow-chart" />
+              <DataModelLink href="#tenant-isolation" label="Tenant isolation" icon="ri-lock-2-line" />
+              <DataModelLink href="#rls-matrix" label="RLS policy matrix" icon="ri-shield-keyhole-line" />
+              <DataModelLink href="#retention" label="Retention" icon="ri-archive-line" />
+            </div>
           </div>
         </motion.div>
       </div>

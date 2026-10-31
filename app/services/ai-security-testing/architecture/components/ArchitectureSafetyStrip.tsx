@@ -2,6 +2,7 @@
 
 import { motion } from '@/components/motion';
 import { safetyWording } from '../architecture-data';
+import DataModelLink from './DataModelLink';
 
 export default function ArchitectureSafetyStrip() {
   return (
@@ -33,6 +34,13 @@ export default function ArchitectureSafetyStrip() {
                 </span>
               ))}
             </div>
+          </div>
+
+          <div className="mt-6 pt-6 border-t border-slate-800 flex flex-wrap items-center gap-2">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">Data model</span>
+            <DataModelLink href="#entities" label="Entities & fields" icon="ri-stack-line" tone="dark" />
+            <DataModelLink href="#implementation-order" label="Build order" icon="ri-list-ordered" tone="dark" />
+            <DataModelLink href="#unresolved-questions" label="Open questions" icon="ri-question-line" tone="dark" />
           </div>
         </motion.div>
       </div>
