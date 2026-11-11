@@ -21,7 +21,7 @@ export default function CareersPage() {
     setError(null);
     import('@/lib/supabase').then(({ supabase }) => {
       if (cancelled) return;
-      Promise.resolve(supabase.from('careers_vacancies').select('*').order('sort_order')).then(({ data, error: queryError }) => {
+      supabase.from('careers_vacancies').select('*').order('sort_order').then(({ data, error: queryError }) => {
         if (cancelled) return;
         if (queryError) {
           setError('Unable to load vacancies. Please try again shortly.');

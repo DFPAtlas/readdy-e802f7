@@ -2,8 +2,8 @@
 
 import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from '@/components/motion';
-import { supabase } from '@/lib/supabase';
-import { notifyLeadSubmission } from '@/lib/submit-enquiry';
+import { submitEnquiry } from '@/lib/submit-enquiry';
+import ProjectBriefConfirmation from '@/components/ProjectBriefConfirmation';
 import { 
   X, ChevronRight, ChevronLeft, Globe, Smartphone, Bot, Share2, 
   Database, ShoppingCart, Clock, Settings, Upload, Check, Sparkles,
@@ -61,6 +61,8 @@ export default function ProjectWizard({ isOpen, onClose, initialData }: WizardPr
   const [isAdvancedMode, setIsAdvancedMode] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState('');
+  const [briefReference, setBriefReference] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [formData, setFormData] = useState({
@@ -118,45 +120,38 @@ export default function ProjectWizard({ isOpen, onClose, initialData }: WizardPr
 
   const handleSubmit = async () => {
     setIsSubmitting(true);
+    setSubmitError('');
     try {
-      const { data: submission, error } = await supabase
-        .from('project_submissions')
-        .insert({
-          name: initialData.name,
-          email: initialData.email,
-          project_type: initialData.projectType,
-          budget_range: `£${initialData.budget.toLocaleString()}+`,
-          initial_message: initialData.message,
-          website_type: formData.websiteType,
-          mobile_app: formData.mobileApp,
-          ai_agents: formData.aiAgents,
-          social_media: formData.socialMedia,
-          reference_urls: formData.referenceUrls.filter(url => url.trim() !== ''),
-          visual_effects: formData.visualEffects,
-          database_type: formData.databaseType,
-          ecommerce: formData.ecommerce,
-          stripe_payment: formData.stripePayment,
-          timeline: formData.timeline,
-          managed_hosting: formData.managedHosting,
-          experience_level: isAdvancedMode ? 'advanced' : 'beginner',
-          additional_notes: formData.additionalNotes,
-          status: 'pending'
-        })
-        .select()
-        .single();
+      const result = await submitEnquiry('project_submissions', {
+        name: initialData.name,
+        email: initialData.email,
+        project_type: initialData.projectType,
+        budget_range: `£${initialData.budget.toLocaleString()}+`,
+        initial_message: initialData.message,
+        website_type: formData.websiteType,
+        mobile_app: formData.mobileApp,
+        ai_agents: formData.aiAgents,
+        social_media: formData.socialMedia,
+        reference_urls: formData.referenceUrls.filter(url => url.trim() !== ''),
+        visual_effects: formData.visualEffects,
+        database_type: formData.databaseType,
+        ecommerce: formData.ecommerce,
+        stripe_payment: formData.stripePayment,
+        timeline: formData.timeline,
+        managed_hosting: formData.managedHosting,
+        experience_level: isAdvancedMode ? 'advanced' : 'beginner',
+        additional_notes: formData.additionalNotes,
+      }, true);
 
-      if (error) throw error;
-
-      if (submission?.id) {
-        notifyLeadSubmission('project_submissions', submission.id);
+      if (result.code === 'OK') {
+        const seed = (result.recordId || '').replace(/-/g, '').toUpperCase().slice(0, 8);
+        setBriefReference(`DFP-PB-${seed || Date.now().toString(36).toUpperCase().slice(-8)}`);
+        setSubmitSuccess(true);
+      } else {
+        setSubmitError(result.message);
       }
-
-      setSubmitSuccess(true);
-      setTimeout(() => {
-        onClose();
-      }, 3000);
-    } catch (error) {
-      console.error('Submission error:', error);
+    } catch {
+      setSubmitError('We could not submit your brief. Please check your connection and try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -758,25 +753,11 @@ export default function ProjectWizard({ isOpen, onClose, initialData }: WizardPr
           className="bg-white border border-gray-100 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden shadow-2xl"
         >
           {submitSuccess ? (
-            <div className="p-8 text-center">
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                className="w-20 h-20 bg-[#00F0FF]/20 rounded-full flex items-center justify-center mx-auto mb-6"
-              >
-                <Check className="w-10 h-10 text-[#00F0FF]" />
-              </motion.div>
-              <h2 className="text-2xl font-bold font-mono mb-4 text-gray-900">Project Brief Submitted!</h2>
-              <p className="text-gray-500 mb-6">We’ll review your requirements and get back to you within 24 hours.</p>
-              <div className="w-full h-1 bg-gray-100 rounded-full overflow-hidden">
-                <motion.div
-                  initial={{ width: 0 }}
-                  animate={{ width: '100%' }}
-                  transition={{ duration: 3 }}
-                  className="h-full bg-gradient-to-r from-[#00F0FF] to-[#00B8CC]"
-                />
-              </div>
-            </div>
+            <ProjectBriefConfirmation
+              reference={briefReference}
+              email={initialData.email}
+              onClose={onClose}
+            />
           ) : (
             <>
               <div className="p-6 border-b border-gray-100">
@@ -825,6 +806,12 @@ export default function ProjectWizard({ isOpen, onClose, initialData }: WizardPr
               <div className="p-6 overflow-y-auto max-h-[50vh]">
                 {isAdvancedMode ? renderAdvancedStep() : renderBeginnerStep()}
               </div>
+
+              {submitError && (
+                <div className="mx-6 mt-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3">
+                  <p className="text-xs text-red-700">{submitError}</p>
+                </div>
+              )}
 
               <div className="p-6 border-t border-gray-100 flex items-center justify-between">
                 <button

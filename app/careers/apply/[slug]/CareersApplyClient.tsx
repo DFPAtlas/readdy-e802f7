@@ -57,8 +57,28 @@ export default function CareersApplyClient({ slug }: { slug: string }) {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (formValues.website_alt.trim()) {
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    const honeypot = ((formData.get('website_alt') as string) || '').trim();
+    if (honeypot) {
       setFormState('success');
+      return;
+    }
+
+    const fullName = ((formData.get('fullName') as string) || '').trim();
+    const email = ((formData.get('email') as string) || '').trim();
+    const coverNote = ((formData.get('coverNote') as string) || '').trim();
+
+    if (coverNote.length > 500) {
+      setFormError('Your cover note must be 500 characters or fewer.');
+      setFormState('error');
+      return;
+    }
+
+    if (!formData.get('privacyConsent')) {
+      setFormError('Please confirm you have read the privacy notice before submitting.');
+      setFormState('error');
       return;
     }
 
@@ -67,10 +87,10 @@ export default function CareersApplyClient({ slug }: { slug: string }) {
 
     try {
       const { supabase } = await import('@/lib/supabase');
-      const { notifyLeadSubmission } = await import('@/lib/submit-enquiry');
+      const { submitEnquiry } = await import('@/lib/submit-enquiry');
       const { data: isDuplicate, error: dupError } = await supabase.rpc('has_career_application', {
         p_vacancy_id: vacancy?.id,
-        p_email: formValues.email,
+        p_email: email,
       });
 
       if (dupError) {
@@ -85,40 +105,34 @@ export default function CareersApplyClient({ slug }: { slug: string }) {
         return;
       }
 
-      const { data: insertedApp, error: appError } = await supabase.from('career_applications').insert({
-        vacancy_id: vacancy?.id,
-        candidate_name: formValues.fullName,
-        candidate_email: formValues.email,
-        telephone: formValues.telephone || null,
-        location: formValues.location || null,
-        work_eligibility_response: formValues.workEligibility || null,
-        cover_note: formValues.coverNote || null,
-        portfolio_url: formValues.portfolioUrl || null,
-        adjustment_request: formValues.adjustmentRequest || null,
-        future_opportunity_consent: formValues.futureConsent,
+      const result = await submitEnquiry('career_applications', {
+        vacancy_id: vacancy?.id ?? null,
+        candidate_name: fullName,
+        candidate_email: email,
+        telephone: (formData.get('telephone') as string) || null,
+        location: (formData.get('location') as string) || null,
+        work_eligibility_response: (formData.get('workEligibility') as string) || null,
+        cover_note: coverNote || null,
+        portfolio_url: (formData.get('portfolioUrl') as string) || null,
+        adjustment_request: (formData.get('adjustmentRequest') as string) || null,
+        future_opportunity_consent: formData.get('futureConsent') === 'on',
         source: 'careers_page',
-        application_status: 'submitted',
-        submitted_at: new Date().toISOString(),
-      }).select('id');
+      }, true);
 
-      if (appError) {
-        setFormError(appError.message);
+      if (result.code !== 'OK') {
+        setFormError(result.message);
         setFormState('error');
         return;
-      }
-
-      if (insertedApp?.[0]?.id) {
-        notifyLeadSubmission('career_applications', insertedApp[0].id);
       }
 
       try {
         await supabase.functions.invoke('send-email', {
           body: {
-            to: formValues.email,
+            to: email,
             subject: `Application Received: ${vacancy?.title || 'Your Application'}`,
             html: `<div style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:20px;">
               <h2 style="color:#0A1628;">Thank you for your application</h2>
-              <p>Dear ${formValues.fullName},</p>
+              <p>Dear ${fullName},</p>
               <p>We have received your application for <strong>${vacancy?.title}</strong> at Digital Footprint.</p>
               <p>Our team reviews every application individually. If your experience matches what we are looking for, we will contact you within two weeks. You will hear from us either way.</p>
               <p style="color:#64748B;font-size:14px;">Your application reference details have been recorded securely. If you need to withdraw your application, please visit our <a href="https://digital-footprint.uk/careers/withdraw" style="color:#06B6D4;">withdrawal page</a>.</p>

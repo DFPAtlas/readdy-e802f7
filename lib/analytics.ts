@@ -10,6 +10,7 @@ import {
   ConsentCategory,
   ALLOWED_PAYLOAD_FIELDS,
   DeviceClass,
+  CONSENT_CATEGORIES,
 } from './analytics-definitions';
 
 const ANALYTICS_ENABLED = typeof window !== 'undefined';
@@ -52,7 +53,7 @@ export function getConsentState(): ConsentState | null {
     const raw = localStorage.getItem(CONSENT_STORAGE_KEY);
     if (!raw) return null;
     const parsed = JSON.parse(raw) as ConsentState;
-    if (parsed.version !== CONSENT_VERSION || !Array.isArray(parsed.categories)) return null;
+    if (!parsed.version || !Array.isArray(parsed.categories)) return null;
     return parsed;
   } catch {
     return null;
@@ -79,14 +80,15 @@ export function updateAnalyticsConsent(categories: ConsentCategory[]): void {
   } catch { /* storage unavailable */ }
 
   if (typeof window.gtag === 'function') {
-    window.gtag('consent', 'update', {
-      analytics_storage: alwaysNecessary.includes('analytics') ? 'granted' : 'denied',
-      ad_storage: alwaysNecessary.includes('marketing') ? 'granted' : 'denied',
-      functionality_storage: alwaysNecessary.includes('functional') ? 'granted' : 'denied',
-      personalization_storage: alwaysNecessary.includes('functional') ? 'granted' : 'denied',
-    });
+    const gtagConsent: Record<string, string> = {};
+    for (const cat of CONSENT_CATEGORIES) {
+      gtagConsent[`analytics_storage`] = alwaysNecessary.includes('analytics') ? 'granted' : 'denied';
+      gtagConsent[`ad_storage`] = alwaysNecessary.includes('marketing') ? 'granted' : 'denied';
+      gtagConsent[`functionality_storage`] = alwaysNecessary.includes('functional') ? 'granted' : 'denied';
+      gtagConsent[`personalization_storage`] = alwaysNecessary.includes('functional') ? 'granted' : 'denied';
+    }
+    window.gtag('consent', 'update', gtagConsent);
   }
-  window.dispatchEvent(new CustomEvent('dfp-consent-updated'));
 }
 
 function getDeviceClass(): DeviceClass {

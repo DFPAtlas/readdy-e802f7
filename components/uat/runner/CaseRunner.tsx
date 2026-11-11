@@ -2,8 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { CircleAlert, LoaderCircle, Check, X, Minus, ChevronLeft, ChevronRight, Save } from 'lucide-react';
-import type { RunnerCase, EvidenceRules } from '@/lib/uat-runner';
-import type { RunnerSession } from '@/hooks/useUatRunner';
+import type { RunnerCase, RunnerSession, EvidenceRules } from '@/lib/uat-runner';
 import CaseEvidence from './CaseEvidence';
 
 interface CaseRunnerProps {

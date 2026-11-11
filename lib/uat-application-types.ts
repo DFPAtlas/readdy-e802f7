@@ -327,26 +327,8 @@ export type MatchingDimension = typeof MATCHING_DIMENSIONS[number];
 
 export function generateApplicationReference(): string {
   const year = new Date().getFullYear();
-  const bytes = new Uint8Array(6);
-  crypto.getRandomValues(bytes);
-  const token = Array.from(bytes, (byte) => byte.toString(16).padStart(2, '0'))
-    .join('')
-    .toUpperCase();
-  return `DFP-UAT-APP-${year}-${token}`;
-}
-
-export function buildAccessibilitySelection(interest: string): Partial<WizardApplicationData> {
-  return {
-    accessibilityInterest: interest,
-    ...(interest === 'No' ? { accessibilityCapabilities: [], accessibilityTools: '' } : {}),
-  };
-}
-
-export function buildProjectConflictSelection(status: string): Partial<WizardApplicationData> {
-  return {
-    projectConflictStatus: status,
-    ...(status === 'No' ? { projectConflictDetails: '' } : {}),
-  };
+  const seq = Math.floor(Math.random() * 900000) + 100000;
+  return `DFP-UAT-APP-${year}-${seq}`;
 }
 
 export interface IndustryExperience {

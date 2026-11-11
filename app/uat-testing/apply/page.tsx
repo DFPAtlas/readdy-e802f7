@@ -7,8 +7,6 @@ import Footer from '@/components/Footer';
 
 import {
   generateApplicationReference,
-  buildAccessibilitySelection,
-  buildProjectConflictSelection,
   ELIGIBILITY_CONFIRMATIONS,
   EXPERIENCE_LEVELS,
   DEVICE_OPTIONS,
@@ -49,9 +47,14 @@ import {
   CheckCircle2,
   Loader2,
   AlertTriangle,
+  UserRound,
+  MonitorSmartphone,
+  Heart,
   WalletCards,
   ShieldCheck,
   Bug,
+  SearchCheck,
+  ClipboardList,
 } from 'lucide-react';
 
 const TOTAL_STEPS = 9;
@@ -67,6 +70,12 @@ const STEP_TITLES: Record<number, string> = {
   8: 'Payments & Tax',
   9: 'Review & Submit',
 };
+
+function generateRef(): string {
+  const year = new Date().getFullYear();
+  const seq = Math.floor(Math.random() * 900000) + 100000;
+  return `DFP-UAT-APP-${year}-${seq}`;
+}
 
 function makeDefaultData(): WizardApplicationData {
   return {
@@ -129,7 +138,6 @@ function TagButton({ label, selected, onClick }: { label: string; selected: bool
     <button
       type="button"
       onClick={onClick}
-      aria-pressed={selected}
       className={`px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 whitespace-nowrap cursor-pointer ${
         selected
           ? 'bg-[#2878d0]/10 border border-[#2878d0]/30 text-[#2878d0] shadow-sm'
@@ -220,7 +228,7 @@ export default function UATApplyPage() {
   const autosave = useCallback((currentData: WizardApplicationData, currentStep: number) => {
     setSaving(true);
     try {
-      const ref = applicationRef || generateApplicationReference();
+      const ref = applicationRef || generateRef();
       if (!applicationRef) setApplicationRef(ref);
       localStorage.setItem('uat_application_draft', JSON.stringify({
         data: currentData,
@@ -244,6 +252,9 @@ export default function UATApplyPage() {
     setErrors([]);
     debouncedSave(next, step);
   };
+
+  const toggleArray = (arr: string[], item: string): string[] =>
+    arr.includes(item) ? arr.filter((a) => a !== item) : [...arr, item];
 
   const validateStep = (s: number): string[] => {
     const errs: string[] = [];
@@ -355,7 +366,7 @@ export default function UATApplyPage() {
     setSubmitting(true);
     setServerError('');
     try {
-      const ref = applicationRef || generateApplicationReference();
+      const ref = applicationRef || generateRef();
 
       const honeypotEl = document.querySelector<HTMLInputElement>('#app_hp_field');
       if (honeypotEl && honeypotEl.value.trim()) {
@@ -648,6 +659,7 @@ function Step3({ data, updateData }: { data: WizardApplicationData; updateData: 
     });
   };
 
+  const hasGeneralIndustry = data.industryExperience.some((ie) => ie.industry === 'No specialist industry experience');
   const specificIndustries = data.industryExperience.filter((ie) => ie.industry !== 'No specialist industry experience');
   const hasNoExperience = data.industryExperience.length === 0;
 
@@ -941,7 +953,8 @@ function Step6({ data, updateData }: { data: WizardApplicationData; updateData: 
           <p className="text-slate-500 text-sm mb-3">Would you like to take part in accessibility testing? *</p>
           <div className="flex flex-wrap gap-2 mb-4">
             {yesNoUnsure.map((o) => <TagButton key={o} label={o} selected={data.accessibilityInterest === o} onClick={() => {
-              updateData(buildAccessibilitySelection(o));
+              updateData({ accessibilityInterest: o });
+              if (o === 'No') updateData({ accessibilityCapabilities: [], accessibilityTools: '' });
             }} />)}
           </div>
           {(data.accessibilityInterest === 'Yes' || data.accessibilityInterest === 'Maybe, with training') && (
@@ -967,7 +980,8 @@ function Step6({ data, updateData }: { data: WizardApplicationData; updateData: 
           <p className="text-slate-500 text-sm mb-3">Are you working for, advising or testing for an organisation that could compete with a DFP project? *</p>
           <div className="flex flex-wrap gap-2 mb-3">
             {conflictOptions.map((o) => <TagButton key={o} label={o} selected={data.projectConflictStatus === o} onClick={() => {
-              updateData(buildProjectConflictSelection(o));
+              updateData({ projectConflictStatus: o });
+              if (o === 'No') updateData({ projectConflictDetails: '' });
             }} />)}
           </div>
           {(data.projectConflictStatus === 'Yes' || data.projectConflictStatus === 'Unsure') && (

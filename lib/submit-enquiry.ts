@@ -1,7 +1,7 @@
 import { supabase } from './supabase';
 
 export type SubmitResult =
-  | { code: 'OK'; submissionId: string }
+  | { code: 'OK'; submissionId: string; recordId?: string }
   | { code: 'ERROR'; message: string };
 
 export type SubmissionTable =
@@ -11,6 +11,31 @@ export type SubmissionTable =
   | 'career_applications'
   | 'project_submissions'
   | 'uat_tester_applications';
+
+const RPC_MAP: Partial<Record<SubmissionTable, string>> = {
+  leads: 'submit_lead',
+  partner_applications: 'submit_partner_application',
+  career_applications: 'submit_career_application',
+  project_submissions: 'submit_project_submission',
+};
+
+const ERROR_MESSAGES: Record<string, string> = {
+  invalid_name: 'Please enter a valid name.',
+  invalid_email: 'Please enter a valid email address.',
+  invalid_applicant_name: 'Please enter a valid contact name.',
+  invalid_company_name: 'Please enter a valid company name.',
+  message_too_long: 'Your message is too long. Please shorten it.',
+  cover_note_too_long: 'Your cover note must be 500 characters or fewer.',
+};
+
+function friendlyMessage(raw: string): string {
+  const key = Object.keys(ERROR_MESSAGES).find((k) => raw.includes(k));
+  if (key) return ERROR_MESSAGES[key];
+  if (raw.toLowerCase().includes('permission denied')) {
+    return 'We could not submit your form right now. Please try again or contact us directly.';
+  }
+  return raw || 'Unable to submit. Please try again.';
+}
 
 export function makeSubmissionReference(prefix = 'dfp'): string {
   return `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
@@ -41,31 +66,31 @@ export async function submitEnquiry(
   if (!supabase) {
     return { code: 'ERROR', message: 'Submission service is not configured. Please try again later.' };
   }
-  try {
-    let recordId: string | undefined;
 
-    if (table === 'leads') {
-      const { data, error } = await supabase.rpc('submit_lead', { p_payload: payload });
+  try {
+    const rpcName = RPC_MAP[table];
+
+    if (rpcName) {
+      const { data, error } = await supabase.rpc(rpcName as never, { p_payload: payload });
       if (error) {
         if (error.code === '23505') {
           return { code: 'OK', submissionId };
         }
-        return { code: 'ERROR', message: error.message || 'Unable to submit. Please try again.' };
+        return { code: 'ERROR', message: friendlyMessage(error.message || '') };
       }
-      recordId = (data as string | null) ?? undefined;
-    } else {
-      const { data, error } = await supabase.from(table).insert(payload as never).select('id');
-      if (error) {
-        if (error.code === '23505') {
-          return { code: 'OK', submissionId };
-        }
-        return { code: 'ERROR', message: error.message || 'Unable to submit. Please try again.' };
+      const recordId = (data as string | null) ?? undefined;
+      if (notify && recordId) {
+        notifyLeadSubmission(table, recordId);
       }
-      recordId = data?.[0]?.id as string | undefined;
+      return { code: 'OK', submissionId, recordId };
     }
 
-    if (notify && recordId) {
-      notifyLeadSubmission(table, recordId);
+    const { error } = await supabase.from(table).insert(payload as never);
+    if (error) {
+      if (error.code === '23505') {
+        return { code: 'OK', submissionId };
+      }
+      return { code: 'ERROR', message: friendlyMessage(error.message || '') };
     }
     return { code: 'OK', submissionId };
   } catch {
