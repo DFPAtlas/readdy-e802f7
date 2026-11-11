@@ -39,7 +39,7 @@ export default function PortalModal({ open, onClose, title, subtitle, children }
             role="dialog"
             aria-modal="true"
             className="bg-[#1E293B] border border-[rgba(255,255,255,0.08)] rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto"
-            onClick={(e) => e.stopPropagation()}
+            onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
           >
             <div className="flex items-start justify-between px-6 pt-6 pb-4 border-b border-[rgba(255,255,255,0.06)]">
               <div>

@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { trackConversion } from '@/lib/analytics';
 
 const SUPPORT_ENDPOINT =
@@ -50,7 +50,7 @@ const ERROR_MESSAGES: Record<number, string> = {
 };
 
 function makeNonce(): string {
-  if (typeof crypto !== 'undefined' && 'randomUUID' in crypto) {
+  if (typeof crypto.randomUUID === 'function') {
     return crypto.randomUUID();
   }
   const arr = new Uint8Array(16);
@@ -62,9 +62,12 @@ export default function SupportRequestPage() {
   const [formState, setFormState] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const [formError, setFormError] = useState('');
   const [ticketNumber, setTicketNumber] = useState('');
+  const lastAttempt = useRef<{ details: string; idempotencyKey: string } | null>(null);
+  const requestInFlight = useRef(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (requestInFlight.current) return;
     const form = e.currentTarget;
     const formData = new FormData(form);
 
@@ -105,7 +108,7 @@ export default function SupportRequestPage() {
     if (organisation) descriptionParts.push(`Organisation: ${organisation}`);
     if (productService) descriptionParts.push(`Product/Service: ${productService}`);
 
-    const payload = {
+    const ticketDetails = {
       siteSlug: 'digital-footprint',
       customer: {
         name,
@@ -122,34 +125,38 @@ export default function SupportRequestPage() {
       consent: {
         privacyAccepted: true,
       },
-      nonce: makeNonce(),
-      timestamp: new Date().toISOString(),
-      honeypot: '',
     };
+    const details = JSON.stringify(ticketDetails);
+    requestInFlight.current = true;
 
     try {
+      if (lastAttempt.current?.details !== details) {
+        lastAttempt.current = { details, idempotencyKey: makeNonce() };
+      }
+      const payload = {
+        ...ticketDetails,
+        nonce: makeNonce(),
+        timestamp: new Date().toISOString(),
+        idempotencyKey: lastAttempt.current.idempotencyKey,
+      };
       const res = await fetch(SUPPORT_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
 
-      if (res.status === 201 || res.status === 200) {
-        let reference = '';
-        try {
-          const data = await res.json();
-          reference = data?.ticketNumber || data?.ticket_number || data?.reference || '';
-        } catch {
-          reference = '';
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success !== true || typeof data.ticketNumber !== 'string' || !data.ticketNumber) {
+          throw new Error('Missing support ticket reference');
         }
-        setTicketNumber(reference);
+        setTicketNumber(data.ticketNumber);
         form.reset();
         setFormState('success');
-        trackConversion(
-          'support_request',
-          `support_${email}_${Date.now()}`,
-          { service_key: productService || undefined, content_slug: category }
-        );
+        trackConversion('support_request', `support_${data.ticketNumber}`, {
+          service_key: productService || undefined,
+          content_slug: category,
+        });
         return;
       }
 
@@ -158,6 +165,8 @@ export default function SupportRequestPage() {
     } catch {
       setFormError('We could not send your support request. Please try again.');
       setFormState('error');
+    } finally {
+      requestInFlight.current = false;
     }
   };
 

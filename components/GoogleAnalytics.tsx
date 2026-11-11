@@ -1,109 +1,61 @@
-"use client";
+'use client';
 
-import Script from "next/script";
-import { useEffect, useState, useRef } from "react";
-import { hasConsentFor, getConsentState } from "@/lib/analytics";
-import type { ConsentState } from "@/lib/analytics-definitions";
-import { CONSENT_CATEGORIES, CONSENT_STORAGE_KEY } from "@/lib/analytics-definitions";
+import Script from 'next/script';
+import { useEffect, useState } from 'react';
+import { hasConsentFor } from '@/lib/analytics';
 
-const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
-
-declare global {
-  interface Window {
-    GA_LOADED?: boolean;
-    gtag?: (...args: any[]) => void;
-  }
-}
+const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || 'G-ZC4Y8SMRR7';
 
 export default function GoogleAnalytics() {
-  const [consentReady, setConsentReady] = useState(false);
   const [analyticsAllowed, setAnalyticsAllowed] = useState(false);
-  const mountedRef = useRef(true);
 
   useEffect(() => {
-    mountedRef.current = true;
-    return () => { mountedRef.current = false; };
-  }, []);
-
-  useEffect(() => {
-    const checkConsent = () => {
-      if (!mountedRef.current) return;
-      const hasGiven = hasConsentFor('analytics');
-      setAnalyticsAllowed(hasGiven);
-      setConsentReady(true);
-    };
-
-    checkConsent();
-
-    const handleStorage = () => {
-      checkConsent();
-    };
-
-    window.addEventListener('storage', handleStorage);
-
-    const handleCustomConsent = () => {
-      checkConsent();
-    };
-    window.addEventListener('dfp-consent-updated', handleCustomConsent);
-
-    return () => {
-      window.removeEventListener('storage', handleStorage);
-      window.removeEventListener('dfp-consent-updated', handleCustomConsent);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (consentReady && analyticsAllowed && !window.GA_LOADED) {
-      window.GA_LOADED = true;
+    const syncConsent = () => {
+      const allowed = hasConsentFor('analytics');
+      // Disable an already loaded tag immediately when consent is withdrawn.
+      Object.assign(window, { [`ga-disable-${GA_MEASUREMENT_ID}`]: !allowed });
+      if (allowed && !window.GA_LOADED) {
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };
+        window.gtag('consent', 'default', {
+          analytics_storage: 'denied', ad_storage: 'denied',
+          functionality_storage: 'denied', personalization_storage: 'denied',
+        });
+        window.gtag('js', new Date());
+        window.GA_LOADED = true;
+      }
       if (typeof window.gtag === 'function') {
         window.gtag('consent', 'update', {
-          analytics_storage: 'granted',
+          analytics_storage: allowed ? 'granted' : 'denied',
           ad_storage: hasConsentFor('marketing') ? 'granted' : 'denied',
           functionality_storage: hasConsentFor('functional') ? 'granted' : 'denied',
           personalization_storage: hasConsentFor('functional') ? 'granted' : 'denied',
         });
+        if (allowed) window.gtag('config', GA_MEASUREMENT_ID, { anonymize_ip: true });
       }
-    }
-  }, [consentReady, analyticsAllowed]);
+      if (!allowed) {
+        // Remove first-party GA cookies without touching necessary session cookies.
+        const hostParts = window.location.hostname.split('.');
+        const domains = ['', ...hostParts.map((_, index) => hostParts.slice(index).join('.'))];
+        for (const cookie of document.cookie.split(';')) {
+          const name = cookie.split('=')[0].trim();
+          if (!/^(_ga|_gid|_gat)(_|$)/.test(name)) continue;
+          for (const domain of domains) {
+            document.cookie = `${name}=; Max-Age=0; path=/${domain ? `; domain=${domain}` : ''}`;
+          }
+        }
+      }
+      setAnalyticsAllowed(allowed);
+    };
+    syncConsent();
+    window.addEventListener('storage', syncConsent);
+    window.addEventListener('dfp-consent-updated', syncConsent);
+    return () => {
+      window.removeEventListener('storage', syncConsent);
+      window.removeEventListener('dfp-consent-updated', syncConsent);
+    };
+  }, []);
 
-  if (!GA_MEASUREMENT_ID) {
-    return null;
-  }
-
-  if (!consentReady) {
-    return null;
-  }
-
-  if (!analyticsAllowed) {
-    return null;
-  }
-
-  return (
-    <>
-      <Script
-        src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
-        strategy="afterInteractive"
-      />
-      <Script id="google-analytics" strategy="afterInteractive">
-        {`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', '${GA_MEASUREMENT_ID}', {
-            page_path: window.location.pathname,
-            anonymize_ip: true,
-            cookie_flags: 'SameSite=None;Secure',
-            analytics_storage: 'granted',
-            ad_storage: 'denied',
-          });
-          gtag('consent', 'default', {
-            analytics_storage: 'granted',
-            ad_storage: 'denied',
-            functionality_storage: 'denied',
-            personalization_storage: 'denied',
-          });
-        `}
-      </Script>
-    </>
-  );
+  if (!analyticsAllowed) return null;
+  return <Script id="google-analytics-loader" src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`} strategy="afterInteractive" />;
 }

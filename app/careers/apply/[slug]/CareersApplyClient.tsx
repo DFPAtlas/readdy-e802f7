@@ -125,23 +125,11 @@ export default function CareersApplyClient({ slug }: { slug: string }) {
         return;
       }
 
-      try {
-        await supabase.functions.invoke('send-email', {
-          body: {
-            to: email,
-            subject: `Application Received: ${vacancy?.title || 'Your Application'}`,
-            html: `<div style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:20px;">
-              <h2 style="color:#0A1628;">Thank you for your application</h2>
-              <p>Dear ${fullName},</p>
-              <p>We have received your application for <strong>${vacancy?.title}</strong> at Digital Footprint.</p>
-              <p>Our team reviews every application individually. If your experience matches what we are looking for, we will contact you within two weeks. You will hear from us either way.</p>
-              <p style="color:#64748B;font-size:14px;">Your application reference details have been recorded securely. If you need to withdraw your application, please visit our <a href="https://digital-footprint.uk/careers/withdraw" style="color:#06B6D4;">withdrawal page</a>.</p>
-              <hr style="border:none;border-top:1px solid #E2E8F0;margin:24px 0;" />
-              <p style="color:#94A3B8;font-size:12px;">Digital Footprint, Hertfordshire, UK</p>
-            </div>`,
-          },
-        });
-      } catch {}
+      if (result.recordId) {
+        void supabase.functions.invoke('public-careers', {
+          body: { action: 'receipt', applicationId: result.recordId },
+        }).catch(() => {});
+      }
 
       setFormState('success');
     } catch {

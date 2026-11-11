@@ -37,7 +37,7 @@ serve(async (req: Request) => {
 
     const supabaseUrl = getEnv("SUPABASE_URL");
     const supabaseKey = getEnv("SUPABASE_SERVICE_ROLE_KEY");
-    const adapterSecret = Deno.env.get("UAT_PROJECT_ADAPTER_SECRET") || "dfp-uat-adapter-secret";
+    const adapterSecret = getEnv("UAT_PROJECT_ADAPTER_SECRET");
 
     const authHeader = req.headers.get("X-Sandbox-Adapter-Token") || "";
     const token = authHeader.replace("Bearer ", "");

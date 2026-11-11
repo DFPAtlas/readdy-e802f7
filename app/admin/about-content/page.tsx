@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation';
 
 
 type Founder = {
-  id: number;
+  id: string;
   name: string;
   role: string;
   bio: string;
@@ -19,7 +19,7 @@ type Founder = {
 };
 
 type TeamMember = {
-  id: number;
+  id: string;
   name: string;
   role: string;
   bio: string;
@@ -76,8 +76,8 @@ export default function AboutContentPage() {
   const fetchData = async () => {
     setLoading(true);
     const [{ data: fData }, { data: tData }] = await Promise.all([
-      supabase.from('about_founder').select('id, name, title, bio, image_url, linkedin_url, twitter_url, sort_order, created_at, updated_at').maybeSingle(),
-      supabase.from('about_team_members').select('id, name, title, bio, image_url, linkedin_url, twitter_url, sort_order, created_at').order('sort_order'),
+      supabase.from('about_founder').select('id, name, role, bio, bio_paragraph_2, image_url, skills').maybeSingle(),
+      supabase.from('about_team_members').select('id, name, role, bio, skills, image_url, section, sort_order').order('sort_order'),
     ]);
     if (fData) setFounder(fData as Founder);
     if (tData) setTeam(tData as TeamMember[]);
@@ -95,7 +95,7 @@ export default function AboutContentPage() {
       image_url: founder.image_url,
       skills: founder.skills,
       updated_at: new Date().toISOString(),
-    }).eq('id', 1);
+    }).eq('id', founder.id);
     setSaving(false);
     if (error) showToast(error.message, 'error');
     else showToast('Founder info saved successfully', 'success');
@@ -140,7 +140,7 @@ export default function AboutContentPage() {
     }
   };
 
-  const deleteTeamMember = async (id: number) => {
+  const deleteTeamMember = async (id: string) => {
     if (!confirm('Delete this team member?')) return;
     setSaving(true);
     const { error } = await supabase.from('about_team_members').delete().eq('id', id);

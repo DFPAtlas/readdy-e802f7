@@ -1,6 +1,9 @@
 import { supabase } from '@/lib/supabase';
 import type { CommunicationSettings, InterceptResult } from '../types';
 
+export { maskEmail } from '../email';
+export { maskPhone } from '../sms';
+
 export interface ProjectAdapter {
   projectId: string;
   environmentId?: string;
@@ -36,47 +39,6 @@ export async function loadCommunicationSettings(projectId: string): Promise<Comm
     .maybeSingle();
 
   return data as CommunicationSettings | null;
-}
-
-export async function generateAdapterToken(
-  sandboxInstanceId: string,
-  assignmentId: string,
-  sessionId: string | null,
-  testerId: string,
-  projectId: string
-): Promise<string | null> {
-  try {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) return null;
-
-    const payload = {
-      sandbox_instance_id: sandboxInstanceId,
-      assignment_id: assignmentId,
-      session_id: sessionId,
-      tester_id: testerId,
-      project_id: projectId,
-      iat: Math.floor(Date.now() / 1000),
-      exp: Math.floor(Date.now() / 1000) + 3600,
-    };
-
-    const header = btoa(JSON.stringify({ alg: 'HS256', typ: 'JWT' }));
-    const body = btoa(JSON.stringify(payload));
-    const signingInput = `${header}.${body}`;
-
-    const encoder = new TextEncoder();
-    const keyData = encoder.encode('dfp-uat-adapter-secret');
-    const cryptoKey = await crypto.subtle.importKey(
-      'raw', keyData, { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']
-    );
-    const signature = await crypto.subtle.sign('HMAC', cryptoKey, encoder.encode(signingInput));
-    const sigArray = Array.from(new Uint8Array(signature));
-    const sigHex = sigArray.map((b) => b.toString(16).padStart(2, '0')).join('');
-    const sigB64 = btoa(sigHex);
-
-    return `${header}.${body}.${sigB64}`;
-  } catch {
-    return null;
-  }
 }
 
 export function formatMessageTypeLabel(type: string): string {
