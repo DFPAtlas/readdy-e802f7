@@ -15,3 +15,11 @@ verify_jwt = false
 
 [functions.dfp-health-probe]
 verify_jwt = false
+[functions.public-careers]
+verify_jwt = false
+
+[functions.public-newsletter]
+verify_jwt = false
+
+[functions.receive-support-ticket]
+verify_jwt = false

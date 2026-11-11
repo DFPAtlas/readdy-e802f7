@@ -5,6 +5,7 @@ import { useState, useRef, useCallback, useEffect } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
+import { productConfigs } from '@/app/demos/components/shared/product-config';
 import { trackConversion } from '@/lib/analytics';
 import { submitEnquiry, makeIdempotencyKey } from '@/lib/submit-enquiry';
 
@@ -21,10 +22,12 @@ const needLabelMap: Record<string, string> = {
 const needServiceMap: Record<string, string> = {
   website: 'Website Development',
   'website-improvement': 'Website Development',
-  'lead-generation': 'Business Process Automation',
-  automation: 'Business Process Automation',
+  'lead-generation': 'Business Automation',
+  automation: 'Business Automation',
   portal: 'Customer Portals',
   saas: 'Website Development',
+  infrastructure: 'Cloud Systems',
+  security: 'Cyber Security',
   discovery: '',
 };
 
@@ -34,25 +37,45 @@ export default function ContactPage() {
   const [submitting, setSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [selectedNeed, setSelectedNeed] = useState<{ value: string; label: string } | null>(null);
+  const [enquiryContext, setEnquiryContext] = useState<{
+    need?: string;
+    package?: string;
+    demoSource?: string;
+    demoProduct?: string;
+    demoModules?: string[];
+  }>({});
   const lastSubmitRef = useRef(0);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const needValue = params.get('need');
-    const needLabel = params.get('need_label');
-    const packageParam = params.get('package');
-    const resolvedLabel = needLabel || (needValue && needLabelMap[needValue] ? needLabelMap[needValue] : null);
-    if (needValue && resolvedLabel) {
-      setSelectedNeed({ value: needValue, label: resolvedLabel });
-      const service = needServiceMap[needValue] || '';
-      const baseMessage = service
-        ? `I selected: "${resolvedLabel}". I'd like to discuss this with the team.`
-        : `I selected: "${resolvedLabel}". I'm looking for guidance on the best next step.`;
-      const packageNote = packageParam ? `\n\nPackage of interest: ${packageParam}` : '';
+    const needValue = params.get('need')?.trim().slice(0, 80);
+    const needLabel = params.get('need_label')?.trim().slice(0, 120);
+    const packageName = params.get('package')?.trim().slice(0, 120);
+    const resolvedLabel = needLabel || (needValue ? needLabelMap[needValue] : '');
+    const demoSource = params.get('source');
+    const demo = Object.values(productConfigs).find((product) => product.enquirySource === demoSource);
+    const requestedModules = (params.get('modules') || '').split(',').map((module) => module.trim());
+    const demoModules = demo?.enquiryModules.filter((module) => requestedModules.includes(module)) ?? [];
+
+    if (needValue && resolvedLabel) setSelectedNeed({ value: needValue, label: resolvedLabel });
+    setEnquiryContext({
+      ...(needValue && resolvedLabel ? { need: needValue } : {}),
+      ...(packageName ? { package: packageName } : {}),
+      ...(demo ? { demoSource: demo.enquirySource, demoProduct: demo.name, demoModules } : {}),
+    });
+
+    const service = needValue ? needServiceMap[needValue] : '';
+    const details = [
+      resolvedLabel && `I'd like to discuss: ${resolvedLabel}.`,
+      packageName && `Package of interest: ${packageName}`,
+      demo && `Demo of interest: ${demo.name}`,
+      demoModules.length > 0 && `Selected modules: ${demoModules.join(', ')}`,
+    ].filter(Boolean).join('\n');
+    if (service || details) {
       setFormData((prev) => ({
         ...prev,
         service: service || prev.service,
-        message: baseMessage + packageNote,
+        message: details.slice(0, 500) || prev.message,
       }));
     }
   }, []);
@@ -103,6 +126,7 @@ export default function ContactPage() {
         service_interest: service || null,
         message,
         source: 'contact_page',
+        ...(Object.keys(enquiryContext).length ? { enquiry_data: enquiryContext } : {}),
         status: 'new',
         stage: 'new',
         consent_contact: true,
@@ -111,7 +135,7 @@ export default function ContactPage() {
 
       if (result.code === 'OK') {
         setSubmitted(true);
-        trackConversion('contact_form', `contact_${email}_${Date.now()}`, { service_key: service || undefined });
+        trackConversion('contact_form', `contact_${result.submissionId}`, { service_key: service || undefined });
       } else {
         setErrorMsg(result.message);
       }
@@ -120,7 +144,7 @@ export default function ContactPage() {
     } finally {
       setSubmitting(false);
     }
-  }, [formData, selectedNeed]);
+  }, [formData, selectedNeed, enquiryContext]);
 
   return (
     <>

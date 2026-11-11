@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { submitEnquiry } from '@/lib/submit-enquiry';
 import { Mail, CheckCircle2, AlertCircle, ArrowRight, Sparkles } from 'lucide-react';
 
 export default function PBXWaitlistSection() {
@@ -19,36 +20,27 @@ export default function PBXWaitlistSection() {
       return;
     }
 
-    formData.delete('website_alt');
-
+    const email = String(formData.get('email') ?? '').trim().toLowerCase();
     setStatus('submitting');
     setErrorMsg('');
 
     try {
-      const res = await fetch('https://readdy.ai/api/form/da8p0t1tacug2b80sjlg', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams(formData as any).toString(),
+      const result = await submitEnquiry('leads', {
+        name: 'PBX Waitlist Subscriber',
+        email,
+        enquiry_type: 'pbx_waitlist',
+        source: 'pbx_waitlist',
+        service_interest: 'Cloud PBX',
+        consent_marketing: true,
+        idempotency_key: `pbx_waitlist:${email}`,
       });
 
-      const responseText = await res.text();
-      let parsed: any = null;
-      try { parsed = JSON.parse(responseText); } catch { parsed = null; }
-
-      const serverMsg =
-        parsed?.meta?.message ||
-        parsed?.message ||
-        parsed?.meta?.detail ||
-        responseText;
-
-      const isSpam = typeof serverMsg === 'string' && /spam|form data is spam/i.test(serverMsg);
-
-      if (res.ok && parsed?.code === 'OK') {
+      if (result.code === 'OK') {
         setStatus('success');
         form.reset();
       } else {
         setStatus('error');
-        setErrorMsg(isSpam ? 'Something went wrong. Please try again.' : (serverMsg || 'Something went wrong. Please try again.'));
+        setErrorMsg(result.message);
       }
     } catch {
       setStatus('error');
@@ -89,12 +81,14 @@ export default function PBXWaitlistSection() {
               </div>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} data-readdy-form className="flex flex-col sm:flex-row gap-2">
+            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-2">
               <div className="relative flex-1">
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none" />
                 <input
                   type="email"
                   name="email"
+                  aria-label="Email address"
+                  maxLength={254}
                   required
                   placeholder="you@company.com"
                   className="w-full bg-[#0F172A] border border-[rgba(255,255,255,0.08)] rounded-lg pl-9 pr-3 py-2.5 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-[#F59E0B]/50 transition-colors"
@@ -106,7 +100,6 @@ export default function PBXWaitlistSection() {
                 tabIndex={-1}
                 autoComplete="off"
                 aria-hidden="true"
-                readOnly
                 className="wp-hp-field"
               />
               <button

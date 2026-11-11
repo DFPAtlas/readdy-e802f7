@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import Link from 'next/link';
 import { motion } from '@/components/motion';
 import Header from '@/components/Header';
@@ -8,43 +8,67 @@ import Footer from '@/components/Footer';
 import { blogPosts } from './posts';
 
 export default function BlogPage() {
-  const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'check-email' | 'confirmed' | 'error'>('idle');
+  const [confirmationToken, setConfirmationToken] = useState('');
   const [formError, setFormError] = useState('');
 
   const featuredPost = blogPosts.find((p) => p.featured) || blogPosts[0];
   const remainingPosts = blogPosts.filter((p) => p.slug !== featuredPost?.slug);
 
-  const handleNewsletterSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const form = e.currentTarget;
+  useLayoutEffect(() => {
+    const token = new URLSearchParams(window.location.hash.slice(1)).get('newsletter-token');
+    if (!token) return;
+    window.history.replaceState(window.history.state, '', window.location.pathname + window.location.search + '#newsletter');
+    if (/^[0-9a-f]{64}$/.test(token)) setConfirmationToken(token);
+    else setFormError('This confirmation link is invalid. You can sign up again below.');
+    document.getElementById('newsletter')?.scrollIntoView();
+  }, []);
+
+  const handleNewsletterSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const form = event.currentTarget;
     const formData = new FormData(form);
-    const honeypot = (formData.get('website_alt') as string || '').trim();
-    if (honeypot) { setFormStatus('success'); return; }
     setFormStatus('submitting');
     setFormError('');
-    formData.delete('website_alt');
     try {
-      const { submitEnquiry, makeIdempotencyKey } = await import('@/lib/submit-enquiry');
-      const result = await submitEnquiry('leads', {
-        name: 'Newsletter Subscriber',
-        email: (formData.get('email') as string) || '',
-        enquiry_type: 'newsletter',
-        source: 'blog',
-        status: 'new',
-        stage: 'new',
-        consent_marketing: true,
-        idempotency_key: makeIdempotencyKey(),
+      const { supabase } = await import('@/lib/supabase');
+      const { data, error } = await supabase.functions.invoke('public-newsletter', {
+        body: {
+          action: 'subscribe',
+          email: formData.get('email'),
+          websiteAlt: formData.get('website_alt'),
+          marketingConsent: formData.get('newsletter_consent') === 'on',
+        },
       });
+      if (error || data?.ok !== true) throw new Error('Newsletter signup failed');
+      form.reset();
+      setFormStatus('check-email');
+    } catch {
+      setFormError('We could not request a confirmation email. Please try again shortly.');
+      setFormStatus('error');
+    }
+  };
 
-      if (result.code === 'OK') {
-        setFormStatus('success');
-        form.reset();
+  const confirmNewsletter = async () => {
+    setFormStatus('submitting');
+    setFormError('');
+    try {
+      const { supabase } = await import('@/lib/supabase');
+      const { data, error } = await supabase.functions.invoke('public-newsletter', {
+        body: { action: 'confirm', token: confirmationToken },
+      });
+      if (error || data?.ok !== true) throw new Error('Newsletter confirmation failed');
+      setConfirmationToken('');
+      if (data.confirmed === true) {
+        setFormStatus('confirmed');
       } else {
-        setFormError(result.message);
         setFormStatus('error');
+        setFormError(data.unsubscribed
+          ? 'This address is currently unsubscribed. Contact us if you would like help rejoining.'
+          : 'This confirmation link has expired or is invalid. You can sign up again below.');
       }
     } catch {
-      setFormError('Unable to connect. Please check your connection and try again.');
+      setFormError('We could not confirm your subscription. Please try again shortly.');
       setFormStatus('error');
     }
   };
@@ -148,30 +172,46 @@ export default function BlogPage() {
             </div>
 
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center">
-              <div className="section-dark-alt rounded-2xl p-12 border border-slate-200">
+              <div id="newsletter" className="section-dark-alt scroll-mt-28 rounded-2xl border border-slate-200 p-12">
                 <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#06B6D4]/8 border border-[#06B6D4]/20 text-[#06B6D4] text-sm font-medium mb-6">
                   <i className="ri-mail-send-line w-4 h-4 flex items-center justify-center" />
                   Stay in the Loop
                 </div>
                 <h2 className="text-3xl font-bold mb-4 text-slate-900">Stay Updated</h2>
                 <p className="text-slate-500 mb-8 max-w-xl mx-auto">Subscribe to our newsletter for the latest insights on technology, automation and digital transformation for UK businesses.</p>
-                {formStatus === 'success' ? (
+                {formStatus === 'check-email' || formStatus === 'confirmed' ? (
                   <div className="max-w-md mx-auto text-center py-4" data-testid="form-success">
                     <div className="w-14 h-14 rounded-full bg-emerald-100 flex items-center justify-center mx-auto mb-4">
                       <i className="ri-check-line w-7 h-7 text-emerald-500 flex items-center justify-center" />
                     </div>
-                    <p className="text-emerald-700 font-medium">Thank you for subscribing. You&apos;ll hear from us soon.</p>
+                    <p role="status" className="font-medium text-emerald-700">
+                      {formStatus === 'confirmed' ? 'Your newsletter subscription is confirmed.' : 'Check your email for a link to confirm your subscription.'}
+                    </p>
                   </div>
+                ) : confirmationToken ? (
+                  <button type="button" onClick={confirmNewsletter} disabled={formStatus === 'submitting'}
+                    className="rounded-xl bg-cyan-700 px-6 py-3 text-sm font-semibold text-white disabled:opacity-50">
+                    {formStatus === 'submitting' ? 'Confirming…' : 'Confirm subscription'}
+                  </button>
                 ) : (
-                  <form data-readdy-form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row items-center gap-3 max-w-md mx-auto">
-                    <input type="text" name="website_alt" tabIndex={-1} autoComplete="off" aria-hidden="true" readOnly className="absolute opacity-0 pointer-events-none" />
-                    <input type="email" name="email" placeholder="Enter your email" required className="flex-1 w-full px-5 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-[#06B6D4] transition-colors text-sm" />
-                    <button type="submit" data-testid="newsletter-submit" disabled={formStatus === 'submitting'} className="px-6 py-3 rounded-xl font-semibold text-sm text-white bg-[#06B6D4] hover:bg-[#0891B2] transition-colors cursor-pointer whitespace-nowrap hover:shadow-[0_0_20px_rgba(6,182,212,0.3)] disabled:opacity-50">
-                      {formStatus === 'submitting' ? 'Subscribing...' : 'Subscribe'}
-                    </button>
+                  <form onSubmit={handleNewsletterSubmit} className="mx-auto max-w-md space-y-3">
+                    <input type="text" name="website_alt" tabIndex={-1} autoComplete="off" aria-hidden="true" className="sr-only" />
+                    <div className="flex flex-col items-center gap-3 sm:flex-row">
+                      <input type="email" name="email" aria-label="Email address" placeholder="Enter your email"
+                        maxLength={254} autoComplete="email" required
+                        className="w-full flex-1 rounded-xl border border-slate-200 bg-slate-50 px-5 py-3 text-sm text-slate-800" />
+                      <button type="submit" data-testid="newsletter-submit" disabled={formStatus === 'submitting'}
+                        className="rounded-xl bg-cyan-700 px-6 py-3 text-sm font-semibold text-white disabled:opacity-50">
+                        {formStatus === 'submitting' ? 'Requesting…' : 'Subscribe'}
+                      </button>
+                    </div>
+                    <label className="flex items-start gap-2 text-left text-xs text-slate-600">
+                      <input type="checkbox" name="newsletter_consent" required className="mt-0.5" />
+                      <span>I agree to receive the Digital Footprint newsletter by email. I can unsubscribe at any time.</span>
+                    </label>
                   </form>
                 )}
-                {formError && <p data-testid="form-error" className="text-xs text-red-500 mt-3">{formError}</p>}
+                {formError && <p data-testid="form-error" role="alert" className="text-xs text-red-500 mt-3">{formError}</p>}
               </div>
             </motion.div>
           </div>

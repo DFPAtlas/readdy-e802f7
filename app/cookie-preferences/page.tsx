@@ -43,7 +43,6 @@ export default function CookiePreferencesPage() {
   const savePreferences = useCallback(() => {
     try {
       updateAnalyticsConsent(selected);
-      window.dispatchEvent(new CustomEvent('dfp-consent-updated'));
       setSaved(true);
       setError('');
       setTimeout(() => setSaved(false), 3000);
@@ -60,8 +59,8 @@ export default function CookiePreferencesPage() {
       withdrawnAt: new Date().toISOString(),
     };
     try {
+      updateAnalyticsConsent(['necessary']);
       localStorage.setItem(CONSENT_STORAGE_KEY, JSON.stringify(state));
-      window.dispatchEvent(new CustomEvent('dfp-consent-updated'));
       setSelected(['necessary']);
       setSaved(true);
       setError('');
