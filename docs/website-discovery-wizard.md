@@ -20,6 +20,8 @@ required contact/privacy acknowledgement.
   plain text, including explicit `Not answered` entries for skipped questions.
 - **Admin → Submissions** displays the complete brief. Converting a submission
   to a project carries its additional notes into the project description.
+  Discovery projects use a zero budget until a quote is agreed, rather than
+  applying the legacy £5,000 fallback to an enquiry with no agreed price.
 - The existing `send-lead-notification` invocation is requested after receipt;
   its email template already includes additional notes. Email delivery remains
   dependent on that deployed function and its email-provider configuration.
