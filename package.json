@@ -34,7 +34,8 @@
     "typecheck": "tsc --noEmit",
     "test:smoke": "playwright test --config=playwright.smoke.config.mjs",
     "test:uat-application": "node --test tests/uat-application-form.test.cjs",
-    "test:security": "node --test tests/sandbox-adapter-auth.test.cjs"
+    "test:security": "node --test tests/sandbox-adapter-auth.test.cjs",
+    "test:website-discovery": "node --test tests/website-discovery.test.cjs"
   },
   "version": "0.1.0",
   "overrides": {
