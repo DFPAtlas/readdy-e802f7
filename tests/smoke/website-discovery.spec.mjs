@@ -63,7 +63,7 @@ test('submission failure retains answers; retry sends the full brief once and cl
   await page.getByLabel('Business name (optional)').fill('Example Ltd');
   await page.locator('main input[type="checkbox"]').check();
   await page.getByRole('button', { name: 'Send my website brief', exact: true }).click();
-  await expect(page.getByRole('alert')).toContainText('Submission unavailable');
+  await expect(page.getByRole('main').getByRole('alert')).toContainText('Submission unavailable');
   await expect(page.getByText('Your vision is in good hands.', { exact: true })).toHaveCount(0);
   const draft = await page.evaluate((key) => JSON.parse(localStorage.getItem(key)), draftKey);
   expect(draft.answers['26'].text).toBe('Vision answer 26');
