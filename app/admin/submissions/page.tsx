@@ -97,7 +97,10 @@ export default function AdminSubmissionsPage() {
       const { data: client, error: clientError } = await supabase.from('profiles').insert({ email: submission.email, full_name: submission.name, company_name: submission.name + ' Company', role: 'client' }).select().single();
       if (clientError && !clientError.message.includes('duplicate')) throw clientError;
       const clientId = client?.id;
-      const { error: projectError } = await supabase.from('projects').insert({ name: `${submission.name} - ${submission.website_type || submission.project_type}`, client_id: clientId, status: 'planning', budget: parseInt(submission.budget_range.replace(/[^0-9]/g, '')) || 5000, description: submission.initial_message, start_date: new Date().toISOString() });
+      // Discovery captures a vision, not a price. Keep its project unpriced
+      // using the database's zero-budget convention until a quote is agreed.
+      const budget = submission.project_type === 'Website discovery' ? 0 : parseInt(submission.budget_range.replace(/[^0-9]/g, '')) || 5000;
+      const { error: projectError } = await supabase.from('projects').insert({ name: `${submission.name} - ${submission.website_type || submission.project_type}`, client_id: clientId, status: 'planning', budget, description: [submission.initial_message, submission.additional_notes].filter(Boolean).join('\n\n'), start_date: new Date().toISOString() });
       if (projectError) throw projectError;
       await updateSubmission(submission.id, { status: 'converted' });
       setShowConvertModal(false);
@@ -283,7 +286,14 @@ export default function AdminSubmissionsPage() {
                           {submission.initial_message && (
                             <div>
                               <p className="text-xs text-slate-400 mb-2">Initial Message</p>
-                              <p className="text-sm text-slate-400 bg-white/5 p-3 rounded-xl">{submission.initial_message}</p>
+                              <p className="text-sm text-slate-400 bg-white/5 p-3 rounded-xl whitespace-pre-wrap break-words">{submission.initial_message}</p>
+                            </div>
+                          )}
+
+                          {submission.additional_notes && (
+                            <div>
+                              <h4 className="text-xs text-slate-400 mb-2">{submission.project_type === 'Website discovery' ? 'Website discovery answers' : 'Additional notes'}</h4>
+                              <p className="text-sm text-slate-300 bg-white/5 p-4 rounded-xl whitespace-pre-wrap break-words">{submission.additional_notes}</p>
                             </div>
                           )}
                         </div>
