@@ -23,6 +23,7 @@ Supabase is accessed over HTTP in this app; no Prisma client, raw SQL interpolat
 | `npm run test:http` | 20 PASS against the final patched production build |
 | Deno typechecking | Six payment/status Edge Functions and reconciliation script PASS |
 | `npm audit` (including dev dependencies) | PASS: zero known vulnerabilities |
+| GitHub CI | TypeScript, lint and regression tests PASS; initial production builds failed because the public Supabase repository variables were empty. Workflows now also accept same-named secrets; otherwise configure the two settings and rerun. |
 | Browser smoke suite | INCOMPLETE: Chromium could not start because the environment denied its process socket. The connected browser was unavailable and the remote browser could not reach workspace localhost. No interactive UAT pass is claimed. |
 | Browser secret exposure scan | No `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET` or `SUPABASE_SERVICE_ROLE_KEY` references in emitted browser JS |
 | Literal internal link scan | No unmatched literal `href` routes found against the source route inventory; dynamic links/authenticated flows still need browser UAT |
@@ -35,8 +36,8 @@ The SQL tests use isolated PostgreSQL fixtures, not the entire production schema
 
 | File | Repair |
 |---|---|
-| `.github/workflows/build-certification.yml` | Read public Supabase repository variables and run the new payment/route tests. |
-| `.github/workflows/stripe-pr-validation.yml` | Read public Supabase variables; use Node 22, required by the installed Supabase SDK. |
+| `.github/workflows/build-certification.yml` | Read public Supabase repository variables (or same-named secrets) and run the new payment/route tests. |
+| `.github/workflows/stripe-pr-validation.yml` | Read public Supabase variables/secrets; use Node 22, required by the installed Supabase SDK. |
 | `eslint.config.mjs` | Exclude generated Playwright reports and traces from source linting. |
 | `next.config.ts` | Validate production auth configuration; redirect www and legacy social-image URLs; extend noindex headers. |
 | `package-lock.json` | Lock security updates and test dependencies; update vulnerable tooling transitive dependencies. |
@@ -158,7 +159,7 @@ This report, `docs/audit-repairs-2026-11-21.md`, is also added as the deployment
 
 ## Manual actions and deployment order
 
-1. Configure GitHub repository **Actions variables** `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` with the public URL/anon key for the intended DFP verification environment. Both CI workflows now require them. Never use a service-role or Stripe secret in either variable. Use Node 22 for build/CI.
+1. Configure GitHub repository **Actions variables** `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` with the public URL/anon key for the intended DFP verification environment, or configure same-named Actions secrets. Empty configuration intentionally blocks the production build; CI cannot complete browser checks until these inputs are available. Both CI workflows now require them. Never use a service-role or Stripe secret in either variable. Use Node 22 for build/CI.
 2. Test the migration on a representative isolated DFP database. Apply **only** `supabase/migrations/20261121005544_repair_stripe_atomicity_and_staff_roles.sql` to the intended project using its SQL editor, or the one-line PowerShell command below with a securely configured DFP connection string. The file has its own transaction. If pre-existing duplicate payment/refund identifiers prevent a unique index from being added, stop and investigate them; do not delete or merge financial records automatically. Do not run the historical migration directory wholesale or reset any database.
 
    ```powershell
