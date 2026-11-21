@@ -1,3 +1,7 @@
+import { privateMetadata } from '@/lib/seo';
+
+export const metadata = privateMetadata;
+
 import UATPortalShell from '@/components/uat/UATPortalShell';
 import UATTesterTermsGate from '@/components/UATTesterTermsGate';
 

@@ -314,6 +314,7 @@ function CheckoutFormInner() {
   const searchParams = useSearchParams();
   const packageParam = searchParams.get('package') || '';
 
+  const requestId = useRef<string | null>(null);
   const [step, setStep] = useState<CheckoutStep>('details');
   const [selectedPkg, setSelectedPkg] = useState<WebsitePackage | null>(null);
   const [details, setDetails] = useState<CustomerDetails>(initialDetails);
@@ -400,10 +401,12 @@ function CheckoutFormInner() {
       setStatusMessage('Preparing your secure payment...');
 
       try {
+        requestId.current ??= crypto.randomUUID();
         const res = await fetch(`${SUPABASE_URL}/functions/v1/dfp-website-checkout`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
+            request_id: requestId.current,
             package_id: selectedPkg.id,
             customer_name: details.fullName.trim(),
             customer_email: details.email.trim(),

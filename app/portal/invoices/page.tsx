@@ -12,7 +12,7 @@ import { usePortalMembership } from '@/components/portal/PortalAccessProvider';
 
 
 
-const SUPABASE_FUNCTIONS_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!.replace('.supabase.co', '.functions.supabase.co');
+const SUPABASE_FUNCTIONS_URL = `${process.env.NEXT_PUBLIC_SUPABASE_URL || ''}/functions/v1`;
 
 interface Invoice {
   id: string;
@@ -73,12 +73,17 @@ export default function InvoicesPage() {
   const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null);
   const [payError, setPayError] = useState<string | null>(null);
 
+  const clientId = membership?.client_id;
+
   useEffect(() => {
-    async function fetchInvoices() {
+    let cancelled = false;
+    let retryTimer: ReturnType<typeof setTimeout> | undefined;
+    const returningFromPayment = new URLSearchParams(window.location.search).has('paid') || new URLSearchParams(window.location.search).get('payment') === 'success';
+    async function fetchInvoices(attempt = 1) {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) { setLoading(false); return; }
 
-      const cid = membership?.client_id;
+      const cid = clientId;
 
       if (!cid) { setLoading(false); return; }
 
@@ -88,11 +93,16 @@ export default function InvoicesPage() {
         .eq('client_id', cid)
         .order('created_at', { ascending: false });
 
+      if (cancelled) return;
       if (data) setInvoices(data as Invoice[]);
       setLoading(false);
+      // Returning from Checkout never marks an invoice paid. Refresh from the
+      // database while the verified webhook is still being delivered.
+      if (returningFromPayment && attempt < 10) retryTimer = setTimeout(() => fetchInvoices(attempt + 1), 2000);
     }
-    fetchInvoices();
-  }, []);
+    void fetchInvoices();
+    return () => { cancelled = true; clearTimeout(retryTimer); };
+  }, [clientId]);
 
   const handlePay = async (invoice: Invoice) => {
     setPayLoading(invoice.id);
@@ -102,7 +112,7 @@ export default function InvoicesPage() {
       const res = await fetch(`${SUPABASE_FUNCTIONS_URL}/create-checkout`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session?.access_token}` },
-        body: JSON.stringify({ invoiceId: invoice.id, amount: Number(invoice.amount), description: invoice.description, customerEmail: session?.user?.email, successUrl: `${window.location.origin}/portal/invoices?paid=true`, cancelUrl: `${window.location.origin}/portal/invoices`, mode: 'payment' }),
+        body: JSON.stringify({ invoiceId: invoice.id, successUrl: `${window.location.origin}/portal/invoices?paid=true`, cancelUrl: `${window.location.origin}/portal/invoices`, mode: 'payment' }),
       });
       const result = await res.json();
       if (result.url) window.location.href = result.url;

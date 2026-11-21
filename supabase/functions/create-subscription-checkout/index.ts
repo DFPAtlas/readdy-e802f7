@@ -10,8 +10,6 @@ const ALLOWED_HOSTS = new Set([
 ]);
 
 const LOOKUP_KEY = "starter_plan_monthly";
-const PLAN_NAME = "Starter Plan";
-const PLAN_DESCRIPTION = "Ongoing website management and support subscription.";
 const PLAN_PRICE_MINOR = 2000;
 const CURRENCY = "gbp";
 const INTERVAL = "month";
@@ -61,23 +59,12 @@ async function resolvePrice(stripe: Stripe): Promise<string> {
     active: true,
     limit: 1,
   });
-  if (existing.data.length > 0) return existing.data[0].id;
-
-  const product = await stripe.products.create({
-    name: PLAN_NAME,
-    description: PLAN_DESCRIPTION,
-    metadata: { venture_code: "digital-footprint" },
-  });
-
-  const price = await stripe.prices.create({
-    product: product.id,
-    lookup_key: LOOKUP_KEY,
-    currency: CURRENCY,
-    unit_amount: PLAN_PRICE_MINOR,
-    recurring: { interval: INTERVAL },
-    metadata: { venture_code: "digital-footprint" },
-  });
-
+  const price = existing.data[0];
+  if (!price || !price.active || price.type !== 'recurring' || price.currency !== CURRENCY ||
+    price.unit_amount !== PLAN_PRICE_MINOR || price.recurring?.interval !== INTERVAL ||
+    price.recurring.interval_count !== 1 || price.billing_scheme !== 'per_unit') {
+    throw new Error('The configured Starter Plan price is missing or does not match the published plan');
+  }
   return price.id;
 }
 
@@ -90,7 +77,11 @@ Deno.serve(async (req: Request) => {
 
   let body: Record<string, unknown>;
   try {
-    body = await req.json();
+    const payload: unknown = await req.json();
+    if (typeof payload !== 'object' || payload === null || Array.isArray(payload)) {
+      return json(req, { error: 'A JSON object is required' }, 400);
+    }
+    body = Object.fromEntries(Object.entries(payload));
   } catch {
     return json(req, { error: "Invalid JSON body" }, 400);
   }
@@ -101,6 +92,11 @@ Deno.serve(async (req: Request) => {
   }
 
   const stripe = new Stripe(STRIPE_SECRET_KEY);
+  const requestKey = body.request_id;
+  if (requestKey !== undefined && (typeof requestKey !== 'string' ||
+    !/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(requestKey))) {
+    return json(req, { error: 'Invalid checkout request ID' }, 400);
+  }
 
   let priceId: string;
   try {
@@ -139,7 +135,7 @@ Deno.serve(async (req: Request) => {
           message: "Your Starter Plan will renew monthly and can be cancelled at any time.",
         },
       },
-    });
+    }, { idempotencyKey: `subscription-checkout-${requestKey || crypto.randomUUID()}` });
   } catch (error) {
     console.error(
       "Failed to create subscription checkout session",

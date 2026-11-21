@@ -7,6 +7,7 @@ export const metadata: Metadata = {
     'Interactive demo of an AI-assisted CRM. Qualify leads, generate replies, build proposals, forecast pipeline and automate sales workflows — all using fictional demo data.',
   alternates: { canonical: '/demos/ai-lead-system' },
   openGraph: {
+    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
     title: 'AI Lead & Sales Demo | Digital Footprint',
     description: 'Explore an interactive AI-assisted CRM — lead qualification, reply generation, proposals and pipeline forecasting.',
     url: 'https://digital-footprint.uk/demos/ai-lead-system',
@@ -14,6 +15,7 @@ export const metadata: Metadata = {
     type: 'website',
   },
   twitter: {
+    images: ["/og-image.png"],
     card: 'summary_large_image',
     title: 'AI Lead & Sales Demo | Digital Footprint',
     description: 'Interactive AI-assisted CRM — lead qualification, reply generation, proposals and pipeline forecasting.',

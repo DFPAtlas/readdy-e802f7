@@ -1,3 +1,7 @@
+import { privateMetadata } from '@/lib/seo';
+
+export const metadata = privateMetadata;
+
 import AreaGate from '@/components/AreaGate';
 
 export default function PBXLayout({ children }: { children: React.ReactNode }) {

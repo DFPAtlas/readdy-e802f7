@@ -7,6 +7,7 @@ export const metadata: Metadata = {
     'Interactive demo of a property management platform. Manage a fictional portfolio of properties, tenancies, maintenance, compliance and rent — all in one connected workspace with demo data.',
   alternates: { canonical: '/demos/lethub-lettings-tour' },
   openGraph: {
+    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
     title: 'LetHub Property Operations Demo | Digital Footprint',
     description: 'Explore an interactive property management platform — portfolio, tenancies, maintenance, compliance and rent in one workspace.',
     url: 'https://digital-footprint.uk/demos/lethub-lettings-tour',
@@ -14,6 +15,7 @@ export const metadata: Metadata = {
     type: 'website',
   },
   twitter: {
+    images: ["/og-image.png"],
     card: 'summary_large_image',
     title: 'LetHub Property Operations Demo | Digital Footprint',
     description: 'Interactive property management — portfolio, tenancies, maintenance, compliance and rent in one connected workspace.',

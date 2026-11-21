@@ -2,10 +2,11 @@ import { Metadata } from 'next';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
+import SubscriptionStatus from './SubscriptionStatus';
 
 export const metadata: Metadata = {
-  title: 'Subscription Confirmed | Digital Footprint',
-  description: 'Your Digital Footprint Starter Plan subscription is now active.',
+  title: 'Subscription Checkout | Digital Footprint',
+  description: 'Verify the status of your Digital Footprint Starter Plan checkout.',
 };
 
 export default function SubscriptionSuccessPage() {
@@ -41,16 +42,7 @@ export default function SubscriptionSuccessPage() {
             <i className="ri-check-double-line text-[#38E8C6] w-8 h-8 flex items-center justify-center" />
           </div>
 
-          <p className="text-[#38E8C6] text-xs uppercase tracking-[0.14em] font-semibold mb-3">
-            Subscription active
-          </p>
-          <h1 className="text-3xl sm:text-4xl font-bold text-[#F5F7FA] tracking-tight mb-4">
-            Welcome to the Starter Plan.
-          </h1>
-          <p className="text-[#AAB4C3] max-w-lg mx-auto mb-10">
-            Your subscription is now active. A confirmation and receipt will be sent to the
-            email address you used at checkout.
-          </p>
+          <SubscriptionStatus />
 
           <div className="rounded-2xl border border-[rgba(148,163,184,0.2)] bg-[rgba(15,23,42,0.7)] p-6 lg:p-8 mb-8">
             <h2 className="text-lg font-semibold text-[#F5F7FA] mb-6">What happens next</h2>
@@ -58,7 +50,7 @@ export default function SubscriptionSuccessPage() {
               {[
                 { step: 1, title: 'Confirmation email', desc: 'A receipt for your first monthly payment will be sent to you.' },
                 { step: 2, title: 'Welcome pack', desc: 'We will reach out with your Starter Plan welcome details and next steps.' },
-                { step: 3, title: 'Ongoing support', desc: 'Your website management and support begins immediately.' },
+                { step: 3, title: 'Ongoing support', desc: 'Your website management and support begins once payment is confirmed.' },
               ].map((item) => (
                 <div key={item.step} className="flex gap-4 text-left">
                   <div className="w-8 h-8 rounded-full bg-[rgba(56,232,198,0.12)] flex items-center justify-center shrink-0">

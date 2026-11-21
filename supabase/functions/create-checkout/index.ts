@@ -1,6 +1,8 @@
 import Stripe from "npm:stripe@22.1.1";
 import { createClient } from "npm:@supabase/supabase-js@2.106.2";
 
+import type { PaymentDatabase } from '../_shared/payment-database.ts';
+
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const STRIPE_SECRET_KEY = Deno.env.get("STRIPE_SECRET_KEY")!;
@@ -30,6 +32,7 @@ function cors(req: Request): HeadersInit {
     "access-control-allow-headers": "authorization, apikey, content-type, x-client-info",
     "access-control-allow-methods": "POST, OPTIONS",
     "vary": "Origin",
+    "cache-control": "no-store",
   };
 }
 
@@ -66,7 +69,7 @@ Deno.serve(async (req: Request) => {
   const token = authorization.startsWith("Bearer ") ? authorization.slice(7) : "";
   if (!token) return json(req, { error: "Authentication required" }, 401);
 
-  const admin = createClient(SUPABASE_URL, SERVICE_ROLE_KEY, {
+  const admin = createClient<PaymentDatabase>(SUPABASE_URL, SERVICE_ROLE_KEY, {
     auth: { persistSession: false, autoRefreshToken: false },
   });
   const { data: userData, error: userError } = await admin.auth.getUser(token);
@@ -75,7 +78,11 @@ Deno.serve(async (req: Request) => {
 
   let body: Record<string, unknown>;
   try {
-    body = await req.json();
+    const payload: unknown = await req.json();
+    if (typeof payload !== 'object' || payload === null || Array.isArray(payload)) {
+      return json(req, { error: 'A JSON object is required' }, 400);
+    }
+    body = Object.fromEntries(Object.entries(payload));
   } catch {
     return json(req, { error: "Invalid JSON body" }, 400);
   }
@@ -86,7 +93,7 @@ Deno.serve(async (req: Request) => {
   const { data: invoice, error: invoiceError } = await admin
     .from("invoices")
     .select(
-      "id, invoice_number, description, amount, total, amount_paid, amount_outstanding, currency, type, status, client_id, project_id, updated_at, clients(id,user_id,email,contact_name,company_name,stripe_customer_id)",
+      "id, invoice_number, description, amount, total, amount_paid, amount_outstanding, currency, type, status, client_id, project_id, updated_at, stripe_checkout_session_id, stripe_payment_intent_id, clients(id,user_id,email,contact_name,company_name,stripe_customer_id)",
     )
     .eq("id", invoiceId)
     .maybeSingle();
@@ -155,7 +162,22 @@ Deno.serve(async (req: Request) => {
   if (!authorised) return json(req, { error: "You do not have access to this invoice" }, 403);
 
   const stripe = new Stripe(STRIPE_SECRET_KEY);
-  let stripeCustomerId = invoice.clients?.stripe_customer_id as string | null;
+  let previousSession: Stripe.Checkout.Session | null = null;
+  if (invoice.stripe_checkout_session_id) {
+    try {
+      previousSession = await stripe.checkout.sessions.retrieve(invoice.stripe_checkout_session_id);
+    } catch {
+      return json(req, { error: 'Unable to verify the previous payment session' }, 502);
+    }
+    if (previousSession.status === 'open' && previousSession.amount_total === amountMinor && previousSession.url) {
+      return json(req, { url: previousSession.url, sessionId: previousSession.id });
+    }
+    const previousIntent = typeof previousSession.payment_intent === 'string' ? previousSession.payment_intent : previousSession.payment_intent?.id;
+    if (previousSession.status === 'open' || (previousSession.status === 'complete' && (!previousIntent || invoice.stripe_payment_intent_id !== previousIntent))) {
+      return json(req, { error: 'The previous payment is awaiting reconciliation' }, 409);
+    }
+  }
+  let stripeCustomerId = invoice.clients?.stripe_customer_id;
   if (!stripeCustomerId && invoice.client_id) {
     const customer = await stripe.customers.create({
       email: invoice.clients?.email || user.email || undefined,
@@ -216,7 +238,7 @@ Deno.serve(async (req: Request) => {
     success_url: successUrl,
     cancel_url: cancelUrl,
   }, {
-    idempotencyKey: `invoice-checkout-${invoice.id}-${amountMinor}`,
+    idempotencyKey: `invoice-checkout-${invoice.id}-${amountMinor}${previousSession ? `-after-${previousSession.id}` : ''}`,
   });
 
   if (!session.url) return json(req, { error: "Stripe did not return a checkout URL" }, 502);

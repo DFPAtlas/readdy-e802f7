@@ -7,6 +7,7 @@ export const metadata: Metadata = {
     'Interactive demo of a security operations command centre. Manage guards, sites, patrols, incidents and compliance — all connected through one operational workspace with fictional demo data.',
   alternates: { canonical: '/demos/guardianhub-preview' },
   openGraph: {
+    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
     title: 'GuardianHub Security Operations Demo | Digital Footprint',
     description: 'Explore an interactive security operations centre — guards, sites, patrols, incidents and compliance in one connected workspace.',
     url: 'https://digital-footprint.uk/demos/guardianhub-preview',
@@ -14,6 +15,7 @@ export const metadata: Metadata = {
     type: 'website',
   },
   twitter: {
+    images: ["/og-image.png"],
     card: 'summary_large_image',
     title: 'GuardianHub Security Operations Demo | Digital Footprint',
     description: 'Interactive security operations centre — guards, sites, patrols, incidents and compliance in one connected workspace.',
