@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 
@@ -11,6 +11,7 @@ const PLAN_FEATURES = [
 ];
 
 export default function SubscriptionCheckout() {
+  const requestId = useRef<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
 
@@ -20,10 +21,11 @@ export default function SubscriptionCheckout() {
     setIsSubmitting(true);
 
     try {
+      requestId.current ??= crypto.randomUUID();
       const res = await fetch(`${SUPABASE_URL}/functions/v1/create-subscription-checkout`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ lookup_key: 'starter_plan_monthly' }),
+        body: JSON.stringify({ lookup_key: 'starter_plan_monthly', request_id: requestId.current }),
       });
 
       const data = await res.json();

@@ -1,4 +1,5 @@
-import { createClient, type SupabaseClient } from '@supabase/supabase-js';
+import { createClient, type SupabaseClient, type SupportedStorage } from '@supabase/supabase-js';
+import { createCookieSessionStorage } from './auth-storage';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -15,7 +16,7 @@ export function getSupabaseConfigurationError(): string | null {
   return `Authentication configuration is missing: ${missing.join(' and ')}.`;
 }
 
-function createSafeStorage() {
+function createSafeStorage(): SupportedStorage {
   if (typeof window === 'undefined') {
     return {
       getItem: () => null,
@@ -27,14 +28,14 @@ function createSafeStorage() {
     const testKey = '__sb_storage_test__';
     window.localStorage.setItem(testKey, '1');
     window.localStorage.removeItem(testKey);
-    return window.localStorage;
+    return createCookieSessionStorage(window.localStorage);
   } catch {
     const memoryStore = new Map<string, string>();
-    return {
-      getItem: (key: string) => (memoryStore.has(key) ? memoryStore.get(key)! : null) as string | null,
+    return createCookieSessionStorage({
+      getItem: (key: string) => memoryStore.get(key) ?? null,
       setItem: (key: string, value: string) => { memoryStore.set(key, value); },
       removeItem: (key: string) => { memoryStore.delete(key); },
-    };
+    });
   }
 }
 
@@ -50,7 +51,7 @@ function getOrCreateClient(): SupabaseClient {
           persistSession: true,
           autoRefreshToken: true,
           detectSessionInUrl: true,
-          storage: createSafeStorage() as never,
+          storage: createSafeStorage(),
         },
       },
     );

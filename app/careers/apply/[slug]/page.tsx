@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { socialMetadata } from "@/lib/seo";
 import CareersApplyClient from './CareersApplyClient';
 
-export const metadata: Metadata = {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  return {
   title: "Apply for a Role — Careers",
   description:
     "Apply for a role at Digital Footprint. Submit your CV and cover note and a real person will review every application.",
@@ -10,9 +12,10 @@ export const metadata: Metadata = {
     title: "Apply for a Role — Careers",
     description:
       "Apply for a role at Digital Footprint. Submit your CV and cover note and a real person will review every application.",
-    path: "/careers",
+    path: `/careers/apply/${encodeURIComponent(slug)}`,
   }),
 };
+}
 
 export async function generateStaticParams() {
   return [

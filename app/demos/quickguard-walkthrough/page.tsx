@@ -7,6 +7,7 @@ export const metadata: Metadata = {
     'Interactive demo of a two-sided security marketplace. Book guards as a client, then switch perspective and accept jobs as a guard. No real bookings — fully simulated demo experience.',
   alternates: { canonical: '/demos/quickguard-walkthrough' },
   openGraph: {
+    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
     title: 'QuickGuard Marketplace Demo | Digital Footprint',
     description: 'Explore a two-sided security marketplace — book guards as a client, then switch and accept jobs as a guard. Fully interactive demo.',
     url: 'https://digital-footprint.uk/demos/quickguard-walkthrough',
@@ -14,6 +15,7 @@ export const metadata: Metadata = {
     type: 'website',
   },
   twitter: {
+    images: ["/og-image.png"],
     card: 'summary_large_image',
     title: 'QuickGuard Marketplace Demo | Digital Footprint',
     description: 'Interactive two-sided security marketplace — book guards, switch perspective, accept jobs. Fully simulated demo.',

@@ -9,6 +9,7 @@ export const metadata: Metadata = {
     canonical: '/demos',
   },
   openGraph: {
+    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
     title: 'DFP Experience Centre | Interactive Software Demos',
     description:
       'Don\'t just look at our work. Step inside it. Seven interactive software experiences — no signup, no real data.',
@@ -17,6 +18,7 @@ export const metadata: Metadata = {
     type: 'website',
   },
   twitter: {
+    images: ["/og-image.png"],
     card: 'summary_large_image',
     title: 'DFP Experience Centre | Interactive Software Demos',
     description:

@@ -1,3 +1,12 @@
+import { socialMetadata } from '@/lib/seo';
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const title = slug.split('-').map((part) => part.charAt(0).toUpperCase() + part.slice(1)).join(' ') + ' | Help Centre';
+  const description = 'Digital Footprint help and guidance: ' + title.replace(' | Help Centre', '') + '.';
+  return { title, description, ...socialMetadata({ title, description, path: '/help/article/' + encodeURIComponent(slug) }) };
+}
+
 import HelpArticleDetail from './HelpArticleDetail';
 
 export async function generateStaticParams() {

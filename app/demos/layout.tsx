@@ -10,6 +10,7 @@ export const metadata: Metadata = {
     canonical: '/demos',
   },
   openGraph: {
+    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
     title: 'DFP Demo Lab | Try Our Software',
     description:
       'Explore safe, interactive software demos built by Digital Footprint. No registration and no real customer data.',
@@ -18,6 +19,7 @@ export const metadata: Metadata = {
     type: 'website',
   },
   twitter: {
+    images: ["/og-image.png"],
     card: 'summary_large_image',
     title: 'DFP Demo Lab | Try Our Software',
     description:

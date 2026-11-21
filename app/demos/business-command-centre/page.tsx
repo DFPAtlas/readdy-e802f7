@@ -7,6 +7,7 @@ export const metadata: Metadata = {
     'Interactive demo of a premium business command centre. Explore real-time business pulse, attention centre, projects, team capacity and financial overview — all driven by fictional demo data.',
   alternates: { canonical: '/demos/business-command-centre' },
   openGraph: {
+    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
     title: 'Business Command Centre Demo | Digital Footprint',
     description: 'Explore an interactive business command centre — pulse, projects, team capacity and financials in one executive workspace.',
     url: 'https://digital-footprint.uk/demos/business-command-centre',
@@ -14,6 +15,7 @@ export const metadata: Metadata = {
     type: 'website',
   },
   twitter: {
+    images: ["/og-image.png"],
     card: 'summary_large_image',
     title: 'Business Command Centre Demo | Digital Footprint',
     description: 'Interactive business command centre — pulse, projects, team capacity and financials in one executive workspace.',

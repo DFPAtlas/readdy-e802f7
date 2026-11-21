@@ -1,3 +1,7 @@
+import { privateMetadata } from '@/lib/seo';
+
+export const metadata = privateMetadata;
+
 import AreaGate from '@/components/AreaGate';
 
 export default function StaffLayout({ children }: { children: React.ReactNode }) {

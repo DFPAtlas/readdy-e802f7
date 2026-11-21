@@ -7,6 +7,12 @@ verify_jwt = true
 [functions.stripe-webhook]
 verify_jwt = false
 
+[functions.create-subscription-checkout]
+verify_jwt = false
+
+[functions.dfp-subscription-checkout-status]
+verify_jwt = false
+
 [functions.dfp-website-checkout]
 verify_jwt = false
 

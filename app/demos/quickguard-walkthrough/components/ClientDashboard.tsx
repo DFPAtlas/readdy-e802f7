@@ -8,7 +8,7 @@ export default function ClientDashboard({ onStartJob, greeting }: ClientDashboar
     <div id="client-dashboard" className="space-y-5">
       <div>
         <p className="text-xs font-medium uppercase tracking-[0.15em] text-blue-400">Hawthorne Events Ltd.</p>
-        <h1 className="mt-1 text-2xl font-bold text-white">{greeting}</h1>
+        <h2 className="mt-1 text-2xl font-bold text-white">{greeting}</h2>
         <p className="mt-1 text-sm text-slate-400">What do you need security for?</p>
       </div>
 

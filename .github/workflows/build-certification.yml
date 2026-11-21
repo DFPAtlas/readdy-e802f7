@@ -13,6 +13,9 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: ${{ vars.NEXT_PUBLIC_SUPABASE_URL || secrets.NEXT_PUBLIC_SUPABASE_URL }}
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ vars.NEXT_PUBLIC_SUPABASE_ANON_KEY || secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
@@ -30,6 +33,10 @@ jobs:
         run: npm run test:security
       - name: Website discovery regression tests
         run: npm run test:website-discovery
+      - name: Payment regression tests
+        run: npm run test:payments
+      - name: Server route authorization regression tests
+        run: npm run test:route-security
       - name: Production dependency audit
         run: npm audit --omit=dev --audit-level=high
       - name: TypeScript

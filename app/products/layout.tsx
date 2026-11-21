@@ -1,3 +1,10 @@
+import { socialMetadata } from '@/lib/seo';
+export const metadata = {
+  title: "Our Products",
+  description: "Explore Digital Footprint's own software products \u2014 QuickGuard, GuardianHub, LetHub and Synqoro \u2014 built to run and grow your business.",
+  ...socialMetadata({ title: "Our Products", description: "Explore Digital Footprint's own software products \u2014 QuickGuard, GuardianHub, LetHub and Synqoro \u2014 built to run and grow your business.", path: "/products" }),
+};
+
 import Link from 'next/link';
 import type { ReactNode } from 'react';
 

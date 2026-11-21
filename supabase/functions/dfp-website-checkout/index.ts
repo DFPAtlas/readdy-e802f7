@@ -119,17 +119,17 @@ function bytesToUuid(bytes: Uint8Array): string {
   return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20, 32)}`;
 }
 
-async function checkoutOrderId(email: string, packageId: string, bucket: number): Promise<string> {
-  const payload = new TextEncoder().encode(`dfp-checkout|${email}|${packageId}|${bucket}`);
+async function checkoutOrderId(email: string, packageId: string, bucket: number, requestId: string): Promise<string> {
+  const payload = new TextEncoder().encode(`dfp-checkout|${email}|${packageId}|${bucket}|${requestId}`);
   const digest = new Uint8Array(await crypto.subtle.digest("SHA-256", payload));
   return bytesToUuid(digest);
 }
 
-async function checkoutOrderIds(email: string, packageId: string): Promise<string[]> {
+async function checkoutOrderIds(email: string, packageId: string, requestId: string): Promise<string[]> {
   const currentBucket = Math.floor(Date.now() / IDEMPOTENCY_WINDOW_MS);
   return await Promise.all([
-    checkoutOrderId(email, packageId, currentBucket),
-    checkoutOrderId(email, packageId, currentBucket - 1),
+    checkoutOrderId(email, packageId, currentBucket, requestId),
+    checkoutOrderId(email, packageId, currentBucket - 1, requestId),
   ]);
 }
 
@@ -144,11 +144,21 @@ Deno.serve(async (req: Request) => {
 
   let body: Record<string, unknown>;
   try {
-    body = await req.json();
+    const payload: unknown = await req.json();
+    if (typeof payload !== 'object' || payload === null || Array.isArray(payload)) {
+      return json(req, { error: 'A JSON object is required' }, 400);
+    }
+    body = Object.fromEntries(Object.entries(payload));
   } catch {
     return json(req, { error: "Invalid JSON body" }, 400);
   }
 
+  // Guest checkouts need an unguessable request capability. Email alone must
+  // never recover another person's open Checkout session and billing details.
+  const requestId = body.request_id ?? crypto.randomUUID();
+  if (typeof requestId !== "string" || !/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(requestId)) {
+    return json(req, { error: "Invalid checkout request ID" }, 400);
+  }
   const packageId = String(body.packageId ?? body.package_id ?? "").toLowerCase().trim();
   const pkg = PACKAGE_CATALOGUE[packageId];
   if (!pkg) {
@@ -205,7 +215,7 @@ Deno.serve(async (req: Request) => {
   });
   const stripe = new Stripe(STRIPE_SECRET_KEY);
 
-  const candidateOrderIds = await checkoutOrderIds(customerEmail, pkg.id);
+  const candidateOrderIds = await checkoutOrderIds(customerEmail, pkg.id, requestId);
   let orderId = candidateOrderIds[0];
   let projectReference = generateProjectReference();
   let existingOrder: ExistingOrder | null = null;

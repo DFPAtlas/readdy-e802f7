@@ -1,12 +1,13 @@
 import Stripe from "npm:stripe@22.1.1";
-import { createClient } from "npm:@supabase/supabase-js@2.106.2";
+import { createClient, type SupabaseClient } from "npm:@supabase/supabase-js@2.106.2";
+import type { PaymentDatabase } from '../_shared/payment-database.ts';
 
 const STRIPE_SECRET_KEY = Deno.env.get("STRIPE_SECRET_KEY")!;
 const STRIPE_WEBHOOK_SECRET = Deno.env.get("STRIPE_WEBHOOK_SECRET")!;
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 
-type AdminClient = ReturnType<typeof createClient>;
+type AdminClient = SupabaseClient<PaymentDatabase>;
 type PayloadStyle = "snapshot" | "thin_v2";
 type VerifiedEnv = "generic" | "uat_test" | "uat_live" | "uat_test_v2" | "uat_live_v2";
 
@@ -41,10 +42,9 @@ function connectedAccountId(event: Stripe.Event): string | null {
   if (explicit && explicit.startsWith("acct_")) return explicit;
   const obj = event.data.object;
   if (obj && typeof obj === "object") {
-    const record = obj as Record<string, unknown>;
-    const id = record["id"];
+    const id = 'id' in obj ? obj.id : null;
     if (typeof id === "string" && id.startsWith("acct_")) return id;
-    const account = record["account"];
+    const account = 'account' in obj ? obj.account : null;
     if (typeof account === "string" && account.startsWith("acct_")) return account;
   }
   return null;
@@ -84,26 +84,7 @@ async function completeInvoicePayment(
   if ((session.currency ?? "").toLowerCase() !== "gbp") {
     throw new Error("Unexpected invoice checkout currency");
   }
-
-  const { data: invoice, error: invoiceError } = await admin
-    .from("invoices")
-    .select("id, amount, total, amount_paid, amount_outstanding, currency, status")
-    .eq("id", invoiceId)
-    .maybeSingle();
-  if (invoiceError || !invoice) {
-    throw new Error("Invoice metadata does not match a database record");
-  }
-
-  const total = Number(invoice.total ?? invoice.amount);
-  const paid = Number(invoice.amount_paid ?? 0);
-  const outstanding = Number(invoice.amount_outstanding ?? Math.max(0, total - paid));
-  const expectedMinor = Math.round(outstanding * 100);
-  if (!Number.isSafeInteger(expectedMinor) || session.amount_total !== expectedMinor) {
-    throw new Error("Invoice payment amount mismatch");
-  }
-  if (String(invoice.currency || "GBP").toLowerCase() !== "gbp") {
-    throw new Error("Invoice database currency mismatch");
-  }
+  if (session.amount_total === null || session.currency === null) throw new Error('Checkout amount and currency are required');
 
   const intentId = paymentIntentId(session.payment_intent);
   if (!intentId) throw new Error("Paid invoice checkout has no PaymentIntent");
@@ -132,103 +113,32 @@ async function completeMilestonePayment(
   if ((session.currency ?? "").toLowerCase() !== "gbp") {
     throw new Error("Unexpected milestone checkout currency");
   }
-
-  const { data: milestone, error: milestoneError } = await admin
-    .from("milestones")
-    .select("id, amount, payment_status")
-    .eq("id", milestoneId)
-    .maybeSingle();
-  if (milestoneError || !milestone) {
-    throw new Error("Milestone metadata does not match a database record");
-  }
-  const expectedMinor = Math.round(Number(milestone.amount) * 100);
-  if (!Number.isSafeInteger(expectedMinor) || session.amount_total !== expectedMinor) {
-    throw new Error("Milestone payment amount mismatch");
-  }
+  if (session.amount_total === null || session.currency === null) throw new Error('Checkout amount and currency are required');
 
   const intentId = paymentIntentId(session.payment_intent);
   if (!intentId) throw new Error("Paid milestone checkout has no PaymentIntent");
-
-  const { error: updateError } = await admin
-    .from("milestones")
-    .update({
-      payment_status: "paid",
-      paid_at: new Date().toISOString(),
-      stripe_payment_id: intentId,
-      stripe_checkout_session_id: session.id,
-    })
-    .eq("id", milestone.id)
-    .neq("payment_status", "paid");
-  if (updateError) throw updateError;
+  const { error } = await admin.rpc("record_stripe_milestone_payment", {
+    p_milestone_id: milestoneId, p_amount_minor: session.amount_total,
+    p_currency: session.currency, p_payment_intent_id: intentId,
+    p_checkout_session_id: session.id, p_paid_at: new Date().toISOString(),
+  });
+  if (error) throw error;
 }
 
 async function completeWebsiteStartingPayment(
-  admin: AdminClient,
-  session: Stripe.Checkout.Session,
-  event: Stripe.Event,
+  admin: AdminClient, session: Stripe.Checkout.Session, event: Stripe.Event,
 ): Promise<void> {
   const projectReference = session.metadata?.project_reference;
-  if (!projectReference) throw new Error("Website checkout is missing project_reference metadata");
-  if (session.payment_status !== "paid") {
-    throw new Error("Website checkout session is not marked paid");
-  }
-  if ((session.currency ?? "").toLowerCase() !== "gbp") {
-    throw new Error("Unexpected website checkout currency");
-  }
-
-  const { data: order, error: orderError } = await admin
-    .from("dfp_checkout_orders")
-    .select("id, starting_payment_minor, payment_status, project_reference")
-    .eq("project_reference", projectReference)
-    .maybeSingle();
-
-  if (orderError || !order) {
-    throw new Error("Website checkout order not found for project_reference");
-  }
-
-  if (order.payment_status === "paid") {
-    console.log("Order already marked paid, skipping", { projectReference });
-    return;
-  }
-
-  if (!Number.isSafeInteger(order.starting_payment_minor) || session.amount_total !== order.starting_payment_minor) {
-    throw new Error("Website starting payment amount mismatch");
-  }
-
+  if (!projectReference || session.payment_status !== "paid") throw new Error("Invalid paid website session");
+  if (session.amount_total === null || session.currency === null) throw new Error('Checkout amount and currency are required');
   const intentId = paymentIntentId(session.payment_intent);
   if (!intentId) throw new Error("Paid website checkout has no PaymentIntent");
-
-  const { error: updateError } = await admin
-    .from("dfp_checkout_orders")
-    .update({
-      payment_status: "paid",
-      project_status: "confirmed",
-      stripe_payment_intent_id: intentId,
-      stripe_checkout_session_id: session.id,
-      updated_at: new Date().toISOString(),
-    })
-    .eq("id", order.id)
-    .neq("payment_status", "paid");
-
-  if (updateError) throw updateError;
-
-  const { error: paymentInsertError } = await admin.from("payments").insert({
-    invoice_id: null,
-    client_id: null,
-    amount: session.amount_total ? session.amount_total / 100 : 0,
-    currency: String(session.currency || "gbp").toUpperCase(),
-    payment_date: new Date(event.created * 1000).toISOString(),
-    method: "stripe",
-    status: "completed",
-    provider: "stripe",
-    provider_payment_id: intentId,
-    provider_event_id: event.id,
-    idempotency_key: `stripe-event:${event.id}`,
-    reconciliation_state: "matched",
+  const { error } = await admin.rpc("record_stripe_website_payment", {
+    p_project_reference: projectReference, p_amount_minor: session.amount_total,
+    p_currency: session.currency, p_payment_intent_id: intentId, p_event_id: event.id,
+    p_checkout_session_id: session.id, p_paid_at: new Date(event.created * 1000).toISOString(),
   });
-  if (paymentInsertError?.code !== "23505" && paymentInsertError) {
-    console.error("Failed to insert payment record", paymentInsertError);
-  }
+  if (error) throw error;
 }
 
 async function recordFailedPayment(
@@ -267,7 +177,6 @@ async function recordFailedPayment(
 async function handlePaymentIntentFailed(
   admin: AdminClient,
   intent: Stripe.PaymentIntent,
-  event: Stripe.Event,
 ): Promise<void> {
   const projectReference = intent.metadata?.project_reference;
   if (!projectReference) return;
@@ -281,7 +190,8 @@ async function handlePaymentIntentFailed(
     .eq("project_reference", projectReference)
     .maybeSingle();
 
-  if (orderError || !order) return;
+  if (orderError) throw orderError;
+  if (!order) throw new Error("Website order not found");
 
   if (order.payment_status === "paid") return;
 
@@ -295,7 +205,7 @@ async function handlePaymentIntentFailed(
     .eq("payment_status", "pending");
 
   if (updateError) {
-    console.error("Failed to update order payment status to failed", updateError);
+    throw updateError;
   }
 }
 
@@ -303,14 +213,36 @@ async function recordRefunds(
   admin: AdminClient,
   charge: Stripe.Charge,
   event: Stripe.Event,
+  stripe: Stripe,
 ): Promise<void> {
   const intentId = paymentIntentId(charge.payment_intent);
   if (!intentId) return;
 
-  for (const refund of charge.refunds?.data ?? []) {
+  const intent = await stripe.paymentIntents.retrieve(intentId);
+  const website = intent.metadata?.payment_type === "website_starting_payment";
+  const milestoneId = intent.metadata?.milestone_id;
+  if (milestoneId) {
+    const current = await stripe.charges.retrieve(charge.id);
+    const { error } = await admin.rpc("record_stripe_milestone_refund", {
+      p_milestone_id: milestoneId, p_payment_intent_id: intentId,
+      p_refunded_minor: current.amount_refunded, p_currency: current.currency,
+    });
+    if (error) throw error;
+    return;
+  }
+  // Ignore payments from other integrations on the same Stripe account.
+  if (!website && !intent.metadata?.invoice_id) return;
+  // List all refunds; embedded charge.refunds can be truncated.
+  for await (const refund of stripe.refunds.list({ charge: charge.id, limit: 100 })) {
     if (refund.status !== "succeeded") continue;
 
-    const { error: rpcError } = await admin.rpc("record_stripe_refund", {
+    const { error: rpcError } = website
+      ? await admin.rpc("record_stripe_website_refund", {
+        p_payment_intent_id: intentId, p_event_id: event.id, p_refund_id: refund.id,
+        p_amount_minor: refund.amount, p_currency: refund.currency,
+        p_refunded_at: new Date(refund.created * 1000).toISOString(),
+      })
+      : await admin.rpc("record_stripe_refund", {
       p_payment_intent_id: intentId,
       p_event_id: event.id,
       p_refund_id: refund.id,
@@ -355,7 +287,8 @@ async function syncConnectedAccount(
     .eq("stripe_account_id", accountId)
     .limit(1)
     .maybeSingle();
-  if (testerError || !tester) return;
+  if (testerError) throw testerError;
+  if (!tester) return;
 
   const { error: updateError } = await admin
     .from("uat_testers")
@@ -390,10 +323,11 @@ async function reconcileUatTransfer(
     query = query.eq("stripe_transfer_id", transferId);
   }
   const { data: payment, error } = await query.maybeSingle();
-  if (error || !payment) return;
+  if (error) throw error;
+  if (!payment) return;
 
   if (transfer.reversed === true) {
-    await admin
+    const { error: reversalError } = await admin
       .from("uat_payments")
       .update({
         stripe_transfer_status: "reversed",
@@ -404,29 +338,32 @@ async function reconcileUatTransfer(
       })
       .eq("id", payment.id);
 
-    await admin.from("uat_audit_log").insert({
+    if (reversalError) throw reversalError;
+    const { error: auditError } = await admin.from("uat_audit_log").insert({
       action: "reward_transfer_reversed",
       entity_type: "uat_payment",
       entity_id: payment.id,
       new_value: { stripe_transfer_id: transferId, stripe_transfer_status: "reversed" },
     });
+    if (auditError) throw auditError;
     return;
   }
 
-  await admin
+  const { error: transferError } = await admin
     .from("uat_payments")
     .update({
       stripe_transfer_id: transferId,
       stripe_transfer_status: "paid",
-      stripe_connected_account_id: transfer.destination,
+      stripe_connected_account_id: typeof transfer.destination === "string" ? transfer.destination : transfer.destination?.id ?? null,
       stripe_transfer_created_at: new Date(transfer.created * 1000).toISOString(),
       stripe_last_reconciled_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     })
     .eq("id", payment.id);
 
+  if (transferError) throw transferError;
   if (payment.status === "approved") {
-    await admin
+    const { error: paidError } = await admin
       .from("uat_payments")
       .update({
         status: "paid",
@@ -434,6 +371,7 @@ async function reconcileUatTransfer(
       })
       .eq("id", payment.id)
       .eq("status", "approved");
+    if (paidError) throw paidError;
   }
 }
 
@@ -441,7 +379,7 @@ async function reconcileUatTransfer(
 
 async function handleThinEvent(
   admin: AdminClient,
-  notification: { id: string; type: string; related_object?: unknown; context?: unknown; fetchRelatedObject(): Promise<unknown> },
+  notification: { id: string; type: string; related_object?: unknown; context?: unknown; fetchRelatedObject?: () => Promise<unknown> },
   verifiedEnv: VerifiedEnv,
 ): Promise<string | null> {
   const eventType = notification.type;
@@ -451,7 +389,7 @@ async function handleThinEvent(
   let accountId: string | null = accountIdFromThinNotification(notification);
 
   // Fallback: fetch related object and extract ID
-  if (!accountId) {
+  if (!accountId && notification.fetchRelatedObject) {
     try {
       const relatedObject = await notification.fetchRelatedObject();
       accountId = accountIdFromThinNotification({ related_object: relatedObject });
@@ -507,13 +445,14 @@ async function handleThinEvent(
 
   // Handle account.closed
   if (eventType === "v2.core.account.closed") {
-    await admin.from("uat_testers").update({
+    const { error: closeError } = await admin.from("uat_testers").update({
       stripe_onboarding_complete: false,
       stripe_transfers_enabled: false,
       stripe_payouts_enabled: false,
       stripe_payment_setup_status: "disabled",
       stripe_connect_updated_at: new Date().toISOString(),
     }).eq("id", tester.id);
+    if (closeError) throw closeError;
     return accountId;
   }
 
@@ -566,7 +505,7 @@ Deno.serve(async (req: Request) => {
   const cryptoProvider = Stripe.createSubtleCryptoProvider();
 
   let event: Stripe.Event | null = null;
-  let notification: { id: string; type: string; related_object?: unknown; context?: unknown; fetchRelatedObject(): Promise<unknown> } | null = null;
+  let notification: { id: string; type: string; related_object?: unknown; context?: unknown; fetchRelatedObject?: () => Promise<unknown> } | null = null;
   let payloadStyle: PayloadStyle | null = null;
   let verifiedEnv: VerifiedEnv | null = null;
 
@@ -613,7 +552,7 @@ Deno.serve(async (req: Request) => {
     return Response.json({ error: "Invalid webhook signature" }, { status: 400 });
   }
 
-  const admin = createClient(SUPABASE_URL, SERVICE_ROLE_KEY, {
+  const admin = createClient<PaymentDatabase>(SUPABASE_URL, SERVICE_ROLE_KEY, {
     auth: { persistSession: false, autoRefreshToken: false },
   });
 
@@ -628,51 +567,26 @@ Deno.serve(async (req: Request) => {
     ledgerConnectedAccountId = accountIdFromThinNotification(notification);
   }
 
-  // Ledger insert
-  const { error: ledgerError } = await admin.from("stripe_webhook_events").insert({
-    event_id: eventId,
-    event_type: eventType,
-    status: "processing",
-    object_id: event ? objectId(event) : null,
-    connected_account_id: ledgerConnectedAccountId,
+  const processingToken = crypto.randomUUID();
+  const { data: claim, error: claimError } = await admin.rpc("claim_stripe_webhook", {
+    p_event_id: eventId, p_event_type: eventType,
+    p_object_id: event ? objectId(event) : null,
+    p_connected_account_id: ledgerConnectedAccountId, p_token: processingToken,
   });
-
-  if (ledgerError?.code === "23505") {
-    const { data: existing, error: existingError } = await admin
-      .from("stripe_webhook_events")
-      .select("status")
-      .eq("event_id", eventId)
-      .maybeSingle();
-    if (existingError || !existing) {
-      return Response.json({ error: "Unable to read webhook ledger" }, { status: 500 });
-    }
-    if (existing.status === "processed") {
-      return Response.json({ received: true, duplicate: true });
-    }
-    if (existing.status === "processing") {
-      return Response.json({ error: "Webhook event is already processing" }, { status: 409 });
-    }
-    const { error: retryError } = await admin
-      .from("stripe_webhook_events")
-      .update({ status: "processing", processed_at: null, error_message: null })
-      .eq("event_id", eventId)
-      .eq("status", "failed");
-    if (retryError) {
-      return Response.json({ error: "Unable to retry webhook event" }, { status: 500 });
-    }
-  }
-  if (ledgerError && ledgerError.code !== "23505") {
-    console.error("Unable to create Stripe event ledger entry", ledgerError);
-    return Response.json({ error: "Unable to record webhook" }, { status: 500 });
-  }
+  if (claimError) return Response.json({ error: "Unable to claim webhook" }, { status: 500 });
+  if (claim === "processed") return Response.json({ received: true, duplicate: true });
+  if (claim !== "claimed") return Response.json({ error: "Webhook is processing; retry later" }, { status: 500 });
 
   try {
     if (event && payloadStyle === "snapshot") {
       // --- Existing snapshot event handling (unchanged) ---
+      if (verifiedEnv !== "generic" && !["account.updated", "capability.updated", "transfer.created", "transfer.updated", "transfer.reversed"].includes(event.type)) {
+        throw new Error("Billing event received on a Connect-only signing secret");
+      }
       switch (event.type) {
         case "checkout.session.completed":
         case "checkout.session.async_payment_succeeded": {
-          const session = event.data.object as Stripe.Checkout.Session;
+          const session = await stripe.checkout.sessions.retrieve((event.data.object as Stripe.Checkout.Session).id);
           if (session.payment_status !== "paid") {
             break;
           }
@@ -699,24 +613,24 @@ Deno.serve(async (req: Request) => {
               })
               .eq("project_reference", projectReference)
               .eq("payment_status", "pending");
-            if (updateError) console.error("Failed to mark order cancelled on expiry", updateError);
+            if (updateError) throw updateError;
           }
           break;
         }
         case "payment_intent.payment_failed": {
           const intent = event.data.object as Stripe.PaymentIntent;
-          await handlePaymentIntentFailed(admin, intent, event);
+          await handlePaymentIntentFailed(admin, intent);
           await recordFailedPayment(admin, intent, event);
           break;
         }
         case "charge.refunded": {
-          await recordRefunds(admin, event.data.object as Stripe.Charge, event);
+          await recordRefunds(admin, event.data.object as Stripe.Charge, event, stripe);
           break;
         }
         case "account.updated": {
           const account = event.data.object as Stripe.Account;
           const uatSecret = uatStripeSecretForLivemode(event.livemode);
-          if (!uatSecret) break;
+          if (!uatSecret) throw new Error("UAT Stripe secret is not configured");
           await syncConnectedAccount(admin, new Stripe(uatSecret), account.id);
           break;
         }
@@ -728,14 +642,17 @@ Deno.serve(async (req: Request) => {
               : (event.account ?? null);
           if (!accountId || !accountId.startsWith("acct_")) break;
           const uatSecret = uatStripeSecretForLivemode(event.livemode);
-          if (!uatSecret) break;
+          if (!uatSecret) throw new Error("UAT Stripe secret is not configured");
           await syncConnectedAccount(admin, new Stripe(uatSecret), accountId);
           break;
         }
         case "transfer.created":
         case "transfer.updated":
         case "transfer.reversed": {
-          await reconcileUatTransfer(admin, event.data.object as Stripe.Transfer);
+          const secret = uatStripeSecretForLivemode(event.livemode);
+          if (!secret) throw new Error("UAT Stripe secret is not configured");
+          const current = await new Stripe(secret).transfers.retrieve((event.data.object as Stripe.Transfer).id);
+          await reconcileUatTransfer(admin, current);
           break;
         }
         default:
@@ -754,15 +671,17 @@ Deno.serve(async (req: Request) => {
     }
 
     // Mark processed
-    const { error: processedError } = await admin
+    const { data: processed, error: processedError } = await admin
       .from("stripe_webhook_events")
       .update({
         status: "processed",
         processed_at: new Date().toISOString(),
         error_message: null,
+        lease_expires_at: null,
       })
-      .eq("event_id", eventId);
-    if (processedError) throw processedError;
+      .eq("event_id", eventId).eq("processing_token", processingToken)
+      .select("event_id").maybeSingle();
+    if (processedError || !processed) throw processedError || new Error("Webhook lease lost");
 
     return Response.json({ received: true });
   } catch (error) {
@@ -773,8 +692,9 @@ Deno.serve(async (req: Request) => {
         status: "failed",
         processed_at: new Date().toISOString(),
         error_message: message.slice(0, 2000),
+        lease_expires_at: null,
       })
-      .eq("event_id", eventId);
+      .eq("event_id", eventId).eq("processing_token", processingToken);
     console.error("Stripe webhook processing failed", {
       eventId,
       eventType,
